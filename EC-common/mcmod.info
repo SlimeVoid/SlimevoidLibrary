@@ -1,0 +1,17 @@
+[
+{
+  "modid": "EurysCore",
+  "name": "Eurys Mod Core",
+  "description": "The Core for all Eury's Mods",
+  "version": "1.3.2.0",
+  "mcversion": "1.3.2",
+  "url": "https://github.com/Eurymachus/Eurys-FMs",
+  "updateUrl": "",
+  "credits": "",
+  "authors": ["Eurymachus"],
+  "logoFile": "",
+  "screenshots": [],
+  "parent":"",
+  "dependencies": []
+}
+]
