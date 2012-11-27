@@ -2,10 +2,10 @@
 {
   "modid": "EurysCore",
   "name": "Eurys Mod Core",
-  "description": "The Core for all Eury's Mods",
+  "description": "An Open Source Mod core",
   "version": "1.3.2.0",
   "mcversion": "1.3.2",
-  "url": "https://github.com/Eurymachus/Eurys-FMs",
+  "url": "https://github.com/SlimeVoid/EurysCore",
   "updateUrl": "",
   "credits": "",
   "authors": ["Eurymachus"],
