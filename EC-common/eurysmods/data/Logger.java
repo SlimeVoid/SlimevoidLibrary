@@ -29,7 +29,6 @@ import net.minecraft.src.ModLoader;
  * @author ali4z
  */
 public abstract class Logger {
-	protected static Logger instance;
 	private String name;
 	private LoggerWriter writer;
 	private LogLevel filterLevel;
@@ -53,31 +52,10 @@ public abstract class Logger {
 	 * Gets the logger name
 	 * 
 	 * Implemented to return a mod specific name for logfile
-	 * public static Logger getInstance(String name) also needs to be implemented
 	 * 
 	 * @return Mod Name
 	 */
 	protected abstract String getLoggerName();
-
-	/**
-	 * Gets the logger singleton instance.
-	 * 
-	 * @param name Logger domain name.
-	 * @return Logger instance.
-	 * 
-	 * ********************
-	 * MUST BE IMPLEMENTED
-	 * ********************
-	 * 
-	public static Logger getInstance(String name) {
-		if (instance == null)
-			instance = new Logger[Mod]();
-
-		instance.name = name;
-
-		return instance;
-	}
-	 */
 
 	/**
 	 * Sets the filtering level based on a string.<br>
