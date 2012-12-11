@@ -22,11 +22,13 @@ import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import eurysmods.api.ICommonProxy;
 
-@Mod(modid = "EurysCore", name = "Eurys Mod Core", version = "1.3.2.0")
+@Mod(
+		modid = "EurysCore",
+		name = "Eurys Mod Core",
+		version = "2.0.0.0")
 @NetworkMod(
 		clientSideRequired = true,
-		serverSideRequired = false,
-		versionBounds = "[1.3.2]")
+		serverSideRequired = false)
 public class EurysMods {
 	@SidedProxy(
 			clientSide="eurysmods.proxy.EC_ClientProxy",
