@@ -47,7 +47,7 @@ public class RecipeRemover {
 		while (it.hasNext()) {
 			IRecipe recipe = it.next();
 			ItemStack output = recipe.getRecipeOutput();
-			if (itemSet.contains(output.itemID)) {
+			if (output != null && itemSet.contains(output.itemID)) {
 				matches.add(recipe);
 			}
 		}
