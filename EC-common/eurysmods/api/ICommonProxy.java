@@ -23,37 +23,93 @@ import cpw.mods.fml.common.network.Player;
 
 public interface ICommonProxy extends IGuiHandler {
 
-	public void registerRenderInformation();
-
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
 
+	/**
+	 * Should be called prior to any other configuration
+	 */
+	public void preInit();
+	
+	/**
+	 * Register Sided Tick handlers
+	 */
+	public void registerTickHandler();
+
+	/**
+	 * Register render information (Client only)
+	 */
+	public void registerRenderInformation();
+
+	/**
+	 * Retrieve Sided Minecraft directory
+	 * 
+	 * @return miencraft path as String
+	 */
 	public String getMinecraftDir();
 
-	public int getBlockTextureFromMetadata(int meta);
-
+	/**
+	 * Fascade to call block texture from side and metadata
+	 * 
+	 * @param side the side of the block
+	 * @param meta the metadata
+	 * 
+	 * @return an index in the texture file
+	 */
 	public int getBlockTextureFromSideAndMetadata(int side, int meta);
 
+	/**
+	 * Fascade to call block texture from meta
+	 * 
+	 * @param meta the metadata
+	 * 
+	 * @return an index in the texture file
+	 */
+	public int getBlockTextureFromMetadata(int meta);
+
+	/**
+	 * Handles sided packetdata
+	 * 
+	 * @param manager
+	 * @param packet
+	 * @param player
+	 */
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player);
 
+	/**
+	 * Retrieves the sided packet handler
+	 * 
+	 * @return Packet Handler
+	 */
 	public IPacketHandling getPacketHandler();
 
-	void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
+	/**
+	 * Register tileentity renderer (Client only)
+	 * 
+	 * @param clazz the TileEntity class to register for
+	 */
+	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
 
+	/**
+	 * Display a tileentity GUI
+	 * 
+	 * @param entityplayer the player to display for
+	 * @param tileentity the tileentity associated with the GUI
+	 */
 	public void displayTileEntityGui(EntityPlayer entityplayer, TileEntity tileentity);
 	
 	/**
-	 * Fetches the current minecraft world object.
+	 * Fetches the current Minecraft world object.
 	 * 
 	 * @return Minecraft world object.
 	 */
 	public World getWorld();
 	
 	/**
-	 * Fetches the current minecraft world object relating to the NetHandler.
+	 * Fetches the current Minecraft world object relating to the NetHandler.
 	 * 
 	 * handler the NetHandler (Server or Client)
 	 * 
@@ -76,5 +132,4 @@ public interface ICommonProxy extends IGuiHandler {
 	 * @param login
 	 */
 	public void login(NetHandler handler, INetworkManager manager, Packet1Login login);
-	public void registerTickHandler();
 }

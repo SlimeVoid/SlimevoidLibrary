@@ -113,4 +113,10 @@ public class EC_CommonProxy implements ICommonProxy {
 		
 	}
 
+	@Override
+	public void preInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
