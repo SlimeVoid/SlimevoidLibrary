@@ -12,21 +12,56 @@
 package eurysmods.core;
 
 import net.minecraft.src.ModLoader;
+import eurysmods.data.Logger;
+import eurysmods.data.LoggerEurysCore;
+
 
 public class EurysCore {
 	public static void console(String modName, String s, int type) {
 		switch (type) {
 		case 0:
 			ModLoader.getLogger().info("[" + modName + "] " + s);
+			LoggerEurysCore
+			.getInstance(
+					Logger.filterClassName(BlockRemover.class.toString())
+			).write(
+					false,
+					"[" + modName + "] " + s,
+					LoggerEurysCore.LogLevel.DEBUG
+			);
 			break;
 		case 1:
 			ModLoader.getLogger().warning("[" + modName + "] " + s);
+			LoggerEurysCore
+			.getInstance(
+					Logger.filterClassName(BlockRemover.class.toString())
+			).write(
+					false,
+					"[" + modName + "] " + s,
+					LoggerEurysCore.LogLevel.WARNING
+			);
 			break;
 		case 2:
 			ModLoader.getLogger().severe("[" + modName + "] " + s);
+			LoggerEurysCore
+			.getInstance(
+					Logger.filterClassName(BlockRemover.class.toString())
+			).write(
+					false,
+					"[" + modName + "] " + s,
+					LoggerEurysCore.LogLevel.ERROR
+			);
 			break;
 		default:
 			ModLoader.getLogger().info("[" + modName + "] " + s);
+			LoggerEurysCore
+			.getInstance(
+					Logger.filterClassName(BlockRemover.class.toString())
+			).write(
+					false,
+					"[" + modName + "] " + s,
+					LoggerEurysCore.LogLevel.INFO
+			);
 			break;
 		}
 	}

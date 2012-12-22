@@ -14,7 +14,7 @@ public class EurysAccessTransformer extends AccessTransformer {
     public EurysAccessTransformer() throws IOException {
             super();
             instance = this;
-            // add your access transformers here!
+            // add access transformers here
             mapFiles.add("euryscore.cfg");
             Iterator it = mapFiles.iterator();
             while (it.hasNext()) {

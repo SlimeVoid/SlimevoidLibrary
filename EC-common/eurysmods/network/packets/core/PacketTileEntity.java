@@ -11,25 +11,56 @@
  */
 package eurysmods.network.packets.core;
 
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
+/**
+ * Packet for sending TileEntity information
+ * 
+ * @author Eurymachus
+ *
+ */
 public abstract class PacketTileEntity extends PacketUpdate {
 
 	public PacketTileEntity() {
 		super(PacketIds.TILE);
 	}
 
+	/**
+	 * Get the tileentity instance for this packet
+	 * 
+	 * @param world The world in which the tileentity resides
+	 * 
+	 * @return The tileentity
+	 */
 	public TileEntity getTileEntity(World world) {
-		return world.getBlockTileEntity(
-				this.xPosition,
-				this.yPosition,
-				this.zPosition);
+		if (this.targetExists(world)) {
+			return world.getBlockTileEntity(
+					this.xPosition,
+					this.yPosition,
+					this.zPosition);
+		}
+		return null;
 	}
 
 	@Override
 	public boolean targetExists(World world) {
-		if (world.blockExists(this.xPosition, this.yPosition, this.zPosition)) {
+		if (world.blockExists(
+				this.xPosition,
+				this.yPosition,
+				this.zPosition) &&
+			Block.blocksList[world.getBlockId(
+					this.xPosition,
+					this.yPosition,
+					this.zPosition)].hasTileEntity(
+							world.getBlockMetadata(
+									this.xPosition,
+									this.yPosition,
+									this.zPosition
+							)
+					)
+			) {
 			return true;
 		}
 		return false;

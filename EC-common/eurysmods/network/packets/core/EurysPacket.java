@@ -16,8 +16,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.Packet;
-import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.network.packet.Packet250CustomPayload;
+
+
 
 /**
  * Packet Information Base
@@ -27,38 +28,72 @@ import net.minecraft.src.Packet250CustomPayload;
  */
 public abstract class EurysPacket {
 	/**
-	 * Only true for Packet51MapChunk, Packet52MultiBlockChange,
-	 * Packet53BlockChange and Packet59ComplexEntity. Used to separate them into
-	 * a different send queue.
+	 * Used to separate packets into a different send queue.
 	 */
 	public boolean isChunkDataPacket = false;
 
+	/**
+	 * The channel for the packet
+	 */
 	private String channel;
 
+	/**
+	 * Sets the packet channel
+	 * 
+	 * @param channel the channel to set
+	 */
 	public void setChannel(String channel) {
 		this.channel = channel;
 	}
 
+	/**
+	 * Writes data to the packet
+	 * 
+	 * @param data the outputstream to write to
+	 * 
+	 * @throws IOException if data is corrupt/null
+	 */
 	public abstract void writeData(DataOutputStream data) throws IOException;
 
+	/**
+	 * Reads data from the packet
+	 * 
+	 * @param data the inputstream to read from
+	 * 
+	 * @throws IOException if data is corrupt/null
+	 */
 	public abstract void readData(DataInputStream data) throws IOException;
 
+	/**
+	 * The packet ID usually listed with PacketIds.class
+	 * 
+	 * @return the Packet ID for this packet instance
+	 */
 	public abstract int getID();
 
+	/**
+	 * Gets a readable output for this packet instance
+	 * 
+	 * @param full should return the full packet text
+	 * 
+	 * @return toString()
+	 */
 	public String toString(boolean full) {
 		return toString();
 	}
 
+	/**
+	 * Gets a readable output for this packet instance
+	 */
 	@Override
 	public String toString() {
 		return getID() + " " + getClass().getSimpleName();
 	}
 
 	/**
-	 * Retrieves the Custom Packet and Payload data as a Forge
-	 * Packet250CustomPayload
+	 * Retrieves the Custom Packet and Payload data as Packet250CustomPayload
 	 */
-	public Packet getPacket() {
+	public Packet250CustomPayload getPacket() {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream data = new DataOutputStream(bytes);
 		try {

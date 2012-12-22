@@ -15,19 +15,28 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.World;
+import net.minecraft.world.World;
 
 /**
  * Packet Information for Reading/Writing packet data
  * 
  * packetId The ID of the packet used to identify which packet handler to use
  * payload The payload to be delivered with the packet
+ * xPosition The value x for the current packet
+ * yPosition The value y for the current packet
+ * zPosition The value z for the current packet
+ * side The value side for the current packet (Used for blocks and activation)
+ * vecX The value vecX for the current packet (Used for blocks and activation)
+ * vecY The value vecY for the current packet (Used for blocks and activation)
+ * vecZ The value vecZ for the current packet (Used for blocks and activation)
  * 
  * @author Eurymachus
  * 
  */
 public abstract class PacketUpdate extends EurysPacket {
 	private int packetId;
+
+	public PacketPayload payload;
 
 	public int xPosition;
 	public int yPosition;
@@ -38,6 +47,14 @@ public abstract class PacketUpdate extends EurysPacket {
 	public float vecY;
 	public float vecZ;
 
+	/**
+	 * Set the position x, y, z and side if applicable
+	 * 
+	 * @param x The x position
+	 * @param y The y position
+	 * @param z The z position
+	 * @param side The side (if applicable)
+	 */
 	public void setPosition(int x, int y, int z, int side) {
 		this.xPosition = x;
 		this.yPosition = y;
@@ -45,15 +62,17 @@ public abstract class PacketUpdate extends EurysPacket {
 		this.side = side;
 	}
 
+	/**
+	 * Set the selected vector positions (if applicable)
+	 * 
+	 * @param vecX The selected vector on x
+	 * @param vecY The selected vector on y
+	 * @param vecZ The selected vector on z
+	 */
 	public void setVecs(float vecX, float vecY, float vecZ) {
 		this.vecX = vecX;
 		this.vecY = vecY;
 		this.vecZ = vecZ;
-	}
-
-	public PacketPayload payload;
-
-	public PacketUpdate() {
 	}
 
 	public PacketUpdate(int packetId, PacketPayload payload) {
@@ -107,12 +126,14 @@ public abstract class PacketUpdate extends EurysPacket {
 		data.writeInt(this.xPosition);
 		data.writeInt(this.yPosition);
 		data.writeInt(this.zPosition);
+		
+		// Checks if the side, vecX, vecY and vecZ values have been set defaults to 0 if not
 		data.writeInt(Integer.valueOf(this.side) != null ? this.side : 0);
 		data.writeFloat(Float.valueOf(this.vecX) != null ? this.vecX : 0.0F);
 		data.writeFloat(Float.valueOf(this.vecY) != null ? this.vecY : 0.0F);
 		data.writeFloat(Float.valueOf(this.vecZ) != null ? this.vecZ : 0.0F);
 
-		// No payload means no data
+		// No payload means no additional data
 		if (this.payload == null) {
 			data.writeInt(0);
 			data.writeInt(0);
@@ -122,6 +143,7 @@ public abstract class PacketUpdate extends EurysPacket {
 			return;
 		}
 
+		// Continue writing payload information
 		data.writeInt(this.payload.getIntSize());
 		data.writeInt(this.payload.getFloatSize());
 		data.writeInt(this.payload.getStringSize());
@@ -175,6 +197,13 @@ public abstract class PacketUpdate extends EurysPacket {
 			this.payload.setDoublePayload(i, data.readDouble());
 	}
 
+	/**
+	 * Used to check that a target of (usually x, y, z) exists
+	 * 
+	 * @param world The World in which to check for target
+	 *  
+	 * @return true or false
+	 */
 	public abstract boolean targetExists(World world);
 
 	@Override

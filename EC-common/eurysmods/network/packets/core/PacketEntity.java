@@ -16,9 +16,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.World;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 
+/**
+ * Packet for sending Entity information
+ * 
+ * entityId The ID of the entity to send
+ * 
+ * @author Eurymachus
+ *
+ */
 public abstract class PacketEntity extends PacketUpdate {
 	private int entityId;
 
@@ -26,10 +34,20 @@ public abstract class PacketEntity extends PacketUpdate {
 		super(PacketIds.ENTITY);
 	}
 
+	/**
+	 * Get the entityId for this packet
+	 * 
+	 * @return The entity ID
+	 */
 	public int getEntityId() {
 		return this.entityId;
 	}
 
+	/**
+	 * Set the entityId for this packet
+	 * 
+	 * @param entityId The entity ID
+	 */
 	public void setEntityId(int entityId) {
 		this.entityId = entityId;
 	}
@@ -48,26 +66,39 @@ public abstract class PacketEntity extends PacketUpdate {
 
 	@Override
 	public boolean targetExists(World world) {
+		// Get the loaded entities for the world
 		List entities = world.loadedEntityList;
+		// For each entity within the world
 		for (int i = 0; i < entities.size(); i++) {
+			// Get the current entity
 			Entity entity = (Entity) entities.get(i);
+			// Is entity id of current loaded entity equal to this entity Id 
 			if (entity != null && entity.entityId == this.getEntityId()) {
+				// Entity is loaded and exists
 				return true;
 			}
 		}
+		// Entity does not exist or is not loaded
 		return false;
 	}
 
 	public Entity getEntity(World world) {
+		// If entity exists within the world
 		if (targetExists(world)) {
+			// Get the loaded entity list
 			List entities = world.loadedEntityList;
+			// For each entity within the world
 			for (int i = 0; i < entities.size(); i++) {
+				// Get the current entity 
 				Entity entity = (Entity) entities.get(i);
+				// Is entity id of current loaded entity equal to this entity Id
 				if (entity != null && entity.entityId == this.getEntityId()) {
+					// Entity is loaded return the loaded entity
 					return entity;
 				}
 			}
 		}
+		// Entity does not exist or is not loaded return nothing
 		return null;
 	}
 }

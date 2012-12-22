@@ -16,11 +16,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import net.minecraft.src.ModLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Side;
+import cpw.mods.fml.relauncher.Side;
 import eurysmods.core.EurysMods;
 
-import net.minecraft.src.ModLoader;
+
 
 /**
  * Wireless Redstone logging engine.<br>

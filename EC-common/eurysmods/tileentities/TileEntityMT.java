@@ -11,16 +11,25 @@
  */
 package eurysmods.tileentities;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import eurysmods.api.ITileEntityMT;
 import eurysmods.network.packets.core.PacketTileEntityMT;
 import eurysmods.network.packets.core.PacketUpdate;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Packet;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
 
+/**
+ * Abstract TileEntity class for generation of Multi-Textured blocks contains the data required
+ * 
+ * @author Eurymachus
+ *
+ */
 public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 
+	/**
+	 * The value of the items damage (Usually stored in metadata however due to limitation we store it in tileentity)
+	 */
 	private int textureValue;
 
 	@Override
@@ -35,11 +44,21 @@ public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 		textureValue = nbttagcompound.getInteger("textureValue");
 	}
 
+	/**
+	 * Sets the texture value
+	 *
+	 * @param texture the texture value to set (usually itemdamage)
+	 */
 	@Override
 	public void setTextureValue(int texture) {
 		this.textureValue = texture;
 	}
 
+	/**
+	 * Gets the texture value for the Multi-Textured block
+	 * 
+	 * @return the texture value
+	 */
 	@Override
 	public int getTextureValue() {
 		return this.textureValue;
@@ -50,8 +69,16 @@ public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 		return getUpdatePacket();
 	}
 
+	/**
+	 * Overriden by child classes to return an instance of PacketUpdate
+	 * 
+	 * @return the associated PacketUpdate.getPacket()
+	 */
 	public abstract Packet getUpdatePacket();
 
+	/**
+	 * Default Packet Handling for the tileentity
+	 */
 	@Override
 	public void handleUpdatePacket(World world, PacketUpdate packet) {
 		this.setTextureValue(((PacketTileEntityMT) packet).getTextureValue());

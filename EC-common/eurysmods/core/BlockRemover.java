@@ -11,34 +11,43 @@
  */
 package eurysmods.core;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.ItemBlock;
-import net.minecraft.src.ModLoader;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 
+
+
+
+/**
+ * Used to remove blocks instances from the game - in order to be replaced
+ * 
+ * @author Eurymachus
+ *
+ */
 public class BlockRemover {
 
+	/**
+	 * Remove a vanilla Block instance and it's associated ItemBlock instance
+	 * 
+	 * @param oldBlock The block to be removed
+	 * 
+	 * @return if the block was removed or not
+	 */
 	public static boolean removeVanillaBlock(Block oldBlock) {
 		// if the the block in blocksList with the blockID of the oldBlock is
 		// initialized
 		if (Block.blocksList[oldBlock.blockID] != null) {
 			// Checks if the block is also has an ItemBlock associated with it
-			if (ItemBlock.itemsList[oldBlock.blockID] != null) {
-				ItemBlock.itemsList[oldBlock.blockID] = null;
+			if (Item.itemsList[oldBlock.blockID] != null) {
+				Item.itemsList[oldBlock.blockID] = null;
 			}
 			// Set the block in the blocksList to null
 			Block.blocksList[oldBlock.blockID] = null;
 			// Output a success message
-			ModLoader
-					.getLogger()
-						.info(
-								"Block ID [" + oldBlock.blockID + "] successfully removed.");
+			EurysCore.console("EurysCore", "Block ID [" + oldBlock.blockID + "] successfully removed.");
 			return true;
 		} else {
 			// Output a failure message
-			ModLoader
-					.getLogger()
-						.severe(
-								"Block ID not removed! Either the ID did not exist or was incorrect!");
+			EurysCore.console("EurysCore", "Block ID not removed! Either the ID did not exist or was incorrect!");
 			return false;
 		}
 	}

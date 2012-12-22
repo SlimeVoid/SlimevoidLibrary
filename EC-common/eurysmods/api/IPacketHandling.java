@@ -11,10 +11,10 @@
  */
 package eurysmods.api;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import eurysmods.network.packets.core.PacketTileEntity;
 import eurysmods.network.packets.core.PacketUpdate;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.World;
 
 public interface IPacketHandling {
 	public void handleTileEntityPacket(PacketTileEntity packet, EntityPlayer entityplayer, World world);

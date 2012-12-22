@@ -17,12 +17,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.CraftingManager;
-import net.minecraft.src.IRecipe;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+
+
+
+
+
+
 
 public class RecipeRemover {
 
@@ -52,7 +57,7 @@ public class RecipeRemover {
 			}
 		}
 		for (IRecipe recipe : matches) {
-			ModLoader.getLogger().info("Removing recipe for " + recipe);
+			EurysCore.console("EurysCore", "Removing recipe for " + recipe.getRecipeOutput().getDisplayName());
 			recipes.remove(recipe);
 		}
 	}
