@@ -67,7 +67,8 @@ public abstract class PacketEntity extends PacketUpdate {
 	@Override
 	public boolean targetExists(World world) {
 		// Get the loaded entities for the world
-		List entities = world.loadedEntityList;
+		@SuppressWarnings("unchecked")
+		List<? extends Entity> entities = world.loadedEntityList;
 		// For each entity within the world
 		for (int i = 0; i < entities.size(); i++) {
 			// Get the current entity
@@ -86,7 +87,8 @@ public abstract class PacketEntity extends PacketUpdate {
 		// If entity exists within the world
 		if (targetExists(world)) {
 			// Get the loaded entity list
-			List entities = world.loadedEntityList;
+			@SuppressWarnings("unchecked")
+			List<? extends Entity> entities = world.loadedEntityList;
 			// For each entity within the world
 			for (int i = 0; i < entities.size(); i++) {
 				// Get the current entity 

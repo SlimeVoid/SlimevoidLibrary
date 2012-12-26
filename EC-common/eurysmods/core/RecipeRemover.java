@@ -46,6 +46,7 @@ public class RecipeRemover {
 	public static void removeCrafting() {
 
 		// remove everything from the list
+		@SuppressWarnings("unchecked")
 		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
 		Iterator<IRecipe> it = recipes.iterator();
 		List<IRecipe> matches = new ArrayList<IRecipe>(); // recipes to remove

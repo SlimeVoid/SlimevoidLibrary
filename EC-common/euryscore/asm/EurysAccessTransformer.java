@@ -10,13 +10,13 @@ import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
 public class EurysAccessTransformer extends AccessTransformer {
     private static EurysAccessTransformer instance;
-    private static List mapFiles = new LinkedList();
+    private static List<String> mapFiles = new LinkedList<String>();
     public EurysAccessTransformer() throws IOException {
             super();
             instance = this;
             // add access transformers here
             mapFiles.add("euryscore.cfg");
-            Iterator it = mapFiles.iterator();
+            Iterator<String> it = mapFiles.iterator();
             while (it.hasNext()) {
                     String file = (String)it.next();
                     this.readMapFile(file);
