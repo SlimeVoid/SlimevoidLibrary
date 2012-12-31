@@ -23,12 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
-
-
-
-
-
-
 public class RecipeRemover {
 
 	// set of recipes to remove
@@ -39,7 +33,7 @@ public class RecipeRemover {
 			itemSet.add(((Block) object).blockID);
 		}
 		if (object instanceof Item) {
-			itemSet.add(((Item) object).shiftedIndex);
+			itemSet.add(((Item) object).itemID);
 		}
 	}
 
