@@ -18,7 +18,7 @@ public class EurysAccessTransformer extends AccessTransformer {
             mapFiles.add("euryscore.cfg");
             Iterator<String> it = mapFiles.iterator();
             while (it.hasNext()) {
-                    String file = (String)it.next();
+                    String file = it.next();
                     this.readMapFile(file);
             }
             

@@ -72,7 +72,7 @@ public abstract class PacketEntity extends PacketUpdate {
 		// For each entity within the world
 		for (int i = 0; i < entities.size(); i++) {
 			// Get the current entity
-			Entity entity = (Entity) entities.get(i);
+			Entity entity = entities.get(i);
 			// Is entity id of current loaded entity equal to this entity Id 
 			if (entity != null && entity.entityId == this.getEntityId()) {
 				// Entity is loaded and exists
@@ -92,7 +92,7 @@ public abstract class PacketEntity extends PacketUpdate {
 			// For each entity within the world
 			for (int i = 0; i < entities.size(); i++) {
 				// Get the current entity 
-				Entity entity = (Entity) entities.get(i);
+				Entity entity = entities.get(i);
 				// Is entity id of current loaded entity equal to this entity Id
 				if (entity != null && entity.entityId == this.getEntityId()) {
 					// Entity is loaded return the loaded entity
