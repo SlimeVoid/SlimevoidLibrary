@@ -15,20 +15,21 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
  * Packet Information for Reading/Writing packet data
  * 
  * packetId The ID of the packet used to identify which packet handler to use
- * payload The payload to be delivered with the packet
- * xPosition The value x for the current packet
- * yPosition The value y for the current packet
- * zPosition The value z for the current packet
- * side The value side for the current packet (Used for blocks and activation)
- * vecX The value vecX for the current packet (Used for blocks and activation)
- * vecY The value vecY for the current packet (Used for blocks and activation)
- * vecZ The value vecZ for the current packet (Used for blocks and activation)
+ * payload The payload to be delivered with the packet xPosition The value x for
+ * the current packet yPosition The value y for the current packet zPosition The
+ * value z for the current packet side The value side for the current packet
+ * (Used for blocks and activation) vecX The value vecX for the current packet
+ * (Used for blocks and activation) vecY The value vecY for the current packet
+ * (Used for blocks and activation) vecZ The value vecZ for the current packet
+ * (Used for blocks and activation)
  * 
  * @author Eurymachus
  * 
@@ -50,10 +51,14 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Set the position x, y, z and side if applicable
 	 * 
-	 * @param x The x position
-	 * @param y The y position
-	 * @param z The z position
-	 * @param side The side (if applicable)
+	 * @param x
+	 *            The x position
+	 * @param y
+	 *            The y position
+	 * @param z
+	 *            The z position
+	 * @param side
+	 *            The side (if applicable)
 	 */
 	public void setPosition(int x, int y, int z, int side) {
 		this.xPosition = x;
@@ -65,9 +70,12 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Set the selected vector positions (if applicable)
 	 * 
-	 * @param vecX The selected vector on x
-	 * @param vecY The selected vector on y
-	 * @param vecZ The selected vector on z
+	 * @param vecX
+	 *            The selected vector on x
+	 * @param vecY
+	 *            The selected vector on y
+	 * @param vecZ
+	 *            The selected vector on z
 	 */
 	public void setVecs(float vecX, float vecY, float vecZ) {
 		this.vecX = vecX;
@@ -88,7 +96,8 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Writes a String to the DataOutputStream
 	 */
-	public static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException {
+	public static void writeString(String par0Str,
+			DataOutputStream par1DataOutputStream) throws IOException {
 		if (par0Str.length() > 32767) {
 			throw new IOException("String too big");
 		} else {
@@ -100,12 +109,14 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Reads a string from a packet
 	 */
-	public static String readString(DataInputStream par0DataInputStream, int par1) throws IOException {
+	public static String readString(DataInputStream par0DataInputStream,
+			int par1) throws IOException {
 		short var2 = par0DataInputStream.readShort();
 
 		if (var2 > par1) {
 			throw new IOException(
-					"Received string length longer than maximum allowed (" + var2 + " > " + par1 + ")");
+					"Received string length longer than maximum allowed ("
+							+ var2 + " > " + par1 + ")");
 		} else if (var2 < 0) {
 			throw new IOException(
 					"Received string length is less than zero! Weird string!");
@@ -120,14 +131,46 @@ public abstract class PacketUpdate extends EurysPacket {
 		}
 	}
 
+	/**
+	 * Writes a compressed NBTTagCompound to the OutputStream
+	 */
+	protected static void writeNBTTagCompound(
+			NBTTagCompound nbttagcompound,
+			DataOutputStream data) throws IOException {
+		if (nbttagcompound == null) {
+			data.writeShort(-1);
+		} else {
+			byte[] var2 = CompressedStreamTools.compress(nbttagcompound);
+			data.writeShort((short) var2.length);
+			data.write(var2);
+		}
+	}
+
+	/**
+	 * Reads a compressed NBTTagCompound from the InputStream
+	 */
+	public static NBTTagCompound readNBTTagCompound(
+			DataInputStream data) throws IOException {
+		short var1 = data.readShort();
+
+		if (var1 < 0) {
+			return null;
+		} else {
+			byte[] var2 = new byte[var1];
+			data.readFully(var2);
+			return CompressedStreamTools.decompress(var2);
+		}
+	}
+
 	@Override
 	public void writeData(DataOutputStream data) throws IOException {
 
 		data.writeInt(this.xPosition);
 		data.writeInt(this.yPosition);
 		data.writeInt(this.zPosition);
-		
-		// Checks if the side, vecX, vecY and vecZ values have been set defaults to 0 if not
+
+		// Checks if the side, vecX, vecY and vecZ values have been set defaults
+		// to 0 if not
 		data.writeInt(Integer.valueOf(this.side) != null ? this.side : 0);
 		data.writeFloat(Float.valueOf(this.vecX) != null ? this.vecX : 0.0F);
 		data.writeFloat(Float.valueOf(this.vecY) != null ? this.vecY : 0.0F);
@@ -165,10 +208,7 @@ public abstract class PacketUpdate extends EurysPacket {
 	@Override
 	public void readData(DataInputStream data) throws IOException {
 
-		this.setPosition(
-				data.readInt(),
-				data.readInt(),
-				data.readInt(),
+		this.setPosition(data.readInt(), data.readInt(), data.readInt(),
 				data.readInt());
 		this.setVecs(data.readFloat(), data.readFloat(), data.readFloat());
 
@@ -178,12 +218,8 @@ public abstract class PacketUpdate extends EurysPacket {
 		int boolSize = data.readInt();
 		int doubleSize = data.readInt();
 
-		this.payload = new PacketPayload(
-				intSize,
-				floatSize,
-				stringSize,
-				boolSize,
-				doubleSize);
+		this.payload = new PacketPayload(intSize, floatSize, stringSize,
+				boolSize, doubleSize);
 
 		for (int i = 0; i < this.payload.getIntSize(); i++)
 			this.payload.setIntPayload(i, data.readInt());
@@ -200,8 +236,9 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Used to check that a target of (usually x, y, z) exists
 	 * 
-	 * @param world The World in which to check for target
-	 *  
+	 * @param world
+	 *            The World in which to check for target
+	 * 
 	 * @return true or false
 	 */
 	public abstract boolean targetExists(World world);
