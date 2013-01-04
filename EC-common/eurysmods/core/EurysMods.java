@@ -19,7 +19,7 @@ import eurysmods.api.ICommonProxy;
 @Mod(
 		modid = "EurysCore",
 		name = "Eurys Mod Core",
-		version = "2.0.0.3")
+		version = "2.0.0.4")
 @NetworkMod(
 		clientSideRequired = true,
 		serverSideRequired = false)
