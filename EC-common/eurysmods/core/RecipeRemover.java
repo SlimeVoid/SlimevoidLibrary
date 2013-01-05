@@ -27,6 +27,10 @@ public class RecipeRemover {
 
 	// set of recipes to remove
 	static Set<Integer> itemSet = new HashSet<Integer>();
+	
+	private static void flush() {
+		itemSet.clear();
+	}
 
 	public static void registerItemRecipeToRemove(Object object) {
 		if (object instanceof Block) {
@@ -55,5 +59,6 @@ public class RecipeRemover {
 			EurysCore.console("EurysCore", "Removing recipe for " + recipe.getRecipeOutput().getDisplayName());
 			recipes.remove(recipe);
 		}
+		flush();
 	}
 }

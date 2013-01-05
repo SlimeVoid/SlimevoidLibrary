@@ -11,8 +11,6 @@
  */
 package eurysmods.core;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import eurysmods.api.ICommonProxy;
 import eurysmods.api.ICore;
 import eurysmods.api.IPacketHandling;
@@ -23,9 +21,7 @@ public class Core implements ICore {
 	private String modChannel;
 	ICommonProxy proxy;
 	IPacketHandling packethandling;
-	@SideOnly(Side.CLIENT)
 	private String itemSheet = "gui/items.png";
-	@SideOnly(Side.CLIENT)
 	private String blockSheet = "terrain.png";
 
 	public Core(ICommonProxy proxyParam) {
@@ -33,27 +29,23 @@ public class Core implements ICore {
 		this.packethandling = proxy.getPacketHandler();
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
 	public String getBlockSheet() {
 		String concat = this.modDir + this.blockSheet;
 		return concat;
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
 	public String getItemSheet() {
 		String concat = this.modDir + this.itemSheet;
 		return concat;
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
 	public void setBlockSheet(String sheet) {
 		this.blockSheet = sheet;
 	}
-
-	@SideOnly(Side.CLIENT)
+	
 	@Override
 	public void setItemSheet(String sheet) {
 		this.itemSheet = sheet;
