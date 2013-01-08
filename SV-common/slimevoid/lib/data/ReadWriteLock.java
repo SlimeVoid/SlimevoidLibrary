@@ -35,7 +35,7 @@ public class ReadWriteLock {
 	 */
 	public synchronized void readLock(World world) throws InterruptedException {
 		while (writers > 0 || writeReq > 0) {
-			LoggerEurysCore.getInstance(
+			LoggerSlimevoidLib.getInstance(
 					"ReadWriteLock"
 			).write(
 					world.isRemote,
@@ -67,7 +67,7 @@ public class ReadWriteLock {
 	public synchronized void writeLock(World world) throws InterruptedException {
 		writeReq++;
 		while (readers > 0 || writers > 0) {
-			LoggerEurysCore.getInstance(
+			LoggerSlimevoidLib.getInstance(
 					"ReadWriteLock"
 			).write(
 					world.isRemote,

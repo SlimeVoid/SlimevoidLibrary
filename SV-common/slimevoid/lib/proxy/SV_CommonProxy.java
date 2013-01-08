@@ -22,7 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.Player;
 
-public class EC_CommonProxy implements ICommonProxy {
+public class SV_CommonProxy implements ICommonProxy {
 
 	@Override
 	public void registerRenderInformation() {

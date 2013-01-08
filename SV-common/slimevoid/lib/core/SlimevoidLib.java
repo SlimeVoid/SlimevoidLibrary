@@ -17,15 +17,15 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(
-		modid = "EurysCore",
-		name = "Eurys Mod Core",
+		modid = "SlimevoidLib",
+		name = "Slimevoid Library",
 		version = "2.0.0.5")
 @NetworkMod(
 		clientSideRequired = true,
 		serverSideRequired = false)
-public class EurysMods {
+public class SlimevoidLib {
 	@SidedProxy(
-			clientSide="eurysmods.proxy.EC_ClientProxy",
-			serverSide="eurysmods.proxy.EC_CommonProxy")
+			clientSide="slimevoid.lib.proxy.SV_ClientProxy",
+			serverSide="slimevoid.lib.proxy.SV_CommonProxy")
 	public static ICommonProxy proxy;
 }

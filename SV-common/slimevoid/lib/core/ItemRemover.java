@@ -35,11 +35,11 @@ public class ItemRemover {
 			// Set the block in the blocksList to null
 			Item.itemsList[oldItem.shiftedIndex] = null;
 			// Output a success message
-			EurysCore.console("EurysCore", "Item ID [" + oldItem.shiftedIndex + "] successfully removed.");
+			SlimevoidCore.console("EurysCore", "Item ID [" + oldItem.shiftedIndex + "] successfully removed.");
 			return true;
 		} else {
 			// Output a failure message
-			EurysCore.console("EurysCore", "Item ID not removed! Either the ID did not exist or was incorrect!");
+			SlimevoidCore.console("EurysCore", "Item ID not removed! Either the ID did not exist or was incorrect!");
 			return false;
 		}
 	}

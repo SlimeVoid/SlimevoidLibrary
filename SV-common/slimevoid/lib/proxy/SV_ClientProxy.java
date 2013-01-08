@@ -13,7 +13,7 @@ package slimevoid.lib.proxy;
 
 import net.minecraft.client.Minecraft;
 
-public class EC_ClientProxy extends EC_CommonProxy {
+public class SV_ClientProxy extends SV_CommonProxy {
 
 	@Override
 	public String getMinecraftDir() {

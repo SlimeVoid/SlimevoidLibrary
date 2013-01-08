@@ -56,7 +56,7 @@ public class RecipeRemover {
 			}
 		}
 		for (IRecipe recipe : matches) {
-			EurysCore.console("EurysCore", "Removing recipe for " + recipe.getRecipeOutput().getDisplayName());
+			SlimevoidCore.console("EurysCore", "Removing recipe for " + recipe.getRecipeOutput().getDisplayName());
 			recipes.remove(recipe);
 		}
 		flush();

@@ -16,7 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import slimevoid.lib.core.EurysMods;
+import slimevoid.lib.core.SlimevoidLib;
 
 import net.minecraft.src.ModLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -175,7 +175,7 @@ public abstract class Logger {
 		public LoggerWriter(String modName) {
 			try {
 				file = new File(
-						EurysMods.proxy.getMinecraftDir()+
+						SlimevoidLib.proxy.getMinecraftDir()+
 						File.separator+
 						modName+".log"
 				);

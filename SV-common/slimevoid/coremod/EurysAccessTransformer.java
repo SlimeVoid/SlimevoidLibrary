@@ -15,7 +15,7 @@ public class EurysAccessTransformer extends AccessTransformer {
             super();
             instance = this;
             // add access transformers here
-            mapFiles.add("euryscore.cfg");
+            mapFiles.add("slimevoid.cfg");
             Iterator<String> it = mapFiles.iterator();
             while (it.hasNext()) {
                     String file = it.next();

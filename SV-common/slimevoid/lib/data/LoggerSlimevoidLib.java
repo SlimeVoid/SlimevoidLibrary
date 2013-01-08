@@ -1,6 +1,6 @@
 package slimevoid.lib.data;
 
-public class LoggerEurysCore extends Logger {
+public class LoggerSlimevoidLib extends Logger {
 
 	private static Logger instance;
 	
@@ -11,7 +11,7 @@ public class LoggerEurysCore extends Logger {
 	
 	public static Logger getInstance(String name) {
 		if (instance == null)
-			instance = new LoggerEurysCore();
+			instance = new LoggerSlimevoidLib();
 
 		instance.setName(name);
 

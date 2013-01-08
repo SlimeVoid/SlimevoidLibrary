@@ -12,16 +12,16 @@
 package slimevoid.lib.core;
 
 import slimevoid.lib.data.Logger;
-import slimevoid.lib.data.LoggerEurysCore;
+import slimevoid.lib.data.LoggerSlimevoidLib;
 import net.minecraft.src.ModLoader;
 
 
-public class EurysCore {
+public class SlimevoidCore {
 	public static void console(String modName, String s, int type) {
 		switch (type) {
 		case 0:
 			ModLoader.getLogger().info("[" + modName + "] " + s);
-			LoggerEurysCore
+			LoggerSlimevoidLib
 			.getInstance(
 					Logger.filterClassName(BlockRemover.class.toString())
 			).write(
@@ -32,7 +32,7 @@ public class EurysCore {
 			break;
 		case 1:
 			ModLoader.getLogger().warning("[" + modName + "] " + s);
-			LoggerEurysCore
+			LoggerSlimevoidLib
 			.getInstance(
 					Logger.filterClassName(BlockRemover.class.toString())
 			).write(
@@ -43,7 +43,7 @@ public class EurysCore {
 			break;
 		case 2:
 			ModLoader.getLogger().severe("[" + modName + "] " + s);
-			LoggerEurysCore
+			LoggerSlimevoidLib
 			.getInstance(
 					Logger.filterClassName(BlockRemover.class.toString())
 			).write(
@@ -54,7 +54,7 @@ public class EurysCore {
 			break;
 		default:
 			ModLoader.getLogger().info("[" + modName + "] " + s);
-			LoggerEurysCore
+			LoggerSlimevoidLib
 			.getInstance(
 					Logger.filterClassName(BlockRemover.class.toString())
 			).write(
