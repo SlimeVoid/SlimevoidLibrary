@@ -40,7 +40,7 @@ public class ReadWriteLock {
 			).write(
 					world.isRemote,
 					"readLock() - waiting",
-					LoggerEurysCore.LogLevel.INFO
+					LoggerSlimevoidLib.LogLevel.INFO
 			);
 			wait();
 		}
@@ -72,7 +72,7 @@ public class ReadWriteLock {
 			).write(
 					world.isRemote,
 					"writeLock() - waiting",
-					LoggerEurysCore.LogLevel.INFO
+					LoggerSlimevoidLib.LogLevel.INFO
 			);
 			wait();
 		}

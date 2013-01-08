@@ -27,7 +27,7 @@ public class SlimevoidCore {
 			).write(
 					false,
 					"[" + modName + "] " + s,
-					LoggerEurysCore.LogLevel.DEBUG
+					LoggerSlimevoidLib.LogLevel.DEBUG
 			);
 			break;
 		case 1:
@@ -38,7 +38,7 @@ public class SlimevoidCore {
 			).write(
 					false,
 					"[" + modName + "] " + s,
-					LoggerEurysCore.LogLevel.WARNING
+					LoggerSlimevoidLib.LogLevel.WARNING
 			);
 			break;
 		case 2:
@@ -49,7 +49,7 @@ public class SlimevoidCore {
 			).write(
 					false,
 					"[" + modName + "] " + s,
-					LoggerEurysCore.LogLevel.ERROR
+					LoggerSlimevoidLib.LogLevel.ERROR
 			);
 			break;
 		default:
@@ -60,7 +60,7 @@ public class SlimevoidCore {
 			).write(
 					false,
 					"[" + modName + "] " + s,
-					LoggerEurysCore.LogLevel.INFO
+					LoggerSlimevoidLib.LogLevel.INFO
 			);
 			break;
 		}
