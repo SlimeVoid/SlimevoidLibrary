@@ -37,7 +37,7 @@ public class RecipeRemover {
 			itemSet.add(((Block) object).blockID);
 		}
 		if (object instanceof Item) {
-			itemSet.add(((Item) object).shiftedIndex);
+			itemSet.add(((Item) object).itemID);
 		}
 	}
 
