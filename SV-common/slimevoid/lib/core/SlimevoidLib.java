@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 @Mod(
 		modid = "SlimevoidLib",
 		name = "Slimevoid Library",
-		version = "2.0.0.5")
+		version = "2.0.1.1")
 @NetworkMod(
 		clientSideRequired = true,
 		serverSideRequired = false)
