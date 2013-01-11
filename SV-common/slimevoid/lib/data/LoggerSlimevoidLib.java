@@ -6,7 +6,7 @@ public class LoggerSlimevoidLib extends Logger {
 	
 	@Override
 	protected String getLoggerName() {
-		return "EurysCore";
+		return "SVLib";
 	}
 	
 	public static Logger getInstance(String name) {

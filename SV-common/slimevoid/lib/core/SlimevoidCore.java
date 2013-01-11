@@ -11,7 +11,6 @@
  */
 package slimevoid.lib.core;
 
-import slimevoid.lib.data.Logger;
 import slimevoid.lib.data.LoggerSlimevoidLib;
 import net.minecraft.src.ModLoader;
 
@@ -22,44 +21,40 @@ public class SlimevoidCore {
 		case 0:
 			ModLoader.getLogger().info("[" + modName + "] " + s);
 			LoggerSlimevoidLib
-			.getInstance(
-					Logger.filterClassName(BlockRemover.class.toString())
+			.getInstance(modName
 			).write(
 					false,
-					"[" + modName + "] " + s,
+					s,
 					LoggerSlimevoidLib.LogLevel.DEBUG
 			);
 			break;
 		case 1:
 			ModLoader.getLogger().warning("[" + modName + "] " + s);
 			LoggerSlimevoidLib
-			.getInstance(
-					Logger.filterClassName(BlockRemover.class.toString())
+			.getInstance(modName
 			).write(
 					false,
-					"[" + modName + "] " + s,
+					s,
 					LoggerSlimevoidLib.LogLevel.WARNING
 			);
 			break;
 		case 2:
 			ModLoader.getLogger().severe("[" + modName + "] " + s);
 			LoggerSlimevoidLib
-			.getInstance(
-					Logger.filterClassName(BlockRemover.class.toString())
+			.getInstance(modName
 			).write(
 					false,
-					"[" + modName + "] " + s,
+					s,
 					LoggerSlimevoidLib.LogLevel.ERROR
 			);
 			break;
 		default:
 			ModLoader.getLogger().info("[" + modName + "] " + s);
 			LoggerSlimevoidLib
-			.getInstance(
-					Logger.filterClassName(BlockRemover.class.toString())
+			.getInstance(modName
 			).write(
 					false,
-					"[" + modName + "] " + s,
+					s,
 					LoggerSlimevoidLib.LogLevel.INFO
 			);
 			break;
