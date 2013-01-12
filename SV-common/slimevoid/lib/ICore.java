@@ -11,9 +11,6 @@
  */
 package slimevoid.lib;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public interface ICore {
 	String getBlockSheet();
 

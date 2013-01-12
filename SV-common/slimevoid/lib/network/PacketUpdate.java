@@ -15,7 +15,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.nbt.CompressedStreamTools;
+import slimevoid.lib.nbt.NBTHelper;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -96,39 +97,17 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Writes a String to the DataOutputStream
 	 */
-	public static void writeString(String par0Str,
+	protected static void writeString(String par0Str,
 			DataOutputStream par1DataOutputStream) throws IOException {
-		if (par0Str.length() > 32767) {
-			throw new IOException("String too big");
-		} else {
-			par1DataOutputStream.writeShort(par0Str.length());
-			par1DataOutputStream.writeChars(par0Str);
-		}
+		NBTHelper.writeString(par0Str, par1DataOutputStream);
 	}
 
 	/**
 	 * Reads a string from a packet
 	 */
-	public static String readString(DataInputStream par0DataInputStream,
+	protected static String readString(DataInputStream par0DataInputStream,
 			int par1) throws IOException {
-		short var2 = par0DataInputStream.readShort();
-
-		if (var2 > par1) {
-			throw new IOException(
-					"Received string length longer than maximum allowed ("
-							+ var2 + " > " + par1 + ")");
-		} else if (var2 < 0) {
-			throw new IOException(
-					"Received string length is less than zero! Weird string!");
-		} else {
-			StringBuilder var3 = new StringBuilder();
-
-			for (int var4 = 0; var4 < var2; ++var4) {
-				var3.append(par0DataInputStream.readChar());
-			}
-
-			return var3.toString();
-		}
+		return NBTHelper.readString(par0DataInputStream, par1);
 	}
 
 	/**
@@ -137,29 +116,15 @@ public abstract class PacketUpdate extends EurysPacket {
 	protected static void writeNBTTagCompound(
 			NBTTagCompound nbttagcompound,
 			DataOutputStream data) throws IOException {
-		if (nbttagcompound == null) {
-			data.writeShort(-1);
-		} else {
-			byte[] var2 = CompressedStreamTools.compress(nbttagcompound);
-			data.writeShort((short) var2.length);
-			data.write(var2);
-		}
+		NBTHelper.writeNBTTagCompound(nbttagcompound, data);
 	}
 
 	/**
 	 * Reads a compressed NBTTagCompound from the InputStream
 	 */
-	public static NBTTagCompound readNBTTagCompound(
+	protected static NBTTagCompound readNBTTagCompound(
 			DataInputStream data) throws IOException {
-		short var1 = data.readShort();
-
-		if (var1 < 0) {
-			return null;
-		} else {
-			byte[] var2 = new byte[var1];
-			data.readFully(var2);
-			return CompressedStreamTools.decompress(var2);
-		}
+		return NBTHelper.readNBTTagCompound(data);
 	}
 
 	@Override
