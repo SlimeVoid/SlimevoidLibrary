@@ -11,13 +11,13 @@
  */
 package slimevoid.lib.tileentity;
 
-import slimevoid.lib.ITileEntityMT;
-import slimevoid.lib.network.PacketTileEntityMT;
-import slimevoid.lib.network.PacketUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import slimevoid.lib.ITileEntityMT;
+import slimevoid.lib.network.PacketTileEntityMT;
+import slimevoid.lib.network.PacketUpdate;
 
 /**
  * Abstract TileEntity class for generation of Multi-Textured blocks contains the data required

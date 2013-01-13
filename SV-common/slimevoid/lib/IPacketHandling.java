@@ -11,10 +11,10 @@
  */
 package slimevoid.lib;
 
-import slimevoid.lib.network.PacketTileEntity;
-import slimevoid.lib.network.PacketUpdate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import slimevoid.lib.network.PacketTileEntity;
+import slimevoid.lib.network.PacketUpdate;
 
 public interface IPacketHandling {
 	public void handleTileEntityPacket(PacketTileEntity packet, EntityPlayer entityplayer, World world);

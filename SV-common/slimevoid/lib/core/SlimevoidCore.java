@@ -11,8 +11,8 @@
  */
 package slimevoid.lib.core;
 
-import slimevoid.lib.data.LoggerSlimevoidLib;
 import net.minecraft.src.ModLoader;
+import slimevoid.lib.data.LoggerSlimevoidLib;
 
 
 public class SlimevoidCore {

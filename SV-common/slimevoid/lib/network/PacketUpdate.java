@@ -15,10 +15,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import slimevoid.lib.nbt.NBTHelper;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import slimevoid.lib.nbt.NBTHelper;
 
 /**
  * Packet Information for Reading/Writing packet data

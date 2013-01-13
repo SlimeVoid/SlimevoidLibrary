@@ -11,8 +11,8 @@
  */
 package slimevoid.lib;
 
-import slimevoid.lib.network.PacketUpdate;
 import net.minecraft.world.World;
+import slimevoid.lib.network.PacketUpdate;
 
 public interface ITileEntity {
 	public void handleUpdatePacket(World world, PacketUpdate packet);

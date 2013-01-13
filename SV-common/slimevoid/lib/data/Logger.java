@@ -16,9 +16,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import slimevoid.lib.core.SlimevoidLib;
-
 import net.minecraft.src.ModLoader;
+import slimevoid.lib.core.SlimevoidLib;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
