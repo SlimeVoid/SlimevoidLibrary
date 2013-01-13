@@ -1,13 +1,8 @@
 package slimevoid.lib.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.src.ModLoader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class EntityHelper {
-	// Get the entity with the given entity ID
-	@SideOnly(Side.CLIENT)
+	// REDUNDANT Get the entity with the given entity ID
+/*	@SideOnly(Side.CLIENT)
 	public static Entity getEntityByID(int entityId) {
 		if (entityId == ModLoader.getMinecraftInstance().thePlayer.entityId) {
 			return ModLoader.getMinecraftInstance().thePlayer;
@@ -25,5 +20,5 @@ public class EntityHelper {
 			}
 		}
 		return null;
-	}
+	}*/
 }
