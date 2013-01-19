@@ -37,7 +37,7 @@ public class RecipeRemover {
 			itemSet.add(((Block) object).blockID);
 		}
 		if (object instanceof Item) {
-			itemSet.add(((Item) object).itemID);
+			itemSet.add(((Item) object).itemID); //shiftedIndex
 		}
 	}
 
@@ -51,8 +51,12 @@ public class RecipeRemover {
 		while (it.hasNext()) {
 			IRecipe recipe = it.next();
 			ItemStack output = recipe.getRecipeOutput();
-			if (output != null && itemSet.contains(output.itemID)) {
-				matches.add(recipe);
+			
+			if (output != null) {
+				int itemID = output.getItem().itemID; //shiftedIndex
+				if (itemSet.contains(itemID)) {
+					matches.add(recipe);
+				}
 			}
 		}
 		for (IRecipe recipe : matches) {

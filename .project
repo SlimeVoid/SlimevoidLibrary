@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>LB-api</name>
+			<type>2</type>
+			<location>C:/Programming/Repositories/LittleBlocks-API/LB-api</location>
+		</link>
+	</linkedResources>
 </projectDescription>

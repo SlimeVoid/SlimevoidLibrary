@@ -26,10 +26,9 @@ import slimevoid.lib.nbt.NBTHelper;
  * payload The payload to be delivered with the packet xPosition The value x for
  * the current packet yPosition The value y for the current packet zPosition The
  * value z for the current packet side The value side for the current packet
- * (Used for blocks and activation) vecX The value vecX for the current packet
- * (Used for blocks and activation) vecY The value vecY for the current packet
- * (Used for blocks and activation) vecZ The value vecZ for the current packet
- * (Used for blocks and activation)
+ * (Used for blocks and activation) hitX The hitX for the current packet
+ * (Used for blocks and activation) hitY The hitY for the current packet
+ * (Used for blocks and activation) hitZ the hitZ for the current packet
  * 
  * @author Eurymachus
  * 
@@ -44,9 +43,11 @@ public abstract class PacketUpdate extends EurysPacket {
 	public int zPosition;
 	public int side;
 
-	public float vecX;
-	public float vecY;
-	public float vecZ;
+	public float hitX;
+	public float hitY;
+	public float hitZ;
+	
+	public String command;
 
 	/**
 	 * Set the position x, y, z and side if applicable
@@ -70,17 +71,17 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Set the selected vector positions (if applicable)
 	 * 
-	 * @param vecX
+	 * @param hitX
 	 *            The selected vector on x
-	 * @param vecY
+	 * @param hitY
 	 *            The selected vector on y
-	 * @param vecZ
+	 * @param hitZ
 	 *            The selected vector on z
 	 */
-	public void setVecs(float vecX, float vecY, float vecZ) {
-		this.vecX = vecX;
-		this.vecY = vecY;
-		this.vecZ = vecZ;
+	public void setHitVectors(float hitX, float hitY, float hitZ) {
+		this.hitX = hitX;
+		this.hitY = hitY;
+		this.hitZ = hitZ;
 	}
 
 	public PacketUpdate(int packetId, PacketPayload payload) {
@@ -128,6 +129,8 @@ public abstract class PacketUpdate extends EurysPacket {
 
 	@Override
 	public void writeData(DataOutputStream data) throws IOException {
+		
+		data.writeUTF(this.getCommand());
 
 		data.writeInt(this.xPosition);
 		data.writeInt(this.yPosition);
@@ -136,9 +139,9 @@ public abstract class PacketUpdate extends EurysPacket {
 		// Checks if the side, vecX, vecY and vecZ values have been set defaults
 		// to 0 if not
 		data.writeInt(Integer.valueOf(this.side) != null ? this.side : 0);
-		data.writeFloat(Float.valueOf(this.vecX) != null ? this.vecX : 0.0F);
-		data.writeFloat(Float.valueOf(this.vecY) != null ? this.vecY : 0.0F);
-		data.writeFloat(Float.valueOf(this.vecZ) != null ? this.vecZ : 0.0F);
+		data.writeFloat(Float.valueOf(this.hitX) != null ? this.hitX : 0.0F);
+		data.writeFloat(Float.valueOf(this.hitY) != null ? this.hitY : 0.0F);
+		data.writeFloat(Float.valueOf(this.hitZ) != null ? this.hitZ : 0.0F);
 
 		// No payload means no additional data
 		if (this.payload == null) {
@@ -171,10 +174,11 @@ public abstract class PacketUpdate extends EurysPacket {
 
 	@Override
 	public void readData(DataInputStream data) throws IOException {
+		this.setCommand(data.readUTF());
 
 		this.setPosition(data.readInt(), data.readInt(), data.readInt(),
 				data.readInt());
-		this.setVecs(data.readFloat(), data.readFloat(), data.readFloat());
+		this.setHitVectors(data.readFloat(), data.readFloat(), data.readFloat());
 
 		int intSize = data.readInt();
 		int floatSize = data.readInt();
@@ -206,6 +210,14 @@ public abstract class PacketUpdate extends EurysPacket {
 	 * @return true or false
 	 */
 	public abstract boolean targetExists(World world);
+	
+	public String getCommand() {
+		return !this.command.isEmpty() ? this.command : "";
+	}
+	
+	public void setCommand(String command) {
+		this.command = command;
+	}
 
 	@Override
 	public int getID() {

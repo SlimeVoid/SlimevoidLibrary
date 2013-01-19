@@ -31,11 +31,14 @@ public class ItemRemover {
 	public static boolean removeVanillaItem(Item oldItem) {
 		// if the the item in itemsList with the itemID of the oldItem is
 		// initialized
-		if (Item.itemsList[oldItem.itemID] != null) {
+		
+		int itemID = oldItem.itemID; // shiftedIndex
+		
+		if (Item.itemsList[itemID] != null) {
 			// Set the block in the blocksList to null
-			Item.itemsList[oldItem.itemID] = null;
+			Item.itemsList[itemID] = null;
 			// Output a success message
-			SlimevoidCore.console("EurysCore", "Item ID [" + oldItem.itemID + "] successfully removed.");
+			SlimevoidCore.console("EurysCore", "Item ID [" + itemID + "] successfully removed.");
 			return true;
 		} else {
 			// Output a failure message
