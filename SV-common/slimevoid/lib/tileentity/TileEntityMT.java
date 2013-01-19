@@ -82,7 +82,6 @@ public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 	@Override
 	public void handleUpdatePacket(World world, PacketUpdate packet) {
 		this.setTextureValue(((PacketTileEntityMT) packet).getTextureValue());
-		System.out.println("Texture: " + this.getTextureValue());
 		this.onInventoryChanged();
 		world.markBlockForUpdate(
 				packet.xPosition,
