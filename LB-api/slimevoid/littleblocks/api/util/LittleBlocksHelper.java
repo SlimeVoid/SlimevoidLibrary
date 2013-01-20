@@ -135,7 +135,7 @@ public class LittleBlocksHelper {
 			double zDiff, 
 			double distance) {
 		if (isLittleBlock(world, xCoord, yCoord, zCoord)) {
-			return player.getDistanceSq((double)(xCoord * size) + xDiff, (double)(yCoord * size) + yDiff, (double)(zCoord * size) + zDiff) <= distance;
+			return player.getDistanceSq((double)(xCoord / size) + xDiff, (double)(yCoord / size) + yDiff, (double)(zCoord / size) + zDiff) <= distance;
 		}
 		return player.getDistanceSq((double)xCoord + xDiff, (double)yCoord + yDiff, (double)zCoord + zDiff) <= distance;
 	}
