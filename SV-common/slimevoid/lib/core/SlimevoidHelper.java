@@ -34,7 +34,7 @@ public class SlimevoidHelper {
 			if (id > 0)
 				return id;
 		}
-		return 0;
+		return world.getBlockId(x, y, z);
 	}
 
 	public static TileEntity getBlockTileEntity(World world, int x, int y, int z) {
@@ -44,7 +44,7 @@ public class SlimevoidHelper {
 				return tileentity;
 			}
 		}
-		return null;
+		return world.getBlockTileEntity(x, y, z);
 	}
 
 	public static boolean targetExists(World world, int x, int y, int z) {
@@ -53,7 +53,7 @@ public class SlimevoidHelper {
 			if (exists)
 				return true;
 		}
-		return false;
+		return world.blockExists(x, y, z);
 	}
 
 	public static boolean isUseableByPlayer(World world, EntityPlayer player,
@@ -64,6 +64,6 @@ public class SlimevoidHelper {
 			if (isUseable)
 				return true;
 		}
-		return false;
+		return player.getDistanceSq((double)xCoord + xDiff, (double)yCoord + yDiff, (double)zCoord + zDiff) <= distance;
 	}
 }
