@@ -64,6 +64,6 @@ public class SlimevoidHelper {
 			if (isUseable)
 				return true;
 		}
-		return player.getDistanceSq((double)xCoord + xDiff, (double)yCoord + yDiff, (double)zCoord + zDiff) <= distance;
+		return player.getDistanceSq(xCoord + xDiff, yCoord + yDiff, zCoord + zDiff) <= distance;
 	}
 }
