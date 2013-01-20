@@ -14,7 +14,7 @@ package slimevoid.lib.network;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import slimevoid.littleblocks.api.util.LittleBlocksHelper;
+import slimevoid.lib.core.SlimevoidHelper;
 
 /**
  * Packet for sending TileEntity information
@@ -37,7 +37,7 @@ public abstract class PacketTileEntity extends PacketUpdate {
 	 */
 	public TileEntity getTileEntity(World world) {
 		if (this.targetExists(world)) {
-			return LittleBlocksHelper.getBlockTileEntity(
+			return SlimevoidHelper.getBlockTileEntity(
 					world,
 					this.xPosition,
 					this.yPosition,
@@ -48,12 +48,12 @@ public abstract class PacketTileEntity extends PacketUpdate {
 
 	@Override
 	public boolean targetExists(World world) {
-		if (LittleBlocksHelper.targetExists(
+		if (SlimevoidHelper.targetExists(
 				world,
 				this.xPosition,
 				this.yPosition,
 				this.zPosition) &&
-			Block.blocksList[LittleBlocksHelper.getBlockId(
+			Block.blocksList[SlimevoidHelper.getBlockId(
 					world,
 					this.xPosition,
 					this.yPosition,

@@ -14,9 +14,6 @@ package slimevoid.lib.core;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-
-
-
 /**
  * Used to remove blocks instances from the game - in order to be replaced
  * 
