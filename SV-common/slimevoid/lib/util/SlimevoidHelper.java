@@ -1,4 +1,4 @@
-package slimevoid.lib.core;
+package slimevoid.lib.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import slimevoid.lib.ISlimevoidHelper;
+import slimevoid.lib.core.SlimevoidCore;
 
 public class SlimevoidHelper {
 	

@@ -9,8 +9,9 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package slimevoid.lib.core;
+package slimevoid.lib.util;
 
+import slimevoid.lib.core.SlimevoidCore;
 import net.minecraft.item.Item;
 
 /**

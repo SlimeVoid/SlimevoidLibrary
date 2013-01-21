@@ -9,13 +9,15 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package slimevoid.lib.core;
+package slimevoid.lib.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import slimevoid.lib.core.SlimevoidCore;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
