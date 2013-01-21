@@ -26,9 +26,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 
 public class XMLRecipeLoader {
+	/**
+	 * Variable mapping.
+	 */
 	private static Map<String,Integer> xmlVariables = new HashMap<String, Integer>();
+	/**
+	 * Default XML files.
+	 * Are copied over when not already exists.
+	 */
 	private static Map<String,File> defaults = new HashMap<String, File>();
 	
+	/**
+	 * Filename filter.
+	 * Used for filtering out other files than XML files.
+	 */
 	private static FilenameFilter filter = new FilenameFilter() {
 		@Override
 		public boolean accept(File dir, String name) {
@@ -36,35 +47,71 @@ public class XMLRecipeLoader {
 		}
 	};
 	
+	/**
+	 * Add a XML variable mapping.
+	 * Variable name can be used in XML files instead of IDs.
+	 * 
+	 * @param var Variable name.
+	 * @param val Variable value.
+	 */
 	public static void addXmlVariable(String var, int val) {
 		xmlVariables.put(var,val);
 	}
 	
+	/**
+	 * Loads default XML Recipe files from a directory.
+	 * 
+	 * @param dir Default XML directory.
+	 */
 	public static void loadDefaults( File dir ) {
+		// Ignore if the dir is not a directory.
+		if ( dir == null || !dir.exists() || !dir.isDirectory() )
+			return;
+		
+		// Iterates through all XML files in the directory and adds to default.
 		for ( File xml: dir.listFiles(filter) ) {
 			defaults.put(xml.getName(), xml);
 		}
 	}
 
+	/**
+	 * Checks if a file exists in a directory.
+	 * 
+	 * @param filename The filename.
+	 * @param dir The directory.
+	 * @return True if file exists in directory, false otherwise.
+	 */
 	private static boolean checkIfExists(String filename, File dir) {
 		return(new File(dir.getPath()+File.separator+filename)).exists();
 	}
+	/**
+	 * Copies a file to a directory.
+	 * 
+	 * @param from Source file.
+	 * @param toDir Destination directory.
+	 * 
+	 * @throws IOException
+	 */
 	private static void copyDefaultTo(File from, File toDir) throws IOException {
 		sendMessage("Copying recipe from default: "+from.getName()+"->"+toDir.getAbsolutePath());
 		
+		// Initialize destination file.
 		File to = new File(toDir.getPath()+File.separator+from.getName());
 		if ( !to.exists() ) {
 			to.createNewFile();
 		}
 		
+		// File channels.
 		FileChannel source = null;
 		FileChannel destination = null;
 		
 		try {
 			source = new FileInputStream(from).getChannel();
 			destination = new FileOutputStream(to).getChannel();
+			// Copy over entire content from source channel to destination channel.
 			destination.transferFrom(source, 0, source.size());
 		} finally {
+			// Close the channels when finished.
 			if ( source != null )
 				source.close();
 			if ( destination != null )
@@ -72,11 +119,19 @@ public class XMLRecipeLoader {
 		}
 	}
 	
+	/**
+	 * Loads XML Recipe files from a directory.
+	 * 
+	 * @param dir Source directory.
+	 */
 	public static void loadFolder( File dir ) {
+		// Create the directory if it does not already exist.
 		if ( !dir.isDirectory() )
 			dir.mkdir();
 		
+		// Iterate through the default files.
 		for ( String filename: defaults.keySet() ) {
+			// If it does not exist in the source directory; copy defaults over.
 			if ( !checkIfExists(filename,dir) ) {
 				try {
 					copyDefaultTo(defaults.get(filename),dir);
@@ -86,21 +141,31 @@ public class XMLRecipeLoader {
 			}
 		}
 		
+		// Iterate through XML files in the source directory.
 		for ( File xml: dir.listFiles(filter) ) {
+			// Load the XML file.
 			loadXML(xml);
 		}
 	}
+	/**
+	 * Load a specific XML Recipe file.
+	 * 
+	 * @param file Source file.
+	 */
 	public static void loadXML(File file) {
 		try {
+			// Set up the XML document.
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
 			
+			// Fetch and iterate through all recipe nodes.
 			NodeList nodes = doc.getElementsByTagName("recipe");
 			for (int i = 0; i < nodes.getLength(); i++) {
 				Node node = nodes.item(i);
 	
+				// If the node is an element node; assemble the recipe.
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
 					assemble(element, file);
@@ -108,146 +173,216 @@ public class XMLRecipeLoader {
 			}
 
 		} catch (ParserConfigurationException e) {
+			// This happens when the parser settings are fooked up.
+			// Serious business! Very rare.
 			endWithError("Could not parse XML: "+file.getName());
 			e.printStackTrace();
 		} catch (SAXException e) {
+			// This happens when the XML markup is fooked up.
+			// The syntax must be correct XML. One root node, closed nodes, etc etc.
 			endWithError("Could not parse XML markup: "+file.getName());
 			e.printStackTrace();
 		} catch (IOException e) {
+			// File I/O error.
+			// Did not exist? No read/write permissions?
 			endWithError("Could not read XML: "+file.getName());
 			e.printStackTrace();
 		}
 	}
 	
-	
+	/**
+	 * Assemble a recipe Element node.
+	 * 
+	 * @param element Element node.
+	 * @param xmlFile Source XML File.
+	 */
 	private static void assemble(Element element, File xmlFile) {
+		// The layout
 		String[] recipeLayout = null;
-		int recipeStackSize = 1;
-		int outId = 0;
-		int outMeta = 0;
-		Map<String,ItemStack> recipeItemMap = new HashMap<String,ItemStack>();
-		Map<String,ItemStack> recipeBlockMap = new HashMap<String,ItemStack>();
 		
-		// Fetch stack size and outId
-		NamedNodeMap recAttrs = element.getAttributes();
+		// Output stack size. Defaults to one.
+		int recipeStackSize = 1;
+		// Output ID. Must be set or it will skip the recipe.
+		int outId = 0;
+		// Output meta data. Defaults to 0.
+		int outMeta = 0;
+		
+		// The input recipe map.
+		// Maps up itemstacks to layout characters.
+		Map<String,ItemStack> recipeMap = new HashMap<String,ItemStack>();
+		
+		
+		/************************************\
+		 * Fetch stack size, meta and outId *
+		\************************************/
+		NamedNodeMap recAttrs = element.getAttributes(); // recipe attributes.
 		for ( int j = 0; j < recAttrs.getLength(); j++ ) {
+			// StackSize attribute was found.
 			if ( recAttrs.item(j).getNodeName().equals("stackSize") ) {
 				try {
+					// Attempt to parse attribute integer.
 					recipeStackSize = Integer.parseInt(recAttrs.item(j).getNodeValue());
-				} catch ( NumberFormatException e) {} //Ignore if not set
+				} catch ( NumberFormatException e) {} //Ignore it completely if failed.
 			}
+			// Metadata attribute was found.
 			if ( recAttrs.item(j).getNodeName().equals("meta") ) {
 				try {
+					// Attempt to parse attribute integer.
 					outMeta = Integer.parseInt(recAttrs.item(j).getNodeValue());
-				} catch ( NumberFormatException e) {} //Ignore if not set
+				} catch ( NumberFormatException e) {} //Ignore it completely if failed.
 			}
+			// Out ID attribute was found.
 			if ( recAttrs.item(j).getNodeName().equals("outId") ) {
 				String outIdStr = recAttrs.item(j).getNodeValue();
 				try {
-					// Try integer
+					// Try to parse attribute integer.
 					outId = Integer.parseInt(outIdStr);
 				} catch( NumberFormatException e ) {
-					// Integer failed, try variable strings.
+					// Integer parsing failed, try checking if it is a variable strings.
 					if (xmlVariables.containsKey(outIdStr)) {
+						// If it was a variable string, use the variable mapping instead.
 						outId = xmlVariables.get(outIdStr);
 					}
 				}
 			}
 		}
 		
-		// Do not continue if out ID is not set.
+		// Do not continue without ID.
 		if ( outId == 0 ) {
 			endWithError("recipe.outID not set! ("+xmlFile.getName()+")");
 			return;
 		}
 		
-		// Fetch layout
+		
+		/****************\
+		 * Fetch layout *
+		\****************/
+		// Split it up by newline
 		recipeLayout = getValue("layout",element).split("\n");
 		int nextI = 0;
 		for ( int i = 0; i < recipeLayout.length; i++ ) {
+			// Trim the line. Removing all leading and trailing whitespaces.
 			recipeLayout[i] = recipeLayout[i].trim();
+			// If its not empty, add it to next index and set current to null.
 			if ( !recipeLayout[i].equals("") ) {
 				recipeLayout[nextI] = recipeLayout[i];
 				recipeLayout[i] = null;
 				nextI++;
+			// If it is empty, set it to null.
 			} else {
 				recipeLayout[i] = null;
 			}
 		}
+		// When layout finishes, the array will be n-length, where n is number of newlines.
+		// But the actual layout stuff is moved to the top of the array, where rest is null.
 
-		// Fetch  mappings
+		
+		/*******************\
+		 * Fetch  mappings *
+		\*******************/
 		NodeList blockNodes = element.getElementsByTagName("mapping");
+		// Iterate through each mapping.
 		for (int i = 0; i < blockNodes.getLength(); i++) {
 			Node node = blockNodes.item(i);
-
+			
+			// Only care about the node if it is an element node.
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				NamedNodeMap attrs = node.getAttributes();
+				// The input object's ID.
 				int id = 0;
+				// The input object's metadata.
 				int meta = 0;
+				
+				// Iterate through mapping attributes.
 				for ( int j = 0; j < attrs.getLength(); j++ ) {
+					// ID attribute was found.
 					if ( attrs.item(j).getNodeName().equals("id") ) {
 						String idStr = attrs.item(j).getNodeValue();
 						try {
-							// Try integer
+							// Attempt to parse attribute integer.
 							id = Integer.parseInt(idStr);
 						} catch( NumberFormatException e ) {
-							// Integer failed, try variable strings.
+							// Integer parsing failed, try checking if it is a variable strings.
 							if (xmlVariables.containsKey(idStr)) {
+								// If it was a variable string, use the variable mapping instead.
 								id = xmlVariables.get(idStr);
 							}
 						}
 					}
+					// Metadata attribute was found.
 					if ( attrs.item(j).getNodeName().equals("meta") ) {
 						String metaStr = attrs.item(j).getNodeValue();
 						try {
-							// Try integer
+							// Attempt to parse attribute integer.
 							meta = Integer.parseInt(metaStr);
-						} catch( NumberFormatException e ) {} //Ignore if not set
+						} catch( NumberFormatException e ) {} //Ignore it completely if failed.
 					}
 				}
+
+				// Do not continue without ID.
 				if ( id == 0 ) {
 					endWithError("mapping.id not set! ("+xmlFile.getName()+")");
 					return;
 				}
 				
-				recipeBlockMap.put(
+				// Add the input mapping to the recipe map.
+				// The node's value is the variable.
+				recipeMap.put(
 						node.getChildNodes().item(0).getNodeValue(), 
 						new ItemStack(id,1,meta)
 				);
 			}
 		}
 		
-		// Assemble recipe
+		/*******************\
+		 * Assemble recipe *
+		\*******************/
+		// The recipe input array.
 		List<Object> recipe = new ArrayList<Object>();
+		// Iterate through layout.
 		for ( int i = 0; i < recipeLayout.length; i++ ) {
+			// Add layout string if it is not null.
 			if ( recipeLayout[i] != null ) {
 				recipe.add(recipeLayout[i]);
 			}
 		}
-		for ( String key: recipeItemMap.keySet() ) {
+		// Iterate through mappings.
+		for ( String key: recipeMap.keySet() ) {
+			// First add the variable...
 			recipe.add(Character.valueOf(key.toCharArray()[0]));
-			recipe.add(recipeItemMap.get(key));
-		}
-		for ( String key: recipeBlockMap.keySet() ) {
-			recipe.add(Character.valueOf(key.toCharArray()[0]));
-			recipe.add(recipeBlockMap.get(key));
+			// ...then the item stack.
+			recipe.add(recipeMap.get(key));
 		}
 
 
-		// Register recipe
+		// Register recipe.
+		// Output itemstack and convert the list to object array.
 		registerRecipe(
 				new ItemStack(outId,recipeStackSize,outMeta),
 				recipe.toArray()
 		);
 	}
 
-	
+	/**
+	 * Fetches a value with set tag from a element node.
+	 * 
+	 * @param tag Tag name.
+	 * @param element Element node.
+	 * @return The tag's value.
+	 */
 	private static String getValue(String tag, Element element) {
 		NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
 		Node node = nodes.item(0);
 		return node.getNodeValue();
 	}
 	
+	/**
+	 * Register a recipe.<br>
+	 * Uses Minecraft API (Forge/Modloader) specific method of registration.
+	 * 
+	 * @param output Recipe output.
+	 * @param input Recipe input.
+	 */
 	private static void registerRecipe(ItemStack output, Object[] input) {
 		GameRegistry.addRecipe(
 				output,
@@ -256,9 +391,19 @@ public class XMLRecipeLoader {
 		sendMessage("Adding recipe: "+output.itemID);
 	}
 
-	private static void sendMessage(String error) {
-		System.out.println(error);
+	/**
+	 * Send a info message, logger or console.
+	 * 
+	 * @param error The message.
+	 */
+	private static void sendMessage(String message) {
+		System.out.println(message);
 	}
+	/**
+	 * Send a error message, logger or console.
+	 * 
+	 * @param error The message.
+	 */
 	private static void endWithError(String error) {
 		System.err.println(error);
 	}
