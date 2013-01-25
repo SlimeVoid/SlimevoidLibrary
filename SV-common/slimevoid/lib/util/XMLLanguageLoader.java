@@ -42,7 +42,7 @@ public class XMLLanguageLoader extends XMLLoader {
 	
 
 	public static void addItemMapping(Item item) {
-		addItemMapping(item.itemID+256, item);
+		addItemMapping(item.itemID, item);
 	}
 	/**
 	 * Add a item mapping.
