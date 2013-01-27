@@ -10,13 +10,14 @@ import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.Tessellator;
 
 public class ModelSimevoidObject {
-	private List<TexturedQuad> quadList;
+	private List<TexturedQuad> faceList;
+	private List<TexturedQuad> qist;
 	private List<PositionTextureVertex> vertexList;
 	private List<Point2D.Float> vertexTexList;
 	private ModelRenderer modelRenderer;
 	
 	public ModelSimevoidObject(ModelRenderer modelRenderer) {
-		quadList = new ArrayList<TexturedQuad>();
+		faceList = new ArrayList<TexturedQuad>();
 		vertexList = new ArrayList<PositionTextureVertex>();
 		vertexTexList = new ArrayList<Point2D.Float>();
 		this.modelRenderer = modelRenderer;
@@ -29,29 +30,22 @@ public class ModelSimevoidObject {
 	}
 
 	public int addVertexTexture(float x, float y) {
-		return addVertexTexture(
-				(int)(x*modelRenderer.textureWidth),
-				(int)((1-y)*modelRenderer.textureHeight)
-		);
-	}
-
-	public int addVertexTexture(int x, int y) {
 		int id = vertexTexList.size();
 		vertexTexList.add(
 				new Point2D.Float(
 						x,
-						y
+						1-y
 				)
 		);
 		return id;
 	}
 	
 	public void addQuad(int a, int b, int c, int d, int at, int bt, int ct, int dt, boolean flip) {
-		int u1 = (int)(vertexTexList.get(bt).x);
-		int v1 = (int)(vertexTexList.get(bt).y);
-		int u2 = (int)(vertexTexList.get(dt).x);
-		int v2 = (int)(vertexTexList.get(dt).y);
-		
+		int u1 = (int)(vertexTexList.get(bt).x*modelRenderer.textureWidth);
+		int v1 = (int)(vertexTexList.get(bt).y*modelRenderer.textureHeight);
+		int u2 = (int)(vertexTexList.get(dt).x*modelRenderer.textureWidth);
+		int v2 = (int)(vertexTexList.get(dt).y*modelRenderer.textureHeight);
+
 		TexturedQuad quad = new TexturedQuad(
 				new PositionTextureVertex[] {
 						vertexList.get(a),
@@ -66,14 +60,39 @@ public class ModelSimevoidObject {
 				modelRenderer.textureWidth,
 				modelRenderer.textureHeight
 		);
+		
 		if ( flip )
 			quad.flipFace();
-		quadList.add(quad);
+		faceList.add(quad);
+	}
+	public void addTriangle(int a, int b, int c, int at, int bt, int ct, boolean flip) {
+		PositionTextureVertex ap = new PositionTextureVertex(
+				vertexList.get(a).vector3D,
+				vertexTexList.get(at).x,vertexTexList.get(at).y
+		);
+		PositionTextureVertex bp = new PositionTextureVertex(
+				vertexList.get(b).vector3D,
+				vertexTexList.get(bt).x,vertexTexList.get(bt).y
+		);
+		PositionTextureVertex cp = new PositionTextureVertex(
+				vertexList.get(c).vector3D,
+				vertexTexList.get(ct).x,vertexTexList.get(ct).y
+		);
+		
+		TexturedTriangle triangle = new TexturedTriangle(
+				new PositionTextureVertex[] {
+						ap,bp,cp
+				}
+		);
+		
+		if ( flip )
+			triangle.flipFace();
+		faceList.add(triangle);
 	}
 
 	public void render(float par2) {
-		for (int i = 0; i < quadList.size(); i++) {
-			quadList.get(i).draw(Tessellator.instance, par2);
+		for (int i = 0; i < faceList.size(); i++) {
+			faceList.get(i).draw(Tessellator.instance, par2);
 		}
 	}
 }
