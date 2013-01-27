@@ -4,19 +4,22 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.Tessellator;
 
-public class ModelSimevoidObject {
+public class ModelSlimevoidObject {
 	private List<TexturedQuad> faceList;
 	private List<TexturedQuad> qist;
 	private List<PositionTextureVertex> vertexList;
 	private List<Point2D.Float> vertexTexList;
 	private ModelRenderer modelRenderer;
 	
-	public ModelSimevoidObject(ModelRenderer modelRenderer) {
+	private ModelSlimevoidObjectBounds boundsCache;
+	
+	public ModelSlimevoidObject(ModelRenderer modelRenderer) {
 		faceList = new ArrayList<TexturedQuad>();
 		vertexList = new ArrayList<PositionTextureVertex>();
 		vertexTexList = new ArrayList<Point2D.Float>();
@@ -41,24 +44,27 @@ public class ModelSimevoidObject {
 	}
 	
 	public void addQuad(int a, int b, int c, int d, int at, int bt, int ct, int dt, boolean flip) {
-		int u1 = (int)(vertexTexList.get(bt).x*modelRenderer.textureWidth);
-		int v1 = (int)(vertexTexList.get(bt).y*modelRenderer.textureHeight);
-		int u2 = (int)(vertexTexList.get(dt).x*modelRenderer.textureWidth);
-		int v2 = (int)(vertexTexList.get(dt).y*modelRenderer.textureHeight);
-
+		PositionTextureVertex ap = new PositionTextureVertex(
+				vertexList.get(a).vector3D,
+				vertexTexList.get(at).x,vertexTexList.get(at).y
+		);
+		PositionTextureVertex bp = new PositionTextureVertex(
+				vertexList.get(b).vector3D,
+				vertexTexList.get(bt).x,vertexTexList.get(bt).y
+		);
+		PositionTextureVertex cp = new PositionTextureVertex(
+				vertexList.get(c).vector3D,
+				vertexTexList.get(ct).x,vertexTexList.get(ct).y
+		);
+		PositionTextureVertex dp = new PositionTextureVertex(
+				vertexList.get(d).vector3D,
+				vertexTexList.get(dt).x,vertexTexList.get(dt).y
+		);
+		
 		TexturedQuad quad = new TexturedQuad(
 				new PositionTextureVertex[] {
-						vertexList.get(a),
-						vertexList.get(b),
-						vertexList.get(c),
-						vertexList.get(d)
-				},
-				u1,
-				v1,
-				u2,
-				v2,
-				modelRenderer.textureWidth,
-				modelRenderer.textureHeight
+						ap,bp,cp,dp
+				}
 		);
 		
 		if ( flip )
@@ -89,10 +95,59 @@ public class ModelSimevoidObject {
 			triangle.flipFace();
 		faceList.add(triangle);
 	}
+	
+	public ModelSlimevoidObjectBounds getBounds() {	
+		if ( boundsCache != null )
+			return boundsCache;
+		
+		int minX = 0;
+		int minY = 0;
+		int minZ = 0;
+		int maxX = 0;
+		int maxY = 0;
+		int maxZ = 0;
+		
+		for ( PositionTextureVertex v: vertexList ) {
+			if ( v.vector3D.xCoord < minX || (minX == 0 && v.vector3D.xCoord != 0) )
+				minX = (int) v.vector3D.xCoord;
+			if ( v.vector3D.yCoord < minY )
+				minY = (int) v.vector3D.yCoord;
+			if ( v.vector3D.zCoord < minZ || (minZ == 0 && v.vector3D.zCoord != 0) )
+				minZ = (int) v.vector3D.zCoord;
+			
+			if ( v.vector3D.xCoord > maxX )
+				maxX = (int) v.vector3D.xCoord;
+			if ( v.vector3D.yCoord > maxY )
+				maxY = (int) v.vector3D.yCoord;
+			if ( v.vector3D.zCoord > maxZ )
+				maxZ = (int) v.vector3D.zCoord;
+		}
+		
+		boundsCache = new ModelSlimevoidObjectBounds(minX, minY, minZ, maxX, maxY, maxZ);
+		return boundsCache;
+	}
 
 	public void render(float par2) {
 		for (int i = 0; i < faceList.size(); i++) {
 			faceList.get(i).draw(Tessellator.instance, par2);
+		}
+	}
+	
+	public class ModelSlimevoidObjectBounds {
+		public int minX = 0;
+		public int minY = 0;
+		public int minZ = 0;
+		public int maxX = 0;
+		public int maxY = 0;
+		public int maxZ = 0;
+		
+		public ModelSlimevoidObjectBounds(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+			this.minX = minX;
+			this.minY = minY;
+			this.minZ = minZ;
+			this.maxX = maxX;
+			this.maxY = maxY;
+			this.maxZ = maxZ;
 		}
 	}
 }

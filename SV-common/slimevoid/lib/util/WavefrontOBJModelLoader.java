@@ -8,18 +8,18 @@ import java.util.Map;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
-import slimevoid.lib.data.ModelSimevoidObject;
+import slimevoid.lib.data.ModelSlimevoidObject;
 
 public class WavefrontOBJModelLoader {
 	private static DecimalFormat df = new DecimalFormat("#.####");
-	private static Map<File,ModelSimevoidObject> cache = new HashMap<File,ModelSimevoidObject>();
+	private static Map<File,ModelSlimevoidObject> cache = new HashMap<File,ModelSlimevoidObject>();
 	
 	
-	public ModelSimevoidObject loadObjFile(ModelBase baseModel, int texW, int texH, File file) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
+	public ModelSlimevoidObject loadObjFile(ModelBase baseModel, int texW, int texH, File file) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
 		if ( cache.containsKey(file) )
 			return cache.get(file);
 		
-		ModelSimevoidObject out = new ModelSimevoidObject((new ModelRenderer(baseModel, 0, 0)).setTextureSize(texW, texH));
+		ModelSlimevoidObject out = new ModelSlimevoidObject((new ModelRenderer(baseModel, 0, 0)).setTextureSize(texW, texH));
 		
 		String objStr = FileReader.readFile(file);
 		
@@ -30,7 +30,7 @@ public class WavefrontOBJModelLoader {
 		return out;
 	}
 	
-	private void parse(String objStr, ModelSimevoidObject objModel) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
+	private void parse(String objStr, ModelSlimevoidObject objModel) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
 		String[] objLines = objStr.split("\n");
 		
 		for ( int i = 0; i < objLines.length; i++ ) {
@@ -38,7 +38,7 @@ public class WavefrontOBJModelLoader {
 		}
 	}
 	
-	private void parseLine(String line, ModelSimevoidObject objModel) throws NumberFormatException,ArithmeticException, FaceMissingTextureException {
+	private void parseLine(String line, ModelSlimevoidObject objModel) throws NumberFormatException,ArithmeticException, FaceMissingTextureException {
 		String[] lineSegments = line.split(" ");
 		
 		if ( lineSegments.length > 0 ) {
@@ -63,17 +63,17 @@ public class WavefrontOBJModelLoader {
 					if ( aS.length != 2 || bS.length != 2 || cS.length != 2 || dS.length != 2 )
 						throw new FaceMissingTextureException("Face missing texture indexes: "+line);
 					
-					int a = Integer.parseInt(aS[0])-1;
-					int at = Integer.parseInt(aS[1])-1;
+					int a = Integer.parseInt(aS[0].trim())-1;
+					int at = Integer.parseInt(aS[1].trim())-1;
 					
-					int b = Integer.parseInt(bS[0])-1;
-					int bt = Integer.parseInt(bS[1])-1;
+					int b = Integer.parseInt(bS[0].trim())-1;
+					int bt = Integer.parseInt(bS[1].trim())-1;
 					
-					int c = Integer.parseInt(cS[0])-1;
-					int ct = Integer.parseInt(cS[1])-1;
+					int c = Integer.parseInt(cS[0].trim())-1;
+					int ct = Integer.parseInt(cS[1].trim())-1;
 					
-					int d = Integer.parseInt(dS[0])-1;
-					int dt = Integer.parseInt(dS[1])-1;
+					int d = Integer.parseInt(dS[0].trim())-1;
+					int dt = Integer.parseInt(dS[1].trim())-1;
 					
 					objModel.addQuad(
 							a, b, c, d,
@@ -88,14 +88,14 @@ public class WavefrontOBJModelLoader {
 					if ( aS.length != 2 || bS.length != 2 || cS.length != 2 )
 						throw new FaceMissingTextureException("Face missing texture indexes: "+line);
 					
-					int a = Integer.parseInt(aS[0])-1;
-					int at = Integer.parseInt(aS[1])-1;
+					int a = Integer.parseInt(aS[0].trim())-1;
+					int at = Integer.parseInt(aS[1].trim())-1;
 					
-					int b = Integer.parseInt(bS[0])-1;
-					int bt = Integer.parseInt(bS[1])-1;
+					int b = Integer.parseInt(bS[0].trim())-1;
+					int bt = Integer.parseInt(bS[1].trim())-1;
 					
-					int c = Integer.parseInt(cS[0])-1;
-					int ct = Integer.parseInt(cS[1])-1;
+					int c = Integer.parseInt(cS[0].trim())-1;
+					int ct = Integer.parseInt(cS[1].trim())-1;
 					
 					objModel.addTriangle(
 							a, b, c,
