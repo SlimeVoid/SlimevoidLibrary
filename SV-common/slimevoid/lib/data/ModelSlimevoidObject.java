@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.Tessellator;
 
 public class ModelSlimevoidObject {
 	private List<TexturedQuad> faceList;
-	private List<TexturedQuad> qist;
 	private List<PositionTextureVertex> vertexList;
 	private List<Point2D.Float> vertexTexList;
 	private ModelRenderer modelRenderer;
@@ -131,6 +130,13 @@ public class ModelSlimevoidObject {
 		for (int i = 0; i < faceList.size(); i++) {
 			faceList.get(i).draw(Tessellator.instance, par2);
 		}
+	}
+	
+	public int vertexCount() {
+		return vertexList.size();
+	}
+	public int faceCount() {
+		return faceList.size();
 	}
 	
 	public class ModelSlimevoidObjectBounds {

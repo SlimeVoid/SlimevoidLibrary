@@ -27,6 +27,8 @@ public class WavefrontOBJModelLoader {
 		
 		cache.put(file, out);
 		
+		sendMessage("Loaded model: "+out.vertexCount()+" vertices, "+out.faceCount()+" faces ["+file.getName()+"]");
+		
 		return out;
 	}
 	
@@ -112,6 +114,14 @@ public class WavefrontOBJModelLoader {
 		public FaceMissingTextureException(String message) { super(message); }
 		public FaceMissingTextureException(String message, Throwable cause) { super(message, cause); }
 		public FaceMissingTextureException(Throwable cause) { super(cause); }
+	}
+	
+	protected static void sendMessage(String message) {
+		System.out.println(message);
+	}
+	
+	protected static void endWithError(String error) {
+		System.err.println(error);
 	}
 }
 
