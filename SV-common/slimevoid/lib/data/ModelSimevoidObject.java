@@ -47,30 +47,11 @@ public class ModelSimevoidObject {
 	}
 	
 	public void addQuad(int a, int b, int c, int d, int at, int bt, int ct, int dt, boolean flip) {
-		int u1 = (int) Math.min(Math.min(Math.min(
-				vertexTexList.get(at).x,
-				vertexTexList.get(bt).x),
-				vertexTexList.get(ct).x),
-				vertexTexList.get(dt).x
-		);
-		int v1 = (int) Math.min(Math.min(Math.min(
-				vertexTexList.get(at).y,
-				vertexTexList.get(bt).y),
-				vertexTexList.get(ct).y),
-				vertexTexList.get(dt).y
-		);
-		int u2 = (int) Math.max(Math.max(Math.max(
-				vertexTexList.get(at).x,
-				vertexTexList.get(bt).x),
-				vertexTexList.get(ct).x),
-				vertexTexList.get(dt).x
-		);
-		int v2 = (int) Math.max(Math.max(Math.max(
-				vertexTexList.get(at).y,
-				vertexTexList.get(bt).y),
-				vertexTexList.get(ct).y),
-				vertexTexList.get(dt).y
-		);
+		int u1 = (int)(vertexTexList.get(bt).x);
+		int v1 = (int)(vertexTexList.get(bt).y);
+		int u2 = (int)(vertexTexList.get(dt).x);
+		int v2 = (int)(vertexTexList.get(dt).y);
+		
 		TexturedQuad quad = new TexturedQuad(
 				new PositionTextureVertex[] {
 						vertexList.get(a),
