@@ -15,7 +15,7 @@ public class WavefrontOBJModelLoader {
 	private static Map<File,ModelSimevoidObject> cache = new HashMap<File,ModelSimevoidObject>();
 	
 	
-	public ModelSimevoidObject loadObjFile(ModelBase baseModel, int texW, int texH, File file) {
+	public ModelSimevoidObject loadObjFile(ModelBase baseModel, int texW, int texH, File file) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
 		if ( cache.containsKey(file) )
 			return cache.get(file);
 		
@@ -30,7 +30,7 @@ public class WavefrontOBJModelLoader {
 		return out;
 	}
 	
-	private void parse(String objStr, ModelSimevoidObject objModel) {
+	private void parse(String objStr, ModelSimevoidObject objModel) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
 		String[] objLines = objStr.split("\n");
 		
 		for ( int i = 0; i < objLines.length; i++ ) {
@@ -38,7 +38,7 @@ public class WavefrontOBJModelLoader {
 		}
 	}
 	
-	private void parseLine(String line, ModelSimevoidObject objModel) {
+	private void parseLine(String line, ModelSimevoidObject objModel) throws NumberFormatException,ArithmeticException, FaceMissingTextureException {
 		String[] lineSegments = line.split(" ");
 		
 		if ( lineSegments.length > 0 ) {
@@ -60,7 +60,7 @@ public class WavefrontOBJModelLoader {
 				String[] dS = lineSegments[4].split("/");
 
 				if ( aS.length != 2 || bS.length != 2 || cS.length != 2 || dS.length != 2 )
-					return;
+					throw new FaceMissingTextureException("Face missing texture indexes: "+line);
 				
 				int a = Integer.parseInt(aS[0])-1;
 				int at = Integer.parseInt(aS[1])-1;
@@ -82,4 +82,12 @@ public class WavefrontOBJModelLoader {
 			}	
 		}
 	}
+	
+	public class FaceMissingTextureException extends Exception {
+		public FaceMissingTextureException() { super(); }
+		public FaceMissingTextureException(String message) { super(message); }
+		public FaceMissingTextureException(String message, Throwable cause) { super(message, cause); }
+		public FaceMissingTextureException(Throwable cause) { super(cause); }
+	}
 }
+
