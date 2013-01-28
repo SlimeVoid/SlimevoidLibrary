@@ -1,4 +1,4 @@
-package slimevoid.lib.util;
+package slimevoid.lib.util.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;

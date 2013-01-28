@@ -1,4 +1,4 @@
-package slimevoid.lib.util;
+package slimevoid.lib.util.javascript;
 
 import java.util.Map;
 

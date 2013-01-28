@@ -1,4 +1,4 @@
-package slimevoid.lib.data;
+package slimevoid.lib.render;
 
 import org.lwjgl.opengl.GL11;
 

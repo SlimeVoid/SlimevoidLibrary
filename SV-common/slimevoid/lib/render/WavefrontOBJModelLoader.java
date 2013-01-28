@@ -1,4 +1,4 @@
-package slimevoid.lib.util;
+package slimevoid.lib.render;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -8,7 +8,7 @@ import java.util.Map;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
-import slimevoid.lib.data.ModelSlimevoidObject;
+import slimevoid.lib.util.FileReader;
 
 public class WavefrontOBJModelLoader {
 	private static DecimalFormat df = new DecimalFormat("#.####");

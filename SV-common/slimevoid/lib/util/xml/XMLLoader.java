@@ -1,4 +1,4 @@
-package slimevoid.lib.util;
+package slimevoid.lib.util.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
