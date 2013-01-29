@@ -28,6 +28,8 @@ public class ModelSlimevoidObject {
 	
 	private ModelSlimevoidObjectBounds boundsCache;
 	
+	private int polyCount = 0;
+	
 	public ModelSlimevoidObject(ModelRenderer modelRenderer) {
 		faceList = new ArrayList<TexturedQuad>();
 		vertexList = new ArrayList<PositionTextureVertex>();
@@ -79,6 +81,8 @@ public class ModelSlimevoidObject {
 		if ( flip )
 			quad.flipFace();
 		faceList.add(quad);
+		
+		polyCount += 2;
 	}
 	public void addTriangle(int a, int b, int c, int at, int bt, int ct, boolean flip) {
 		PositionTextureVertex ap = new PositionTextureVertex(
@@ -103,6 +107,8 @@ public class ModelSlimevoidObject {
 		if ( flip )
 			triangle.flipFace();
 		faceList.add(triangle);
+		
+		polyCount += 1;
 	}
 	
 	public ModelSlimevoidObjectBounds getBounds() {	
@@ -147,6 +153,9 @@ public class ModelSlimevoidObject {
 	}
 	public int faceCount() {
 		return faceList.size();
+	}
+	public int polyCount() {
+		return polyCount;
 	}
 	
 	public class ModelSlimevoidObjectBounds {
