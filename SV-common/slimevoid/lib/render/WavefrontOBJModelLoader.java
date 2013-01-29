@@ -27,7 +27,7 @@ public class WavefrontOBJModelLoader {
 		
 		cache.put(file, out);
 		
-		sendMessage("Loaded model: "+out.vertexCount()+" vertices, "+out.faceCount()+" faces ["+file.getName()+"]");
+		sendMessage("Loaded model: "+out.vertexCount()+" vertices, "+out.polyCount()+" polys ["+file.getName()+"]");
 		
 		return out;
 	}
