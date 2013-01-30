@@ -34,4 +34,6 @@ public class PacketIds {
 	public static final int TILE = 3;
 	// Packet ID for Entity information
 	public static final int ENTITY = 4;
+	// Packet ID for Player notification e.g. Client side messages
+	public static final int PLAYER = 5;
 }
