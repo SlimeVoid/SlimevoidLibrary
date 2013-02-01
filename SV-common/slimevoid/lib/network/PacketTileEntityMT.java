@@ -32,6 +32,7 @@ public class PacketTileEntityMT extends PacketTileEntity {
 
 	public PacketTileEntityMT(String channel, TileEntityMT tileentitymt) {
 		this(channel);
+		this.setCommand("mt");
 		this.setTextureValue(tileentitymt.getTextureValue());
 		this.setPosition(
 				tileentitymt.xCoord,
