@@ -30,9 +30,9 @@ import cpw.mods.fml.relauncher.Side;
  * @author ali4z
  */
 public abstract class Logger {
-	private String name;
-	private LoggerWriter writer;
-	private LogLevel filterLevel;
+	protected String name;
+	protected LoggerWriter writer;
+	protected LogLevel filterLevel;
 
 	/**
 	 * Log level.<br>
@@ -132,7 +132,6 @@ public abstract class Logger {
 						trace.append("->");
 				}
 			}
-
 			writer.write(lvl.name() + ":" + getSide(isRemote) + ":" + name + ":" + msg + ":" + trace);
 		}
 	}
@@ -173,10 +172,12 @@ public abstract class Logger {
 
 		public LoggerWriter(String modName) {
 			try {
-				file = new File(
-						SlimevoidLib.proxy.getMinecraftDir()+
+				String fileName = SlimevoidLib.proxy.getMinecraftDir()+
 						File.separator+
-						modName+".log"
+						modName+".log";
+				System.out.println(fileName);
+				file = new File(
+						fileName
 				);
 				fstream = new FileWriter(file);
 				out = new PrintWriter(fstream);
