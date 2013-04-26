@@ -129,8 +129,11 @@ public abstract class PacketUpdate extends EurysPacket {
 
 	@Override
 	public void writeData(DataOutputStream data) throws IOException {
-		
-		data.writeUTF(this.getCommand());
+		if (this.command == null || this.command.isEmpty() || this.command.equals("")) {
+			data.writeUTF("sv");
+		} else {
+			data.writeUTF(this.getCommand());
+		}
 
 		data.writeInt(this.xPosition);
 		data.writeInt(this.yPosition);
