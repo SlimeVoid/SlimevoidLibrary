@@ -45,6 +45,7 @@ xcopy "%mcpdir%\reobf\minecraft\*.*" "%packagedir%\SlimevoidLib\" /S
 xcopy "%euryscore%\SV-resources\*.*" "%packagedir%\SlimevoidLib\" /S
 echo "Slimevoid Library Packaged Successfully
 pause
+
 ren "%mcpdir%\src" src-old
 echo Recompiled Source folder renamed
 pause
