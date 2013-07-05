@@ -17,6 +17,6 @@ public class SV_ClientProxy extends SV_CommonProxy {
 
 	@Override
 	public String getMinecraftDir() {
-		return Minecraft.getMinecraftDir().getPath();
+		return Minecraft.getMinecraft().mcDataDir.getPath();
 	}
 }
