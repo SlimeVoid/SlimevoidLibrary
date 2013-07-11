@@ -11,6 +11,7 @@
  */
 package slimevoid.lib;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -52,7 +53,7 @@ public interface ISlimevoidHelper {
 	
 	/**
 	 * 
-	 * Helps get the useable by player for Containers
+	 * Helps get the usable by player for Containers
 	 * 
 	 * @param world NOT player.worldObj world of the object e.g. tileentity.worldObj
 	 * @param player the player attempting to use the block
@@ -78,9 +79,22 @@ public interface ISlimevoidHelper {
 			double distance);
 
 	/**
-	 * Overriden to return a readable name string
+	 * Overridden to return a readable name string
 	 * 
 	 * @return the name of the helper
 	 */
 	public String getHelperName();
+	
+	/**
+	 * Overridden to determine whether or not the entity is on a ladder
+	 * 
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param entity
+	 * 
+	 * @return true of false
+	 */
+	public boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity);
 }
