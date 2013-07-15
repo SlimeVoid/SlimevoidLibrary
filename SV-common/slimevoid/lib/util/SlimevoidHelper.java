@@ -87,7 +87,6 @@ public class SlimevoidHelper {
 			if (isLadder)
 				return true;
 		}
-		int blockID = world.getBlockId(x, y, z);
-		return blockID > 0 ? Block.blocksList[blockID].isLadder(world, x, y, z, entity) : false;
+		return false;
 	}
 }
