@@ -30,6 +30,11 @@ public interface ICommonProxy extends IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
 
 	/**
+	 * Registers sided Configuration
+	 */
+	public void registerConfigurationProperties();
+	
+	/**
 	 * Should be called prior to any other configuration
 	 */
 	public void preInit();

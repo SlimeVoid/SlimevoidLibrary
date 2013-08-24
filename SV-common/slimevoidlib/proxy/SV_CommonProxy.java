@@ -97,4 +97,10 @@ public class SV_CommonProxy implements ICommonProxy {
 	public void preInit() {
 	}
 
+	@Override
+	public void registerConfigurationProperties() {
+		// TODO :: Auto-generated method stub
+		
+	}
+
 }
