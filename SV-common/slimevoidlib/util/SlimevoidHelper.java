@@ -17,6 +17,7 @@ import java.util.List;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import slimevoidlib.ISlimevoidHelper;
 import slimevoidlib.core.SlimevoidCore;
@@ -50,7 +51,7 @@ public class SlimevoidHelper {
 		return world.getBlockId(x, y, z);
 	}
 
-	public static TileEntity getBlockTileEntity(World world, int x, int y, int z) {
+	public static TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z) {
 		for (ISlimevoidHelper helper : helperClasses) {
 			TileEntity tileentity = helper.getBlockTileEntity(world, x, y, z);
 			if (tileentity != null) {

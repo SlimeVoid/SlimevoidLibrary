@@ -14,6 +14,7 @@ package slimevoidlib;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public interface ISlimevoidHelper {
@@ -38,7 +39,7 @@ public interface ISlimevoidHelper {
 	 * @param z the zCoord
 	 * @return a tile entity
 	 */
-	public TileEntity getBlockTileEntity(World world, int x, int y, int z);
+	public TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z);
 	
 	/**
 	 * Checks if the target exists within the worldObj of the target
