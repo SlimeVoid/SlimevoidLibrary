@@ -37,10 +37,10 @@ public class SlimevoidLib {
 	@EventHandler
 	public static void SlimevoidLibPreInit(FMLPreInitializationEvent event) {
 		proxy.preInit();
+		SlimevoidHelper.init();
 	}
 	
 	@EventHandler
 	public static void SlimevoidLibInit(FMLInitializationEvent event) {
-		SlimevoidHelper.init();
 	}
 }
