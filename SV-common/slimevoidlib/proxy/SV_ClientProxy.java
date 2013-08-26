@@ -14,6 +14,11 @@ package slimevoidlib.proxy;
 import net.minecraft.client.Minecraft;
 
 public class SV_ClientProxy extends SV_CommonProxy {
+	
+	@Override
+	public void preInit() {
+		super.preInit();
+	}
 
 	@Override
 	public String getMinecraftDir() {
