@@ -11,17 +11,17 @@
  */
 package slimevoidlib.proxy;
 
-import net.minecraft.client.Minecraft;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class SV_ClientProxy extends SV_CommonProxy {
+
+	@Override
+	public String getMinecraftDir() {
+		return FMLClientHandler.instance().getClient().mcDataDir.toString();
+	}
 	
 	@Override
 	public void preInit() {
 		super.preInit();
-	}
-
-	@Override
-	public String getMinecraftDir() {
-		return Minecraft.getMinecraft().mcDataDir.getPath();
 	}
 }

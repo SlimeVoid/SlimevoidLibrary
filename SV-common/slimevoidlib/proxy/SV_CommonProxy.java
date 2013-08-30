@@ -11,11 +11,15 @@
  */
 package slimevoidlib.proxy;
 
+import java.io.File;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import slimevoidlib.ICommonProxy;
@@ -23,6 +27,11 @@ import slimevoidlib.IPacketHandling;
 import cpw.mods.fml.common.network.Player;
 
 public class SV_CommonProxy implements ICommonProxy {
+
+	@Override
+	public String getMinecraftDir() {
+		return ".";
+	}
 
 	@Override
 	public void registerRenderInformation() {
@@ -39,21 +48,6 @@ public class SV_CommonProxy implements ICommonProxy {
 	}
 
 	@Override
-	public String getMinecraftDir() {
-		return ".";
-	}
-
-	@Override
-	public int getBlockTextureFromMetadata(int meta) {
-		return 0;
-	}
-
-	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return 0;
-	}
-
-	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 	}
 
@@ -67,29 +61,6 @@ public class SV_CommonProxy implements ICommonProxy {
 	}
 
 	@Override
-	public void displayTileEntityGui(EntityPlayer entityplayer, TileEntity tileentity) {
-	}
-
-	@Override
-	public World getWorld() {
-		return null;
-	}
-
-	@Override
-	public World getWorld(NetHandler handler) {
-		return null;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return null;
-	}
-
-	@Override
-	public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
-	}
-
-	@Override
 	public void registerTickHandler() {
 	}
 
@@ -98,9 +69,42 @@ public class SV_CommonProxy implements ICommonProxy {
 	}
 
 	@Override
-	public void registerConfigurationProperties() {
-		// TODO :: Auto-generated method stub
-		
+	public void registerConfigurationProperties(File configFile) {
+	}
+
+	@Override
+	public boolean isClient(World world) {
+		return false;
+	}
+
+	@Override
+	public void playerLoggedIn(Player player, NetHandler netHandler,
+			INetworkManager manager) {
+	}
+
+	@Override
+	public String connectionReceived(NetLoginHandler netHandler,
+			INetworkManager manager) {
+		return null;
+	}
+
+	@Override
+	public void connectionOpened(NetHandler netClientHandler, String server,
+			int port, INetworkManager manager) {
+	}
+
+	@Override
+	public void connectionOpened(NetHandler netClientHandler,
+			MinecraftServer server, INetworkManager manager) {
+	}
+
+	@Override
+	public void connectionClosed(INetworkManager manager) {
+	}
+
+	@Override
+	public void clientLoggedIn(NetHandler clientHandler,
+			INetworkManager manager, Packet1Login login) {
 	}
 
 }

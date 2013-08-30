@@ -11,33 +11,44 @@
  */
 package slimevoidlib;
 
+import java.io.File;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.Player;
 
-public interface ICommonProxy extends IGuiHandler {
+public interface ICommonProxy extends IGuiHandler, INetworkConnection {
+	
+	/**
+	 * Should be called prior to any other configuration
+	 */
+	public void preInit();
+	
+	/**
+	 * Retrieves the Minecraft directory
+	 * 
+	 * @return the Path
+	 */
+	public String getMinecraftDir();
+	
+	/**
+	 * Registers sided Configuration
+	 */
+	public void registerConfigurationProperties(File configFile);
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
-
-	/**
-	 * Registers sided Configuration
-	 */
-	public void registerConfigurationProperties();
-	
-	/**
-	 * Should be called prior to any other configuration
-	 */
-	public void preInit();
 	
 	/**
 	 * Register Sided Tick handlers
@@ -48,41 +59,6 @@ public interface ICommonProxy extends IGuiHandler {
 	 * Register render information (Client only)
 	 */
 	public void registerRenderInformation();
-
-	/**
-	 * Retrieve Sided Minecraft directory
-	 * 
-	 * @return miencraft path as String
-	 */
-	public String getMinecraftDir();
-
-	/**
-	 * Fascade to call block texture from side and metadata
-	 * 
-	 * @param side the side of the block
-	 * @param meta the metadata
-	 * 
-	 * @return an index in the texture file
-	 */
-	public int getBlockTextureFromSideAndMetadata(int side, int meta);
-
-	/**
-	 * Fascade to call block texture from meta
-	 * 
-	 * @param meta the metadata
-	 * 
-	 * @return an index in the texture file
-	 */
-	public int getBlockTextureFromMetadata(int meta);
-
-	/**
-	 * Handles sided packetdata
-	 * 
-	 * @param manager
-	 * @param packet
-	 * @param player
-	 */
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player);
 
 	/**
 	 * Retrieves the sided packet handler
@@ -99,42 +75,34 @@ public interface ICommonProxy extends IGuiHandler {
 	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
 
 	/**
-	 * Display a tileentity GUI
+	 * Checks if we're looking at the Client side session.
 	 * 
-	 * @param entityplayer the player to display for
-	 * @param tileentity the tileentity associated with the GUI
+	 * @return True or false.
 	 */
-	public void displayTileEntityGui(EntityPlayer entityplayer, TileEntity tileentity);
+	public boolean isClient(World world);
 	
-	/**
-	 * Fetches the current Minecraft world object.
-	 * 
-	 * @return Minecraft world object.
+	/*
+	 * Network Connection Area
 	 */
-	public World getWorld();
-	
-	/**
-	 * Fetches the current Minecraft world object relating to the NetHandler.
-	 * 
-	 * handler the NetHandler (Server or Client)
-	 * 
-	 * @return Minecraft world object.
-	 */
-	public World getWorld(NetHandler handler);
 
-	/**
-	 * Fetches the current player.
-	 * 
-	 * @return Player
-	 */
-	public EntityPlayer getPlayer();
+	@Override
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player);
 
-	/**
-	 * Called on player/client login
-	 * 
-	 * @param handler
-	 * @param manager
-	 * @param login
-	 */
-	public void login(NetHandler handler, INetworkManager manager, Packet1Login login);
+	@Override
+	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager);
+
+	@Override
+	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager);
+
+	@Override
+	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager);
+
+	@Override
+	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager);
+
+	@Override
+	public void connectionClosed(INetworkManager manager);
+
+	@Override
+	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login);
 }
