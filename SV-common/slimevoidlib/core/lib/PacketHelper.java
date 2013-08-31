@@ -1,6 +1,6 @@
 package slimevoidlib.core.lib;
 
-public class PacketLib {
+public class PacketHelper {
 	
 	public void registerClientPacketHandlers() {
 		

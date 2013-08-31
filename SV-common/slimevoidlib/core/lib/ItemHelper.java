@@ -4,7 +4,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemLib {
+public class ItemHelper {
 
 	public static void dropItem(World world, int x, int y, int z, ItemStack itemstack) {
 		if (world.isRemote) {

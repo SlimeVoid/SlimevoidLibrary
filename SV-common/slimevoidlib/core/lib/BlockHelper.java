@@ -1,16 +1,18 @@
 package slimevoidlib.core.lib;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import slimevoidlib.util.SlimevoidHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-public class BlockLib {
+public class BlockHelper {
 
 	public static void notifyBlock(World world, int x, int y, int z, int blockID) {
 		Block block = Block.blocksList[world.getBlockId(x, y, z)];
@@ -52,5 +54,12 @@ public class BlockLib {
 		} else {
 			return tileentity;
 		}
+	}
+
+	public static TileEntity getTileEntityAtBase(Entity entity) {
+        int x = MathHelper.floor_double(entity.posX);
+        int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D - (double)entity.yOffset);
+        int z = MathHelper.floor_double(entity.posZ);
+		return SlimevoidHelper.getBlockTileEntity(entity.worldObj, x, y, z);
 	}
 }
