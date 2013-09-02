@@ -13,7 +13,7 @@ package slimevoidlib.core;
 
 import slimevoidlib.ICommonProxy;
 import slimevoidlib.core.lib.CoreLib;
-import slimevoidlib.util.SlimevoidHelper;
+import slimevoidlib.util.helpers.SlimevoidHelper;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;

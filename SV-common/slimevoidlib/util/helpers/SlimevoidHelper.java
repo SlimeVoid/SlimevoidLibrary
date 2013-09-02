@@ -9,7 +9,7 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package slimevoidlib.util;
+package slimevoidlib.util.helpers;
 
 import java.util.ArrayList;
 import java.util.List;

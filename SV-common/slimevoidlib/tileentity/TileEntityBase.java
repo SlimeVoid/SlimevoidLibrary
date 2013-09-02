@@ -22,9 +22,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import slimevoidlib.blocks.BlockBase;
-import slimevoidlib.core.lib.BlockHelper;
-import slimevoidlib.core.lib.ItemHelper;
 import slimevoidlib.core.lib.NBTLib;
+import slimevoidlib.util.helpers.BlockHelper;
+import slimevoidlib.util.helpers.ItemHelper;
 
 public abstract class TileEntityBase extends TileEntity {
 

@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import slimevoidlib.core.lib.BlockHelper;
-import slimevoidlib.core.lib.ItemHelper;
 import slimevoidlib.items.ItemBlockBase;
 import slimevoidlib.tileentity.TileEntityBase;
+import slimevoidlib.util.helpers.BlockHelper;
+import slimevoidlib.util.helpers.ItemHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

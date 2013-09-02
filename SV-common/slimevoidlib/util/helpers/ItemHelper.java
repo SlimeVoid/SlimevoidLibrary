@@ -1,4 +1,4 @@
-package slimevoidlib.core.lib;
+package slimevoidlib.util.helpers;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;

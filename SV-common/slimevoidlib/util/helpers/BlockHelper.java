@@ -1,4 +1,4 @@
-package slimevoidlib.core.lib;
+package slimevoidlib.util.helpers;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -8,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import slimevoidlib.util.SlimevoidHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 

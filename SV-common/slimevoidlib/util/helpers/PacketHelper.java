@@ -1,4 +1,4 @@
-package slimevoidlib.core.lib;
+package slimevoidlib.util.helpers;
 
 public class PacketHelper {
 	

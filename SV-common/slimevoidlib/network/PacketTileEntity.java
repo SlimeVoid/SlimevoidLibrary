@@ -14,7 +14,7 @@ package slimevoidlib.network;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import slimevoidlib.util.SlimevoidHelper;
+import slimevoidlib.util.helpers.SlimevoidHelper;
 
 /**
  * Packet for sending TileEntity information
