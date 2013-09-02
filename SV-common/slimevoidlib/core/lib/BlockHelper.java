@@ -48,6 +48,9 @@ public class BlockHelper {
 	}
 
 	public static Object getTileEntity(IBlockAccess world, int x, int y, int z, Class tileEntityClass) {
+		if (tileEntityClass == null) {
+			return null;
+		}
 		TileEntity tileentity = SlimevoidHelper.getBlockTileEntity(world, x, y, z);
 		if (!tileEntityClass.isInstance(tileentity)) {
 			return null;
@@ -61,5 +64,11 @@ public class BlockHelper {
         int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D - (double)entity.yOffset);
         int z = MathHelper.floor_double(entity.posZ);
 		return SlimevoidHelper.getBlockTileEntity(entity.worldObj, x, y, z);
+	}
+
+	public static void playBlockPlaceNoise(World world, int x, int y, int z, int blockID) {
+		Block block = Block.blocksList[blockID];
+		world.playSoundEffect((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F,
+				"step.stone", (block.stepSound.getPitch() + 1.0F) / 2.0F, block.stepSound.getVolume() * 0.8F);
 	}
 }

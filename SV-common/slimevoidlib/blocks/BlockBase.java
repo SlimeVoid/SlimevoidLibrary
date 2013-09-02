@@ -61,7 +61,8 @@ public abstract class BlockBase extends BlockContainer {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int x, int y, int z) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, TileEntityBase.class);
+		int metadata = iblockaccess.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			super.setBlockBoundsBasedOnState(iblockaccess, x, y, z);
 			return;
@@ -73,7 +74,8 @@ public abstract class BlockBase extends BlockContainer {
 	
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, TileEntityBase.class);
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			return super.collisionRayTrace(world, x, y, z, startVec, endVec);
 		} else {
@@ -85,7 +87,8 @@ public abstract class BlockBase extends BlockContainer {
 	public void addCollisionBoxesToList(World world, int x, int y,
 			int z, AxisAlignedBB axisAlignedBB, List aList,
 			Entity anEntity) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, TileEntityBase.class);
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, aList, anEntity);
 			return;
@@ -111,7 +114,8 @@ public abstract class BlockBase extends BlockContainer {
 
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, TileEntityBase.class);
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			return super.isBlockSolidOnSide(world, x, y, z, side);
 		} else {
@@ -125,7 +129,8 @@ public abstract class BlockBase extends BlockContainer {
 	
 	@Override
     public float getBlockHardness(World world, int x, int y, int z) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, TileEntityBase.class);
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			return super.getBlockHardness(world, x, y, z);
 		} else {
@@ -136,7 +141,7 @@ public abstract class BlockBase extends BlockContainer {
 	@Override
 	public ArrayList getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
 		ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, TileEntityBase.class);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			return harvestList;
 		} else {
@@ -183,8 +188,8 @@ public abstract class BlockBase extends BlockContainer {
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper
-				.getTileEntity(world, x, y, z, TileEntityBase.class);
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			world.setBlock(x, y, z, 0);
 			return;
@@ -195,8 +200,8 @@ public abstract class BlockBase extends BlockContainer {
 	}
 
 	public void onBlockPlaced(World world, int x, int y, int z, int side, EntityPlayer entityplayer, ItemStack itemstack) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper
-				.getTileEntity(world, x, y, z, TileEntityBase.class);
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase == null) {
 			return;
 		} else {
@@ -207,12 +212,11 @@ public abstract class BlockBase extends BlockContainer {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int side, int metadata) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper
-				.getTileEntity(world, x, y, z, TileEntityBase.class);
-		if (tileentitybase == null) {
+		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentity == null) {
 			return;
 		} else {
-			tileentitybase.onBlockRemoval();
+			tileentity.onBlockRemoval();
 			super.breakBlock(world, x, y, z, side, metadata);
 			return;
 		}
@@ -220,35 +224,45 @@ public abstract class BlockBase extends BlockContainer {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float xHit, float yHit, float zHit) {
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper
-				.getTileEntity(world, x, y, z, TileEntityBase.class);
-		if (tileentitybase == null) {
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentity == null) {
 			return false;
 		} else {
-			return tileentitybase.onBlockActivated(entityplayer);
+			return tileentity.onBlockActivated(entityplayer);
 		}
 	}
 	
 	@Override
 	public Icon getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		int metadata = iblockaccess.getBlockMetadata(x, y, z);
-		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.tileEntityMap[metadata]);
+		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
 		if (tileentity != null) {
 			return tileentity.getBlockTexture(x, y, z, metadata, side);
+		} else {
+			return this.getIcon(side, metadata);
 		}
-		return this.getIcon(side, metadata);
 	}
 
 	@Override
 	public int getLightValue(IBlockAccess iblockaccess, int x, int y, int z) {
 		int metadata = iblockaccess.getBlockMetadata(x, y, z);
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.tileEntityMap[metadata]);
-		if (tileentitybase == null)
+		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
+		if (tileentity == null) {
 			return super.getLightValue(iblockaccess, x, y, z);
-		else
-			return tileentitybase.getLightValue();
+		} else {
+			return tileentity.getLightValue();
+		}
 	}
 	
+	private Class getTileMapData(int metadata) {
+		if (metadata < this.tileEntityMap.length) {
+			return this.tileEntityMap[metadata];
+		} else {
+			return null;
+		}
+	}
+
 	@Override
 	public abstract int getRenderType();
 	
@@ -266,7 +280,7 @@ public abstract class BlockBase extends BlockContainer {
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
 		try {
-			return (TileEntity) this.tileEntityMap[metadata].newInstance();
+			return (TileEntity) this.getTileMapData(metadata).newInstance();
 		} catch (Exception e) {
 			return null;
 		}
