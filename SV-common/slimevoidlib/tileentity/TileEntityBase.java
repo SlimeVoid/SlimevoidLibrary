@@ -41,12 +41,24 @@ public abstract class TileEntityBase extends TileEntity {
 	public void onBlockNeighborChange(int direction) {
 		
 	}
+
+	public int onBlockPlaced(int side, float hitX, float hitY, float hitZ, int damage) {
+		return damage;
+	}
 	
-	public void onBlockPlaced(ItemStack itemstack, int side, EntityLivingBase entity) {
+	public void onBlockPlacedBy(ItemStack itemstack, EntityLivingBase entity) {
 		this.rotation = (int) Math.floor((double)((entity.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 	}
 	
-	public void onBlockRemoval() {
+	public int getRotation() {
+		return this.rotation;
+	}
+	
+	public void setRotation(int newRotation) {
+		this.rotation = newRotation;
+	}
+	
+	public void onBlockRemoval(int side, int metadata) {
 		
 	}
 

@@ -16,6 +16,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,12 +64,10 @@ public abstract class BlockBase extends BlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int x, int y, int z) {
 		int metadata = iblockaccess.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			super.setBlockBoundsBasedOnState(iblockaccess, x, y, z);
-			return;
-		} else {
+		if (tileentitybase != null) {
 			tileentitybase.setBlockBoundsBasedOnState(this);
-			return;
+		} else {
+			super.setBlockBoundsBasedOnState(iblockaccess, x, y, z);
 		}
 	}
 	
@@ -76,10 +75,10 @@ public abstract class BlockBase extends BlockContainer {
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			return super.collisionRayTrace(world, x, y, z, startVec, endVec);
-		} else {
+		if (tileentitybase != null) {
 			return tileentitybase.collisionRayTrace(this, startVec, endVec);
+		} else {
+			return super.collisionRayTrace(world, x, y, z, startVec, endVec);
 		}
 	}
 	
@@ -89,12 +88,10 @@ public abstract class BlockBase extends BlockContainer {
 			Entity anEntity) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, aList, anEntity);
-			return;
-		} else {
+		if (tileentitybase != null) {
 			tileentitybase.addCollisionBoxesToList(this, axisAlignedBB, aList, anEntity);
-			return;
+		} else {
+			super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, aList, anEntity);
 		}
 	}
 
@@ -116,10 +113,10 @@ public abstract class BlockBase extends BlockContainer {
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			return super.isBlockSolidOnSide(world, x, y, z, side);
-		} else {
+		if (tileentitybase != null) {
 			return tileentitybase.isBlockSolidOnSide(this, side);
+		} else {
+			return super.isBlockSolidOnSide(world, x, y, z, side);
 		}
 	}
 
@@ -131,10 +128,10 @@ public abstract class BlockBase extends BlockContainer {
     public float getBlockHardness(World world, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			return super.getBlockHardness(world, x, y, z);
-		} else {
+		if (tileentitybase != null) {
 			return tileentitybase.getBlockHardness(world, x, y, z);
+		} else {
+			return super.getBlockHardness(world, x, y, z);
 		}
 	}
 	
@@ -161,8 +158,7 @@ public abstract class BlockBase extends BlockContainer {
 	}
 
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer entityplayer,
-			int x, int y, int z) {
+	public boolean removeBlockByPlayer(World world, EntityPlayer entityplayer, int x, int y, int z) {
 		if (world.isRemote) {
 			return true;
 		}
@@ -190,46 +186,39 @@ public abstract class BlockBase extends BlockContainer {
 	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			world.setBlock(x, y, z, 0);
-			return;
-		} else {
+		if (tileentitybase != null) {
 			tileentitybase.onBlockNeighborChange(blockID);
-			return;
+		} else {
+			world.setBlock(x, y, z, 0);
 		}
 	}
 
-	public void onBlockPlaced(World world, int x, int y, int z, int side, EntityPlayer entityplayer, ItemStack itemstack) {
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityplayer, ItemStack itemstack) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			return;
-		} else {
-			tileentitybase.onBlockPlaced(itemstack, side, entityplayer);
-			return;
+		if (tileentitybase != null) {
+			tileentitybase.onBlockPlacedBy(itemstack, entityplayer);
 		}
 	}
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int side, int metadata) {
 		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentity == null) {
-			return;
-		} else {
-			tileentity.onBlockRemoval();
-			super.breakBlock(world, x, y, z, side, metadata);
-			return;
+		if (tileentity != null) {
+			tileentity.onBlockRemoval(side, metadata);
 		}
+		super.breakBlock(world, x, y, z, side, metadata);
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float xHit, float yHit, float zHit) {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
-		if (tileentity == null) {
-			return false;
-		} else {
+		if (tileentity != null) {
 			return tileentity.onBlockActivated(entityplayer);
+		} else {
+			return false;
 		}
 	}
 	
@@ -255,7 +244,7 @@ public abstract class BlockBase extends BlockContainer {
 		}
 	}
 	
-	private Class getTileMapData(int metadata) {
+	public Class getTileMapData(int metadata) {
 		if (metadata < this.tileEntityMap.length) {
 			return this.tileEntityMap[metadata];
 		} else {

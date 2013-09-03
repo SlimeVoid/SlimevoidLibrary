@@ -43,7 +43,7 @@ public class ItemBlockBase extends ItemBlock {
 			return itemName;
 		}
 	}
-	
+/*	
 	@Override
 	public boolean placeBlockAt(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
 		if (!world.setBlock(x, y, z, this.itemID, metadata, 0x3)) {
@@ -51,10 +51,11 @@ public class ItemBlockBase extends ItemBlock {
 		}
 		if (world.getBlockId(x, y, z) == this.itemID) {
 			BlockBase blockBase = (BlockBase) Block.blocksList[this.itemID];
+			int damage = this.getMetadata(itemstack.getItemDamage());
 			if (blockBase != null) {
-				blockBase.onBlockPlaced(world, x, y, z, side, entityplayer, itemstack);
+				blockBase.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, damage);
 			}
 		}
 		return true;
-	}
+	}*/
 }
