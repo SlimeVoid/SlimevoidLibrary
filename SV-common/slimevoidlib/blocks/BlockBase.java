@@ -13,6 +13,7 @@ import slimevoidlib.util.helpers.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -237,10 +238,46 @@ public abstract class BlockBase extends BlockContainer {
 	public int getLightValue(IBlockAccess iblockaccess, int x, int y, int z) {
 		int metadata = iblockaccess.getBlockMetadata(x, y, z);
 		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
-		if (tileentity == null) {
-			return super.getLightValue(iblockaccess, x, y, z);
-		} else {
+		if (tileentity != null) {
 			return tileentity.getLightValue();
+		} else {
+			return super.getLightValue(iblockaccess, x, y, z);
+		}
+	}
+
+	public boolean superBlockDestroyEffects(World world, int x, int y, int z,
+			int meta, EffectRenderer effectRenderer) {
+		return super.addBlockDestroyEffects(world, x, y, z, meta, effectRenderer);
+	}	
+	
+	@Override
+	public boolean addBlockDestroyEffects(World world, int x, int y, int z,
+			int meta, EffectRenderer effectRenderer) {
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentity != null) {
+			return tileentity.addBlockDestroyEffects(this, meta, effectRenderer);
+		} else {
+			return super.addBlockDestroyEffects(world, x, y, z, meta, effectRenderer);
+		}
+	}
+	
+	public boolean superBlockHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+		return super.addBlockHitEffects(world, target, effectRenderer);
+	}
+
+	@Override
+	public boolean addBlockHitEffects(World world, MovingObjectPosition target,
+			EffectRenderer effectRenderer) {
+		int x = target.blockX,
+			y = target.blockY,
+			z = target.blockZ;
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentity != null) {
+			return tileentity.addBlockHitEffects(this, target, effectRenderer);
+		} else {
+			return super.addBlockHitEffects(world, target, effectRenderer);
 		}
 	}
 	

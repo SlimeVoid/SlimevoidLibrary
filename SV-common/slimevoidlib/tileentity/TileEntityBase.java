@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -182,6 +183,14 @@ public abstract class TileEntityBase extends TileEntity {
 	public boolean isBlockSolidOnSide(BlockBase blockBase, ForgeDirection side) {
 		return blockBase.superIsBlockSolidOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, side);
 	}
+
+	public boolean addBlockDestroyEffects(BlockBase blockBase, int meta, EffectRenderer effectRenderer) {
+		return blockBase.superBlockDestroyEffects(this.worldObj, this.xCoord, this.yCoord, this.zCoord, meta, effectRenderer);
+	}
+
+	public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
+		return blockBase.superBlockHitEffects(this.worldObj, target, effectRenderer);
+	}
 	
 	/**
 	 * This can be overriden and used to retrieve the step sound based on TileEntity information
@@ -211,7 +220,7 @@ public abstract class TileEntityBase extends TileEntity {
 
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
-		this.readFromNBT(pkt.customParam1);
+		this.readFromNBT(pkt.data);
 		this.onInventoryChanged();
 	}
 
