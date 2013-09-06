@@ -82,9 +82,13 @@ public abstract class TileEntityBase extends TileEntity {
 		return 0;
 	}
 	
-    public float getBlockHardness(IBlockAccess iblockaccess, int par2, int par3, int par4) {
-    	return 0.0F;
-    }
+	public float getBlockHardness(BlockBase blockBase) {
+		return blockBase.superBlockHardness(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	}
+
+	public int colorMultiplier(BlockBase blockBase) {
+		return blockBase.superColorMultiplier(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	}
 
 	public void addHarvestContents(ArrayList<ItemStack> harvestList) {
 		harvestList.add(
@@ -191,14 +195,6 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
 		return blockBase.superBlockHitEffects(this.worldObj, target, effectRenderer);
-	}
-	
-	public float getBlockHardness(BlockBase blockBase) {
-		return blockBase.superBlockHardness(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-	}
-
-	public int colorMultiplier(BlockBase blockBase) {
-		return blockBase.superColorMultiplier(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	/**

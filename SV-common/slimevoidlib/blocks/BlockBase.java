@@ -130,7 +130,7 @@ public abstract class BlockBase extends BlockContainer {
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
 		if (tileentitybase != null) {
-			return tileentitybase.getBlockHardness(world, x, y, z);
+			return tileentitybase.getBlockHardness(this);
 		} else {
 			return super.getBlockHardness(world, x, y, z);
 		}
