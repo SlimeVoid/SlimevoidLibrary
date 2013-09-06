@@ -20,6 +20,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import slimevoidlib.blocks.BlockBase;
@@ -81,7 +82,7 @@ public abstract class TileEntityBase extends TileEntity {
 		return 0;
 	}
 	
-    public float getBlockHardness(World par1World, int par2, int par3, int par4) {
+    public float getBlockHardness(IBlockAccess iblockaccess, int par2, int par3, int par4) {
     	return 0.0F;
     }
 
@@ -190,6 +191,14 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
 		return blockBase.superBlockHitEffects(this.worldObj, target, effectRenderer);
+	}
+	
+	public float getBlockHardness(BlockBase blockBase) {
+		return blockBase.superBlockHardness(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	}
+
+	public int colorMultiplier(BlockBase blockBase) {
+		return blockBase.superColorMultiplier(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	/**

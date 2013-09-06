@@ -135,6 +135,25 @@ public abstract class BlockBase extends BlockContainer {
 			return super.getBlockHardness(world, x, y, z);
 		}
 	}
+
+	public float superBlockHardness(World world, int x, int y, int z) {
+		return super.getBlockHardness(world, x, y, z);
+	}
+	
+	@Override
+	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
+		int metadata = iblockaccess.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
+		if (tileentitybase != null) {
+			return tileentitybase.colorMultiplier(this);
+		} else {
+			return super.colorMultiplier(iblockaccess, x, y, z);
+		}
+	}
+
+	public int superColorMultiplier(World world, int x, int y, int z) {
+		return super.colorMultiplier(world, x, y, z);
+	}
 	
 	@Override
 	public ArrayList getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
