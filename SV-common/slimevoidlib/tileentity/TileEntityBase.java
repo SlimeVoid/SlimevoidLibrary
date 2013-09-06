@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +46,7 @@ public abstract class TileEntityBase extends TileEntity {
 		return damage;
 	}
 	
-	public void onBlockPlacedBy(ItemStack itemstack, EntityLivingBase entity) {
+	public void onBlockPlacedBy(ItemStack itemstack, EntityLiving entity) {
 		this.rotation = (int) Math.floor((double)((entity.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 	}
 	
@@ -223,7 +223,7 @@ public abstract class TileEntityBase extends TileEntity {
 
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
-		this.readFromNBT(pkt.data);
+		this.readFromNBT(pkt.customParam1);
 		this.onInventoryChanged();
 	}
 

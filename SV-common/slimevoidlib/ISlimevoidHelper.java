@@ -11,7 +11,7 @@
  */
 package slimevoidlib;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -97,5 +97,5 @@ public interface ISlimevoidHelper {
 	 * 
 	 * @return true of false
 	 */
-	public boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity);
+	public boolean isLadder(World world, int x, int y, int z, EntityLiving entity);
 }
