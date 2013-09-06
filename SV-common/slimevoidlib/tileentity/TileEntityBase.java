@@ -87,13 +87,13 @@ public abstract class TileEntityBase extends TileEntity {
 	public float getBlockHardness(BlockBase blockBase) {
 		return blockBase.superBlockHardness(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
+	
+	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ, BlockBase blockBase) {
+		return blockBase.superGetExplosionResistance(entity, this.worldObj, this.xCoord, this.yCoord, this.zCoord, explosionX, explosionY, explosionZ);
+	}
 
 	public int colorMultiplier(BlockBase blockBase) {
 		return blockBase.superColorMultiplier(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-	}
-
-	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ, BlockBase blockBase) {
-		return blockBase.superGetExplosionResistance(entity, this.worldObj, this.xCoord, this.yCoord, this.zCoord, explosionX, explosionY, explosionZ);
 	}
 
 	public void addHarvestContents(ArrayList<ItemStack> harvestList) {
