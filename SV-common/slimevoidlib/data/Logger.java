@@ -16,15 +16,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import net.minecraft.src.ModLoader;
 import slimevoidlib.core.SlimevoidLib;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-
-
 /**
- * Wireless Redstone logging engine.<br>
+ * Slimevoid logging engine.<br>
  * Singleton pattern class.
  * 
  * @author ali4z
@@ -157,7 +154,7 @@ public abstract class Logger {
 			writer = new LoggerWriter(this.getLoggerName());
 
 		writer.writeStackTrace(e);
-		ModLoader.throwException(e.getMessage(), e);
+        FMLCommonHandler.instance().raiseException(e, e.getMessage(), false);
 	}
 
 	/**
