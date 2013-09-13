@@ -79,6 +79,10 @@ public abstract class TileEntityBase extends TileEntity {
 	public int getExtendedMetadata() {
 		return 0;
 	}
+
+	public ItemStack getPickBlock(MovingObjectPosition target, BlockBase blockBase) {
+		return blockBase.superGetPickBlock(target, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	}
 	
 	public float getBlockHardness(BlockBase blockBase) {
 		return blockBase.superBlockHardness(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
@@ -86,6 +90,10 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public int colorMultiplier(BlockBase blockBase) {
 		return blockBase.superColorMultiplier(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	}
+
+	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ, BlockBase blockBase) {
+		return blockBase.superGetExplosionResistance(entity, this.worldObj, this.xCoord, this.yCoord, this.zCoord, explosionX, explosionY, explosionZ);
 	}
 
 	public void addHarvestContents(ArrayList<ItemStack> harvestList) {
