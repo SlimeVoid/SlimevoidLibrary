@@ -60,6 +60,21 @@ public abstract class BlockBase extends BlockContainer {
 	public int damageDropped(int metadata) {
 		return metadata;
 	}
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentitybase != null) {
+			return tileentitybase.getPickBlock(target, this);
+		} else {
+			return super.getPickBlock(target, world, x, y, z);
+		}
+	}
+
+	public final ItemStack superGetPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		return super.getPickBlock(target, world, x, y, z);
+	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int x, int y, int z) {
@@ -123,6 +138,21 @@ public abstract class BlockBase extends BlockContainer {
 
 	public boolean superIsBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		return super.isBlockSolidOnSide(world, x, y, z, side);
+	}
+	
+	@Override
+	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ){
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentitybase != null) {
+			return tileentitybase.getExplosionResistance(entity, explosionX, explosionY , explosionZ, this);
+		} else {
+			return super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY , explosionZ);
+		}
+	}
+	
+	public final float superGetExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ){
+		return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY , explosionZ);
 	}
 	
 	@Override
