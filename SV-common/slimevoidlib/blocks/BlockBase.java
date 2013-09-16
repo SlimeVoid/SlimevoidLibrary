@@ -61,6 +61,16 @@ public abstract class BlockBase extends BlockContainer {
 		return metadata;
 	}
 	
+    public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentitybase != null) {
+			return tileentitybase.removeBlockByPlayer(player, this);
+		} else {
+			return super.removeBlockByPlayer(world, player, x, y, z);
+		}
+    }
+	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(x, y, z);
@@ -171,6 +181,17 @@ public abstract class BlockBase extends BlockContainer {
 	}
 	
 	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, World world, int x, int y, int z) {
+		int metadata = world.getBlockMetadata(x, y, z);
+		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world, x, y, z, this.getTileMapData(metadata));
+		if (tileentitybase != null) {
+			return tileentitybase.getPlayerRelativeBlockHardness(entityplayer, this);
+		} else {
+			return super.getPlayerRelativeBlockHardness(entityplayer, world, x, y, z);
+		}
+	}
+	
+	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
 		int metadata = iblockaccess.getBlockMetadata(x, y, z);
 		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess, x, y, z, this.getTileMapData(metadata));
@@ -205,31 +226,6 @@ public abstract class BlockBase extends BlockContainer {
 	@Override
 	public void harvestBlock(World world, EntityPlayer entityplayer, int x,
 			int y, int z, int damage) {
-	}
-
-	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer entityplayer, int x, int y, int z) {
-		if (world.isRemote) {
-			return true;
-		}
-		int blockId = world.getBlockId(x, y, z);
-		int metadata = world.getBlockMetadata(x, y, z);
-		Block block = Block.blocksList[blockId];
-		if (block == null) {
-			return false;
-		}
-		if (block.canHarvestBlock(entityplayer, metadata)
-				&& !entityplayer.capabilities.isCreativeMode) {
-			ArrayList blockDropped = getBlockDropped(world, x, y, z, metadata,
-					EnchantmentHelper.getFortuneModifier(entityplayer));
-			ItemStack itemstack;
-			for (Iterator stack = blockDropped.iterator(); stack.hasNext(); ItemHelper
-					.dropItem(world, x, y, z, itemstack))
-				itemstack = (ItemStack) stack.next();
-
-		}
-		world.setBlock(x, y, z, 0);
-		return true;
 	}
 
 	@Override

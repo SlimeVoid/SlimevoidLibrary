@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +22,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.ForgeHooks;
 import slimevoidlib.blocks.BlockBase;
 import slimevoidlib.core.lib.NBTLib;
 import slimevoidlib.util.helpers.BlockHelper;
@@ -80,12 +82,39 @@ public abstract class TileEntityBase extends TileEntity {
 		return 0;
 	}
 
+	public boolean removeBlockByPlayer(EntityPlayer player, BlockBase blockBase) {
+		if (this.worldObj.isRemote) {
+			return true;
+		}
+		int blockId = worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord);
+		int metadata = worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+		Block block = Block.blocksList[blockId];
+		if (block == null) {
+			return false;
+		}
+		if (block.canHarvestBlock(player, metadata)
+				&& !player.capabilities.isCreativeMode) {
+			ArrayList blockDropped = blockBase.getBlockDropped(this.worldObj, this.xCoord, this.yCoord, this.zCoord, metadata,
+					EnchantmentHelper.getFortuneModifier(player));
+			ItemStack itemstack;
+			for (Iterator stack = blockDropped.iterator(); stack.hasNext(); ItemHelper
+					.dropItem(worldObj, this.xCoord, this.yCoord, this.zCoord, itemstack))
+				itemstack = (ItemStack) stack.next();
+
+		}
+		return this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+	}
+
 	public ItemStack getPickBlock(MovingObjectPosition target, BlockBase blockBase) {
 		return blockBase.superGetPickBlock(target, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public float getBlockHardness(BlockBase blockBase) {
 		return blockBase.superBlockHardness(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	}
+
+	public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, BlockBase blockBase) {
+		return ForgeHooks.blockStrength(blockBase, entityplayer, worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ, BlockBase blockBase) {
