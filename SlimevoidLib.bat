@@ -1,19 +1,19 @@
-@echo off
+@echo on
 
-set programdir="C:\Programming"
-set packagedir="%programdir%\Packages"
-set repodir="%programdir%\Repositories"
-set forgedir="%repodir%\MinecraftForge"
-set fmldir="%repodir%\MinecraftForge\fml"
-set mcpdir="%forgedir%\mcp"
-set euryscore="%repodir%\EurysCore-FML"
+set programdir=C:\Programming
+set packagedir=%programdir%\Packages
+set repodir=%programdir%\Repositories
+set forgedir=%repodir%\MinecraftForge-1.5.2
+set fmldir=%forgedir%\fml
+set mcpdir=%forgedir%\mcp
+set euryscore=%repodir%\EurysCore-FML
 cd %mcpdir%
 
-if not exist %euryscore% GOTO :ECFAIL
+if not exist "%euryscore%" GOTO :ECFAIL
 GOTO :EC
 
 :EC
-if exist %mcpdir%\src GOTO :COPYSRC
+if exist "%mcpdir%\src" GOTO :COPYSRC
 GOTO :ECFAIL
 
 :COPYSRC
