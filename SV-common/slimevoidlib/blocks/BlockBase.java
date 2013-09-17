@@ -331,9 +331,6 @@ public abstract class BlockBase extends BlockContainer {
 			return null;
 		}
 	}
-
-	@Override
-	public abstract int getRenderType();
 	
 	public void addTileEntityMapping(int metadata, Class tileEntityClass) {
 		this.tileEntityMap[metadata] = tileEntityClass;
