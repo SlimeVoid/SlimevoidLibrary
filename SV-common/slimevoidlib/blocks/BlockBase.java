@@ -1,21 +1,18 @@
 package slimevoidlib.blocks;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import slimevoidlib.items.ItemBlockBase;
+import slimevoidlib.sounds.SlimevoidStepSound;
 import slimevoidlib.tileentity.TileEntityBase;
 import slimevoidlib.util.helpers.BlockHelper;
-import slimevoidlib.util.helpers.ItemHelper;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +35,7 @@ public abstract class BlockBase extends BlockContainer {
 		super(blockID, material);
 		this.tileEntityMap = new Class[maxTiles];
 		this.setCreativeTab(this.getCreativeTab());
+		this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
 	}
 	
 	public abstract CreativeTabs getCreativeTab();
