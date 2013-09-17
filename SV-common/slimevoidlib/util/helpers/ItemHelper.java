@@ -25,4 +25,8 @@ public class ItemHelper {
 			return;
 		}
 	}
+	
+	public static String correctName(String name) {
+		return Character.toUpperCase(name.charAt(0)) + name.substring(1);
+	}
 }
