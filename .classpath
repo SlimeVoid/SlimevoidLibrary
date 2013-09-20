@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry combineaccessrules="false" kind="src" path="/Forge-MC1.5.2"/>
+	<classpathentry kind="lib" path="/Forge-MC1.5.2/jars/bin/lwjgl.jar"/>
 	<classpathentry kind="src" path="SV-common"/>
 	<classpathentry kind="src" path="SV-resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
-	<classpathentry kind="lib" path="/Forge/jars/bin/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
