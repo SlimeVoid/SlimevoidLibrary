@@ -19,9 +19,7 @@ public class ConfigurationLib {
 		baseBlockIdsNDmgs = configuration.get(	Configuration.CATEGORY_GENERAL,
 												"BaseBlockList",
 												new String[] {
-														"155",
-														"155_1-Chisled Quartz",
-														"155_2-Pillar Quartz" },
+														"44-Smooth Stone" },
 												"Data to generate custom Blocks with the format BaseBlockID<_DMG-Friendly Prefix>. "
 														+ "\nexample 35_14-Red Wool will create a slope, slanted corner, and oblic slope blocks"
 														+ "\nwith the texture based on the blockid 35 with damage 14, Damage is optional if 0"
