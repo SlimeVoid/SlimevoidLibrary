@@ -21,7 +21,7 @@ public class MaterialsLib {
 	private static ArrayList<String>				descs				= new ArrayList<String>();
 	private static ArrayList<IMaterialHandler>		materialHandlers	= new ArrayList<IMaterialHandler>();
 	private static HashMap<List<Integer>, Integer>	materialIndex		= new HashMap<List<Integer>, Integer>();
-	public static int								brickIndex			= 5;
+	public static int								brickIndex			= 35;
 
 	public static int getSize() {
 		return materials.size();
