@@ -2,7 +2,6 @@ package slimevoidlib.materials.lib;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import slimevoid.slopesncorners.core.lib.ConfigurationLib;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -21,7 +20,7 @@ public class ReInitMatsCommand extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		ConfigurationLib.getBaseBlockList(true);
-		ConfigurationLib.reInitSlopeMats();
+		ConfigurationLib.reInitMaterials();
 		if (FMLCommonHandler.instance().getSide() == Side.SERVER) {
 			PacketLib.sendAllMaterialList();
 		}

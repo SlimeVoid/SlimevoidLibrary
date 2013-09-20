@@ -13,6 +13,7 @@ public class ConfigurationLib {
 	private static String[]			baseBlockIdsNDmgs;
 
 	public static void CommonConfig(File suggestedConfigurationFile) {
+		configuration = new Configuration(suggestedConfigurationFile);
 		configuration.load();
 		
 		baseBlockIdsNDmgs = configuration.get(	Configuration.CATEGORY_GENERAL,

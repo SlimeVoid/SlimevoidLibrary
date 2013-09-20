@@ -2,6 +2,7 @@ package slimevoidlib.materials.lib;
 
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.NetHandler;
+import slimevoidlib.materials.client.network.ClientPacketHandler;
 import slimevoidlib.materials.network.handler.PacketMaterialHandler;
 import slimevoidlib.materials.network.packet.PacketMaterialList;
 import slimevoidlib.materials.network.packet.executor.PacketMaterialListExecutor;
