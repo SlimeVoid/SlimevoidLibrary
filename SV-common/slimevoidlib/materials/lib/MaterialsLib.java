@@ -182,7 +182,7 @@ public class MaterialsLib {
 		}
 	}
 
-	private static int damageToCoverData(int dmg) {
+	private static int damageToMaterialData(int dmg) {
 		// 524288, 262144, 131072, 65536
 		// 32768, 16384, 8192, 4096
 		// 2048, 1024, 512, 256
@@ -333,7 +333,7 @@ public class MaterialsLib {
 	}
 
 	public static int damageToMaterialValue(int dmg) {
-		return damageToCoverData(dmg) & 0xffff; // = 65535
+		return damageToMaterialData(dmg) & 0xffff; // = 65535
 	}
 
 	public static ItemStack getItemStack(int n) {
