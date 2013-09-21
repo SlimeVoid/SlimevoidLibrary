@@ -16,14 +16,18 @@ package slimevoidlib.network;
  * Internal use only.
  */
 public class IndexInPayload {
-	
+
 	/**
 	 * Instantiates a payload of information to be sent in a packet
 	 * 
-	 * @param intIndex how many Integer values are within the payload
-	 * @param floatIndex  how many Float values are within the payload
-	 * @param stringIndex how many String values are within the payload
-	 * @param boolIndex how many Boolean values are within the payload
+	 * @param intIndex
+	 *            how many Integer values are within the payload
+	 * @param floatIndex
+	 *            how many Float values are within the payload
+	 * @param stringIndex
+	 *            how many String values are within the payload
+	 * @param boolIndex
+	 *            how many Boolean values are within the payload
 	 */
 	public IndexInPayload(int intIndex, int floatIndex, int stringIndex, int boolIndex) {
 		this.intIndex = intIndex;
@@ -35,11 +39,16 @@ public class IndexInPayload {
 	/**
 	 * Instantiates a payload of information to be sent in a packet
 	 * 
-	 * @param intIndex how many Integer values are within the payload
-	 * @param floatIndex  how many Float values are within the payload
-	 * @param stringIndex how many String values are within the payload
-	 * @param boolIndex how many Boolean values are within the payload
-	 * @param doubleIndex how many Double values are within the payload
+	 * @param intIndex
+	 *            how many Integer values are within the payload
+	 * @param floatIndex
+	 *            how many Float values are within the payload
+	 * @param stringIndex
+	 *            how many String values are within the payload
+	 * @param boolIndex
+	 *            how many Boolean values are within the payload
+	 * @param doubleIndex
+	 *            how many Double values are within the payload
 	 */
 	public IndexInPayload(int intIndex, int floatIndex, int stringIndex, int boolIndex, int doubleIndex) {
 		this(intIndex, floatIndex, stringIndex, boolIndex);
@@ -49,9 +58,9 @@ public class IndexInPayload {
 	/**
 	 * Default values for payload
 	 */
-	public int intIndex = 0;
-	public int floatIndex = 0;
-	public int stringIndex = 0;
-	public int boolIndex = 0;
-	public int doubleIndex = 0;
+	public int	intIndex	= 0;
+	public int	floatIndex	= 0;
+	public int	stringIndex	= 0;
+	public int	boolIndex	= 0;
+	public int	doubleIndex	= 0;
 }

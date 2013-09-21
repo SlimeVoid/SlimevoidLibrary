@@ -25,10 +25,10 @@ import net.minecraft.world.World;
  * entityId The ID of the entity to send
  * 
  * @author Eurymachus
- *
+ * 
  */
 public abstract class PacketEntity extends PacketUpdate {
-	private int entityId;
+	private int	entityId;
 
 	public PacketEntity() {
 		super(PacketIds.ENTITY);
@@ -46,7 +46,8 @@ public abstract class PacketEntity extends PacketUpdate {
 	/**
 	 * Set the entityId for this packet
 	 * 
-	 * @param entityId The entity ID
+	 * @param entityId
+	 *            The entity ID
 	 */
 	public void setEntityId(int entityId) {
 		this.entityId = entityId;
@@ -73,7 +74,7 @@ public abstract class PacketEntity extends PacketUpdate {
 		for (int i = 0; i < entities.size(); i++) {
 			// Get the current entity
 			Entity entity = entities.get(i);
-			// Is entity id of current loaded entity equal to this entity Id 
+			// Is entity id of current loaded entity equal to this entity Id
 			if (entity != null && entity.entityId == this.getEntityId()) {
 				// Entity is loaded and exists
 				return true;
@@ -91,7 +92,7 @@ public abstract class PacketEntity extends PacketUpdate {
 			List<? extends Entity> entities = world.loadedEntityList;
 			// For each entity within the world
 			for (int i = 0; i < entities.size(); i++) {
-				// Get the current entity 
+				// Get the current entity
 				Entity entity = entities.get(i);
 				// Is entity id of current loaded entity equal to this entity Id
 				if (entity != null && entity.entityId == this.getEntityId()) {

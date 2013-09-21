@@ -19,14 +19,15 @@ import net.minecraft.item.Item;
  * Used to remove blocks instances from the game - in order to be replaced
  * 
  * @author Eurymachus
- *
+ * 
  */
 public class BlockRemover {
 
 	/**
 	 * Remove a vanilla Block instance and it's associated ItemBlock instance
 	 * 
-	 * @param oldBlock The block to be removed
+	 * @param oldBlock
+	 *            The block to be removed
 	 * 
 	 * @return if the block was removed or not
 	 */
@@ -41,11 +42,14 @@ public class BlockRemover {
 			// Set the block in the blocksList to null
 			Block.blocksList[oldBlock.blockID] = null;
 			// Output a success message
-			SlimevoidCore.console("EurysCore", "Block ID [" + oldBlock.blockID + "] successfully removed.");
+			SlimevoidCore.console(	"EurysCore",
+									"Block ID [" + oldBlock.blockID
+											+ "] successfully removed.");
 			return true;
 		} else {
 			// Output a failure message
-			SlimevoidCore.console("EurysCore", "Block ID not removed! Either the ID did not exist or was incorrect!");
+			SlimevoidCore.console(	"EurysCore",
+									"Block ID not removed! Either the ID did not exist or was incorrect!");
 			return false;
 		}
 	}

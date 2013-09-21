@@ -25,15 +25,13 @@ import cpw.mods.fml.common.network.NetworkMod;
 		modid = CoreLib.MOD_ID,
 		name = CoreLib.MOD_NAME,
 		version = CoreLib.MOD_VERSION)
-@NetworkMod(
-		clientSideRequired = true,
-		serverSideRequired = false)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class SlimevoidLib {
 	@SidedProxy(
 			clientSide = CoreLib.MOD_CLIENT_PROXY,
 			serverSide = CoreLib.MOD_COMMON_PROXY)
-	public static ICommonProxy proxy;
-	
+	public static ICommonProxy	proxy;
+
 	@PreInit
 	public static void SlimevoidLibPreInit(FMLPreInitializationEvent event) {
 		proxy.preInit();

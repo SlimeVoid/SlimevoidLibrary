@@ -14,18 +14,15 @@ public class ItemHelper {
 			double xx = (double) world.rand.nextFloat() * d + (1.0D - d) * 0.5D;
 			double yy = (double) world.rand.nextFloat() * d + (1.0D - d) * 0.5D;
 			double zz = (double) world.rand.nextFloat() * d + (1.0D - d) * 0.5D;
-			EntityItem item = new EntityItem(
-					world,
-					(double) x + xx,
-					(double) y + yy,
-					(double) z + zz,
-					itemstack);
+			EntityItem item = new EntityItem(world, (double) x + xx, (double) y
+																		+ yy, (double) z
+																				+ zz, itemstack);
 			item.age = 10;
 			world.spawnEntityInWorld(item);
 			return;
 		}
 	}
-	
+
 	public static String correctName(String name) {
 		return Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	}

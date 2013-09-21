@@ -26,28 +26,28 @@ import slimevoidlib.nbt.NBTHelper;
  * payload The payload to be delivered with the packet xPosition The value x for
  * the current packet yPosition The value y for the current packet zPosition The
  * value z for the current packet side The value side for the current packet
- * (Used for blocks and activation) hitX The hitX for the current packet
- * (Used for blocks and activation) hitY The hitY for the current packet
- * (Used for blocks and activation) hitZ the hitZ for the current packet
+ * (Used for blocks and activation) hitX The hitX for the current packet (Used
+ * for blocks and activation) hitY The hitY for the current packet (Used for
+ * blocks and activation) hitZ the hitZ for the current packet
  * 
  * @author Eurymachus
  * 
  */
 public abstract class PacketUpdate extends EurysPacket {
-	private int packetId;
+	private int				packetId;
 
-	public PacketPayload payload;
+	public PacketPayload	payload;
 
-	public int xPosition;
-	public int yPosition;
-	public int zPosition;
-	public int side;
+	public int				xPosition;
+	public int				yPosition;
+	public int				zPosition;
+	public int				side;
 
-	public float hitX;
-	public float hitY;
-	public float hitZ;
-	
-	public String command;
+	public float			hitX;
+	public float			hitY;
+	public float			hitZ;
+
+	public String			command;
 
 	/**
 	 * Set the position x, y, z and side if applicable
@@ -97,39 +97,38 @@ public abstract class PacketUpdate extends EurysPacket {
 	/**
 	 * Writes a String to the DataOutputStream
 	 */
-	protected static void writeString(String par0Str,
-			DataOutputStream par1DataOutputStream) throws IOException {
-		NBTHelper.writeString(par0Str, par1DataOutputStream);
+	protected static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException {
+		NBTHelper.writeString(	par0Str,
+								par1DataOutputStream);
 	}
 
 	/**
 	 * Reads a string from a packet
 	 */
-	protected static String readString(DataInputStream par0DataInputStream,
-			int par1) throws IOException {
-		return NBTHelper.readString(par0DataInputStream, par1);
+	protected static String readString(DataInputStream par0DataInputStream, int par1) throws IOException {
+		return NBTHelper.readString(par0DataInputStream,
+									par1);
 	}
 
 	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
 	 */
-	protected static void writeNBTTagCompound(
-			NBTTagCompound nbttagcompound,
-			DataOutputStream data) throws IOException {
-		NBTHelper.writeNBTTagCompound(nbttagcompound, data);
+	protected static void writeNBTTagCompound(NBTTagCompound nbttagcompound, DataOutputStream data) throws IOException {
+		NBTHelper.writeNBTTagCompound(	nbttagcompound,
+										data);
 	}
 
 	/**
 	 * Reads a compressed NBTTagCompound from the InputStream
 	 */
-	protected static NBTTagCompound readNBTTagCompound(
-			DataInputStream data) throws IOException {
+	protected static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException {
 		return NBTHelper.readNBTTagCompound(data);
 	}
 
 	@Override
 	public void writeData(DataOutputStream data) throws IOException {
-		if (this.command == null || this.command.isEmpty() || this.command.equals("")) {
+		if (this.command == null || this.command.isEmpty()
+			|| this.command.equals("")) {
 			data.writeUTF("sv");
 		} else {
 			data.writeUTF(this.getCommand());
@@ -179,9 +178,13 @@ public abstract class PacketUpdate extends EurysPacket {
 	public void readData(DataInputStream data) throws IOException {
 		this.setCommand(data.readUTF());
 
-		this.setPosition(data.readInt(), data.readInt(), data.readInt(),
-				data.readInt());
-		this.setHitVectors(data.readFloat(), data.readFloat(), data.readFloat());
+		this.setPosition(	data.readInt(),
+							data.readInt(),
+							data.readInt(),
+							data.readInt());
+		this.setHitVectors(	data.readFloat(),
+							data.readFloat(),
+							data.readFloat());
 
 		int intSize = data.readInt();
 		int floatSize = data.readInt();
@@ -189,19 +192,23 @@ public abstract class PacketUpdate extends EurysPacket {
 		int boolSize = data.readInt();
 		int doubleSize = data.readInt();
 
-		this.payload = new PacketPayload(intSize, floatSize, stringSize,
-				boolSize, doubleSize);
+		this.payload = new PacketPayload(intSize, floatSize, stringSize, boolSize, doubleSize);
 
 		for (int i = 0; i < this.payload.getIntSize(); i++)
-			this.payload.setIntPayload(i, data.readInt());
+			this.payload.setIntPayload(	i,
+										data.readInt());
 		for (int i = 0; i < this.payload.getFloatSize(); i++)
-			this.payload.setFloatPayload(i, data.readFloat());
+			this.payload.setFloatPayload(	i,
+											data.readFloat());
 		for (int i = 0; i < this.payload.getStringSize(); i++)
-			this.payload.setStringPayload(i, data.readUTF());
+			this.payload.setStringPayload(	i,
+											data.readUTF());
 		for (int i = 0; i < this.payload.getBoolSize(); i++)
-			this.payload.setBoolPayload(i, data.readBoolean());
+			this.payload.setBoolPayload(i,
+										data.readBoolean());
 		for (int i = 0; i < this.payload.getDoubleSize(); i++)
-			this.payload.setDoublePayload(i, data.readDouble());
+			this.payload.setDoublePayload(	i,
+											data.readDouble());
 	}
 
 	/**
@@ -213,11 +220,11 @@ public abstract class PacketUpdate extends EurysPacket {
 	 * @return true or false
 	 */
 	public abstract boolean targetExists(World world);
-	
+
 	public String getCommand() {
 		return !this.command.isEmpty() ? this.command : "";
 	}
-	
+
 	public void setCommand(String command) {
 		this.command = command;
 	}

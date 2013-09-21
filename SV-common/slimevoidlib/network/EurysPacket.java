@@ -18,8 +18,6 @@ import java.io.IOException;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-
-
 /**
  * Packet Information Base
  * 
@@ -30,17 +28,18 @@ public abstract class EurysPacket {
 	/**
 	 * Used to separate packets into a different send queue.
 	 */
-	public boolean isChunkDataPacket = false;
+	public boolean	isChunkDataPacket	= false;
 
 	/**
 	 * The channel for the packet
 	 */
-	private String channel;
+	private String	channel;
 
 	/**
 	 * Sets the packet channel
 	 * 
-	 * @param channel the channel to set
+	 * @param channel
+	 *            the channel to set
 	 */
 	public void setChannel(String channel) {
 		this.channel = channel;
@@ -49,18 +48,22 @@ public abstract class EurysPacket {
 	/**
 	 * Writes data to the packet
 	 * 
-	 * @param data the outputstream to write to
+	 * @param data
+	 *            the outputstream to write to
 	 * 
-	 * @throws IOException if data is corrupt/null
+	 * @throws IOException
+	 *             if data is corrupt/null
 	 */
 	public abstract void writeData(DataOutputStream data) throws IOException;
 
 	/**
 	 * Reads data from the packet
 	 * 
-	 * @param data the inputstream to read from
+	 * @param data
+	 *            the inputstream to read from
 	 * 
-	 * @throws IOException if data is corrupt/null
+	 * @throws IOException
+	 *             if data is corrupt/null
 	 */
 	public abstract void readData(DataInputStream data) throws IOException;
 
@@ -74,7 +77,8 @@ public abstract class EurysPacket {
 	/**
 	 * Gets a readable output for this packet instance
 	 * 
-	 * @param full should return the full packet text
+	 * @param full
+	 *            should return the full packet text
 	 * 
 	 * @return toString()
 	 */

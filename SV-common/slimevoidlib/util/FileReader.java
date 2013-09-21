@@ -25,7 +25,9 @@ public class FileReader {
 		try {
 			stream = new FileInputStream(file);
 			FileChannel fc = stream.getChannel();
-			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			MappedByteBuffer bb = fc.map(	FileChannel.MapMode.READ_ONLY,
+											0,
+											fc.size());
 			return Charset.defaultCharset().decode(bb).toString();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -33,8 +35,7 @@ public class FileReader {
 			e.printStackTrace();
 		} finally {
 			try {
-				if ( stream != null )
-				stream.close();
+				if (stream != null) stream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
