@@ -1,6 +1,6 @@
 @echo off
 
-set programdir=C:\Programming\Minecraft\1.5.2
+set programdir=%CD%\..\..
 set packagedir=%programdir%\Packages
 set repodir=%programdir%\Git
 set forgedir=%programdir%\Forge
