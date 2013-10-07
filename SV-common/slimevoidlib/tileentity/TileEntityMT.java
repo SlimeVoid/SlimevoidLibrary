@@ -20,22 +20,25 @@ import slimevoidlib.network.PacketTileEntityMT;
 import slimevoidlib.network.PacketUpdate;
 
 /**
- * Abstract TileEntity class for generation of Multi-Textured blocks contains the data required
+ * Abstract TileEntity class for generation of Multi-Textured blocks contains
+ * the data required
  * 
  * @author Eurymachus
- *
+ * 
  */
 public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 
 	/**
-	 * The value of the items damage (Usually stored in metadata however due to limitation we store it in tileentity)
+	 * The value of the items damage (Usually stored in metadata however due to
+	 * limitation we store it in tileentity)
 	 */
-	private int textureValue;
+	private int	textureValue;
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setInteger("textureValue", textureValue);
+		nbttagcompound.setInteger(	"textureValue",
+									textureValue);
 	}
 
 	@Override
@@ -46,8 +49,9 @@ public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 
 	/**
 	 * Sets the texture value
-	 *
-	 * @param texture the texture value to set (usually itemdamage)
+	 * 
+	 * @param texture
+	 *            the texture value to set (usually itemdamage)
 	 */
 	@Override
 	public void setTextureValue(int texture) {
@@ -83,9 +87,8 @@ public abstract class TileEntityMT extends TileEntity implements ITileEntityMT {
 	public void handleUpdatePacket(World world, PacketUpdate packet) {
 		this.setTextureValue(((PacketTileEntityMT) packet).getTextureValue());
 		this.onInventoryChanged();
-		world.markBlockForUpdate(
-				packet.xPosition,
-				packet.yPosition,
-				packet.zPosition);
+		world.markBlockForUpdate(	packet.xPosition,
+									packet.yPosition,
+									packet.zPosition);
 	}
 }

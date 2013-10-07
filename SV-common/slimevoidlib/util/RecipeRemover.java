@@ -28,8 +28,8 @@ import net.minecraft.item.crafting.IRecipe;
 public class RecipeRemover {
 
 	// set of recipes to remove
-	static Set<Integer> itemSet = new HashSet<Integer>();
-	
+	static Set<Integer>	itemSet	= new HashSet<Integer>();
+
 	private static void flush() {
 		itemSet.clear();
 	}
@@ -39,7 +39,7 @@ public class RecipeRemover {
 			itemSet.add(((Block) object).blockID);
 		}
 		if (object instanceof Item) {
-			itemSet.add(((Item) object).itemID); //shiftedIndex
+			itemSet.add(((Item) object).itemID); // shiftedIndex
 		}
 	}
 
@@ -53,16 +53,18 @@ public class RecipeRemover {
 		while (it.hasNext()) {
 			IRecipe recipe = it.next();
 			ItemStack output = recipe.getRecipeOutput();
-			
+
 			if (output != null) {
-				int itemID = output.getItem().itemID; //shiftedIndex
+				int itemID = output.getItem().itemID; // shiftedIndex
 				if (itemSet.contains(itemID)) {
 					matches.add(recipe);
 				}
 			}
 		}
 		for (IRecipe recipe : matches) {
-			SlimevoidCore.console("EurysCore", "Removing recipe for " + recipe.getRecipeOutput().getDisplayName());
+			SlimevoidCore.console(	"EurysCore",
+									"Removing recipe for "
+											+ recipe.getRecipeOutput().getDisplayName());
 			recipes.remove(recipe);
 		}
 		flush();

@@ -26,19 +26,19 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.Player;
 
 public interface ICommonProxy extends IGuiHandler, INetworkConnection {
-	
+
 	/**
 	 * Should be called prior to any other configuration
 	 */
 	public void preInit();
-	
+
 	/**
 	 * Retrieves the Minecraft directory
 	 * 
 	 * @return the Path
 	 */
 	public String getMinecraftDir();
-	
+
 	/**
 	 * Registers sided Configuration
 	 */
@@ -49,7 +49,7 @@ public interface ICommonProxy extends IGuiHandler, INetworkConnection {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
-	
+
 	/**
 	 * Register Sided Tick handlers
 	 */
@@ -70,7 +70,8 @@ public interface ICommonProxy extends IGuiHandler, INetworkConnection {
 	/**
 	 * Register tileentity renderer (Client only)
 	 * 
-	 * @param clazz the TileEntity class to register for
+	 * @param clazz
+	 *            the TileEntity class to register for
 	 */
 	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
 
@@ -80,7 +81,7 @@ public interface ICommonProxy extends IGuiHandler, INetworkConnection {
 	 * @return True or false.
 	 */
 	public boolean isClient(World world);
-	
+
 	/*
 	 * Network Connection Area
 	 */

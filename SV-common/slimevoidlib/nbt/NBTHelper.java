@@ -23,8 +23,7 @@ public class NBTHelper {
 	/**
 	 * Writes a String to the DataOutputStream
 	 */
-	public static void writeString(String stringToWrite,
-			DataOutputStream data) throws IOException {
+	public static void writeString(String stringToWrite, DataOutputStream data) throws IOException {
 		if (stringToWrite.length() > 32767) {
 			throw new IOException("String too big");
 		} else {
@@ -36,17 +35,17 @@ public class NBTHelper {
 	/**
 	 * Reads a string from a DataInputStream
 	 */
-	public static String readString(DataInputStream data,
-			int allowedLength) throws IOException {
+	public static String readString(DataInputStream data, int allowedLength) throws IOException {
 		short stringLength = data.readShort();
 
 		if (stringLength > allowedLength) {
-			throw new IOException(
-					"Received string length longer than maximum allowed ("
-							+ stringLength + " > " + allowedLength + ")");
+			throw new IOException("Received string length longer than maximum allowed ("
+									+ stringLength
+									+ " > "
+									+ allowedLength
+									+ ")");
 		} else if (stringLength < 0) {
-			throw new IOException(
-					"Received string length is less than zero! Weird string!");
+			throw new IOException("Received string length is less than zero! Weird string!");
 		} else {
 			StringBuilder stringBuilder = new StringBuilder();
 
@@ -61,9 +60,7 @@ public class NBTHelper {
 	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
 	 */
-	public static void writeNBTTagCompound(
-			NBTTagCompound nbttagcompound,
-			DataOutputStream data) throws IOException {
+	public static void writeNBTTagCompound(NBTTagCompound nbttagcompound, DataOutputStream data) throws IOException {
 		if (nbttagcompound == null) {
 			data.writeShort(-1);
 		} else {
@@ -76,8 +73,7 @@ public class NBTHelper {
 	/**
 	 * Reads a compressed NBTTagCompound from the InputStream
 	 */
-	public static NBTTagCompound readNBTTagCompound(
-			DataInputStream data) throws IOException {
+	public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException {
 		short nbtSize = data.readShort();
 
 		if (nbtSize < 0) {

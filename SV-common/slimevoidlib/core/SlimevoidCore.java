@@ -14,54 +14,43 @@ package slimevoidlib.core;
 import cpw.mods.fml.common.FMLCommonHandler;
 import slimevoidlib.data.LoggerSlimevoidLib;
 
-
 public class SlimevoidCore {
 	public static void console(String modName, String s, int type) {
 		switch (type) {
 		case 0:
-			FMLCommonHandler.instance().getFMLLogger().info("[" + modName + "] " + s);
-			LoggerSlimevoidLib
-			.getInstance(modName
-			).write(
-					false,
-					s,
-					LoggerSlimevoidLib.LogLevel.DEBUG
-			);
+			FMLCommonHandler.instance().getFMLLogger().info("[" + modName
+															+ "] " + s);
+			LoggerSlimevoidLib.getInstance(modName).write(	false,
+															s,
+															LoggerSlimevoidLib.LogLevel.DEBUG);
 			break;
 		case 1:
-			FMLCommonHandler.instance().getFMLLogger().warning("[" + modName + "] " + s);
-			LoggerSlimevoidLib
-			.getInstance(modName
-			).write(
-					false,
-					s,
-					LoggerSlimevoidLib.LogLevel.WARNING
-			);
+			FMLCommonHandler.instance().getFMLLogger().warning("[" + modName
+																+ "] " + s);
+			LoggerSlimevoidLib.getInstance(modName).write(	false,
+															s,
+															LoggerSlimevoidLib.LogLevel.WARNING);
 			break;
 		case 2:
-			FMLCommonHandler.instance().getFMLLogger().severe("[" + modName + "] " + s);
-			LoggerSlimevoidLib
-			.getInstance(modName
-			).write(
-					false,
-					s,
-					LoggerSlimevoidLib.LogLevel.ERROR
-			);
+			FMLCommonHandler.instance().getFMLLogger().severe("[" + modName
+																+ "] " + s);
+			LoggerSlimevoidLib.getInstance(modName).write(	false,
+															s,
+															LoggerSlimevoidLib.LogLevel.ERROR);
 			break;
 		default:
-			FMLCommonHandler.instance().getFMLLogger().info("[" + modName + "] " + s);
-			LoggerSlimevoidLib
-			.getInstance(modName
-			).write(
-					false,
-					s,
-					LoggerSlimevoidLib.LogLevel.INFO
-			);
+			FMLCommonHandler.instance().getFMLLogger().info("[" + modName
+															+ "] " + s);
+			LoggerSlimevoidLib.getInstance(modName).write(	false,
+															s,
+															LoggerSlimevoidLib.LogLevel.INFO);
 			break;
 		}
 	}
 
 	public static void console(String modName, String s) {
-		console(modName, s, 0);
+		console(modName,
+				s,
+				0);
 	}
 }

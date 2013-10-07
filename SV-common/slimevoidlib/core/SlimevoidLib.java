@@ -15,7 +15,7 @@ import slimevoidlib.ICommonProxy;
 import slimevoidlib.core.lib.CoreLib;
 import slimevoidlib.util.helpers.SlimevoidHelper;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -25,22 +25,16 @@ import cpw.mods.fml.common.network.NetworkMod;
 		modid = CoreLib.MOD_ID,
 		name = CoreLib.MOD_NAME,
 		version = CoreLib.MOD_VERSION)
-@NetworkMod(
-		clientSideRequired = true,
-		serverSideRequired = false)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class SlimevoidLib {
 	@SidedProxy(
 			clientSide = CoreLib.MOD_CLIENT_PROXY,
 			serverSide = CoreLib.MOD_COMMON_PROXY)
-	public static ICommonProxy proxy;
-	
-	@EventHandler
+	public static ICommonProxy	proxy;
+
+	@PreInit
 	public static void SlimevoidLibPreInit(FMLPreInitializationEvent event) {
 		proxy.preInit();
 		SlimevoidHelper.init();
-	}
-	
-	@EventHandler
-	public static void SlimevoidLibInit(FMLInitializationEvent event) {
 	}
 }

@@ -27,9 +27,9 @@ import cpw.mods.fml.relauncher.Side;
  * @author ali4z
  */
 public abstract class Logger {
-	protected String name;
-	protected LoggerWriter writer;
-	protected LogLevel filterLevel;
+	protected String		name;
+	protected LoggerWriter	writer;
+	protected LogLevel		filterLevel;
 
 	/**
 	 * Log level.<br>
@@ -59,7 +59,8 @@ public abstract class Logger {
 	 * Sets the filtering level based on a string.<br>
 	 * "DEBUG","INFO","WARNING","ERROR" are valid strings.
 	 * 
-	 * @param f log level string
+	 * @param f
+	 *            log level string
 	 * @return true if string valid was valid. Defaults to INFO if not.
 	 */
 	public boolean setFilterLevel(String f) {
@@ -82,76 +83,66 @@ public abstract class Logger {
 	}
 
 	private boolean filter(LogLevel lvl) {
-		if (filterLevel == LogLevel.DEBUG)
-			return true;
+		if (filterLevel == LogLevel.DEBUG) return true;
 		else if (filterLevel == LogLevel.INFO) {
-			if (lvl == LogLevel.DEBUG)
-				return false;
-			else
-				return true;
+			if (lvl == LogLevel.DEBUG) return false;
+			else return true;
 		} else if (filterLevel == LogLevel.WARNING) {
-			if (lvl == LogLevel.DEBUG || lvl == LogLevel.INFO)
-				return false;
-			else
-				return true;
+			if (lvl == LogLevel.DEBUG || lvl == LogLevel.INFO) return false;
+			else return true;
 		} else if (filterLevel == LogLevel.ERROR) {
-			if (lvl == LogLevel.ERROR)
-				return true;
-			else
-				return false;
-		} else
-			return true;
+			if (lvl == LogLevel.ERROR) return true;
+			else return false;
+		} else return true;
 	}
 
 	/**
 	 * Write a message to the logger.
 	 * 
-	 * @param msg message text
-	 * @param lvl message level
+	 * @param msg
+	 *            message text
+	 * @param lvl
+	 *            message level
 	 */
 	public void write(boolean isRemote, String msg, LogLevel lvl) {
 		String name = this.getName();
 		if (filter(lvl)) {
-			if (writer == null)
-				writer = new LoggerWriter(this.getLoggerName());
+			if (writer == null) writer = new LoggerWriter(this.getLoggerName());
 
 			StringBuilder trace = new StringBuilder();
 			try {
 				throw new Exception();
 			} catch (Exception e) {
 				StackTraceElement[] c = e.getStackTrace();
-				int min = Math.min(3, c.length - 1);
+				int min = Math.min(	3,
+									c.length - 1);
 				for (int i = min; i >= 1; i--) {
-					trace
-							.append(filterClassName(c[i].getClassName()) + "." + c[i]
-									.getMethodName());
-					if (i > 1)
-						trace.append("->");
+					trace.append(filterClassName(c[i].getClassName()) + "."
+									+ c[i].getMethodName());
+					if (i > 1) trace.append("->");
 				}
 			}
-			writer.write(lvl.name() + ":" + getSide(isRemote) + ":" + name + ":" + msg + ":" + trace);
+			writer.write(lvl.name() + ":" + getSide(isRemote) + ":" + name
+							+ ":" + msg + ":" + trace);
 		}
 	}
-	
+
 	private String getSide(boolean isRemote) {
-		if ( !isRemote && FMLCommonHandler.instance().getSide() ==  Side.CLIENT ) 
-			return "ISERVER";
-		if (FMLCommonHandler.instance().getSide() ==  Side.CLIENT ) 
-			return "CLIENT";
-		if (FMLCommonHandler.instance().getSide() ==  Side.SERVER ) 
-			return "SERVER";
-		
+		if (!isRemote && FMLCommonHandler.instance().getSide() == Side.CLIENT) return "ISERVER";
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) return "CLIENT";
+		if (FMLCommonHandler.instance().getSide() == Side.SERVER) return "SERVER";
+
 		return "UNKNOWN";
 	}
 
 	/**
 	 * Write an exception stack trace to the logger.
 	 * 
-	 * @param e exception
+	 * @param e
+	 *            exception
 	 */
 	public void writeStackTrace(Exception e) {
-		if (writer == null)
-			writer = new LoggerWriter(this.getLoggerName());
+		if (writer == null) writer = new LoggerWriter(this.getLoggerName());
 
 		writer.writeStackTrace(e);
         FMLCommonHandler.instance().raiseException(e, e.getMessage(), false);
@@ -163,19 +154,16 @@ public abstract class Logger {
 	 * @author ali4z
 	 */
 	private class LoggerWriter {
-		private File file;
-		private FileWriter fstream;
-		private PrintWriter out;
+		private File		file;
+		private FileWriter	fstream;
+		private PrintWriter	out;
 
 		public LoggerWriter(String modName) {
 			try {
-				String fileName = SlimevoidLib.proxy.getMinecraftDir()+
-						File.separator+
-						modName+".log";
+				String fileName = SlimevoidLib.proxy.getMinecraftDir()
+									+ File.separator + modName + ".log";
 				System.out.println(fileName);
-				file = new File(
-						fileName
-				);
+				file = new File(fileName);
 				fstream = new FileWriter(file);
 				out = new PrintWriter(fstream);
 			} catch (IOException e) {
@@ -211,7 +199,8 @@ public abstract class Logger {
 	 * Find the class name from a string.<br>
 	 * Returns the string beyond the last period ".".
 	 * 
-	 * @param name class name
+	 * @param name
+	 *            class name
 	 * @return Filtered class name.
 	 */
 
@@ -230,6 +219,7 @@ public abstract class Logger {
 
 	/**
 	 * Sets the instance name for the Logger
+	 * 
 	 * @param name
 	 */
 	public void setName(String name) {

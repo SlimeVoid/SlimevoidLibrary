@@ -20,7 +20,7 @@ import slimevoidlib.util.helpers.SlimevoidHelper;
  * Packet for sending TileEntity information
  * 
  * @author Eurymachus
- *
+ * 
  */
 public abstract class PacketTileEntity extends PacketUpdate {
 
@@ -31,34 +31,31 @@ public abstract class PacketTileEntity extends PacketUpdate {
 	/**
 	 * Get the tileentity instance for this packet
 	 * 
-	 * @param world The world in which the tileentity resides
+	 * @param world
+	 *            The world in which the tileentity resides
 	 * 
 	 * @return The tileentity
 	 */
 	public TileEntity getTileEntity(World world) {
 		if (this.targetExists(world)) {
-			return SlimevoidHelper.getBlockTileEntity(
-					world,
-					this.xPosition,
-					this.yPosition,
-					this.zPosition);
+			return SlimevoidHelper.getBlockTileEntity(	world,
+														this.xPosition,
+														this.yPosition,
+														this.zPosition);
 		}
 		return null;
 	}
 
 	@Override
 	public boolean targetExists(World world) {
-		if (SlimevoidHelper.targetExists(
-				world,
-				this.xPosition,
-				this.yPosition,
-				this.zPosition) &&
-			Block.blocksList[SlimevoidHelper.getBlockId(
-					world,
-					this.xPosition,
-					this.yPosition,
-					this.zPosition)].hasTileEntity(0)
-			) {
+		if (SlimevoidHelper.targetExists(	world,
+											this.xPosition,
+											this.yPosition,
+											this.zPosition)
+			&& Block.blocksList[SlimevoidHelper.getBlockId(	world,
+															this.xPosition,
+															this.yPosition,
+															this.zPosition)].hasTileEntity(0)) {
 			return true;
 		}
 		return false;

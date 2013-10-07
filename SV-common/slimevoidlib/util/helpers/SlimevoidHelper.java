@@ -14,7 +14,7 @@ package slimevoidlib.util.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -23,69 +23,95 @@ import slimevoidlib.ISlimevoidHelper;
 import slimevoidlib.core.SlimevoidCore;
 
 public class SlimevoidHelper {
-	
-	private static boolean initialized = false;
-	private static List<ISlimevoidHelper> helperClasses;
-	
+
+	private static boolean					initialized	= false;
+	private static List<ISlimevoidHelper>	helperClasses;
+
 	public static void init() {
 		if (!initialized) {
 			helperClasses = new ArrayList<ISlimevoidHelper>();
 			initialized = true;
 		}
 	}
-	
+
 	public static void registerHelper(ISlimevoidHelper newHelper) {
 		if (!helperClasses.contains(newHelper)) {
 			helperClasses.add(newHelper);
 		} else {
-			SlimevoidCore.console("Slimevoid Lib", "Attempted to register helper Object " + newHelper.getHelperName() + " that was already registered.");
+			SlimevoidCore.console(	"Slimevoid Lib",
+									"Attempted to register helper Object "
+											+ newHelper.getHelperName()
+											+ " that was already registered.");
 		}
 	}
 
 	public static int getBlockId(World world, int x, int y, int z) {
 		for (ISlimevoidHelper helper : helperClasses) {
-			int id = helper.getBlockId(world, x, y, z);
-			if (id > 0)
-				return id;
+			int id = helper.getBlockId(	world,
+										x,
+										y,
+										z);
+			if (id > 0) return id;
 		}
-		return world.getBlockId(x, y, z);
+		return world.getBlockId(x,
+								y,
+								z);
 	}
 
 	public static TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z) {
 		for (ISlimevoidHelper helper : helperClasses) {
-			TileEntity tileentity = helper.getBlockTileEntity(world, x, y, z);
+			TileEntity tileentity = helper.getBlockTileEntity(	world,
+																x,
+																y,
+																z);
 			if (tileentity != null) {
 				return tileentity;
 			}
 		}
-		return world.getBlockTileEntity(x, y, z);
+		return world.getBlockTileEntity(x,
+										y,
+										z);
 	}
 
 	public static boolean targetExists(World world, int x, int y, int z) {
 		for (ISlimevoidHelper helper : helperClasses) {
-			boolean exists = helper.targetExists(world, x, y, z);
-			if (exists)
-				return true;
+			boolean exists = helper.targetExists(	world,
+													x,
+													y,
+													z);
+			if (exists) return true;
 		}
-		return world.blockExists(x, y, z);
+		return world.blockExists(	x,
+									y,
+									z);
 	}
 
-	public static boolean isUseableByPlayer(World world, EntityPlayer player,
-			int xCoord, int yCoord, int zCoord, double xDiff, double yDiff,
-			double zDiff, double distance) {
+	public static boolean isUseableByPlayer(World world, EntityPlayer player, int xCoord, int yCoord, int zCoord, double xDiff, double yDiff, double zDiff, double distance) {
 		for (ISlimevoidHelper helper : helperClasses) {
-			boolean isUseable = helper.isUseableByPlayer(world, player, xCoord, yCoord, zCoord, xDiff, yDiff, zDiff, distance);
-			if (isUseable)
-				return true;
+			boolean isUseable = helper.isUseableByPlayer(	world,
+															player,
+															xCoord,
+															yCoord,
+															zCoord,
+															xDiff,
+															yDiff,
+															zDiff,
+															distance);
+			if (isUseable) return true;
 		}
-		return player.getDistanceSq(xCoord + xDiff, yCoord + yDiff, zCoord + zDiff) <= distance;
+		return player.getDistanceSq(xCoord + xDiff,
+									yCoord + yDiff,
+									zCoord + zDiff) <= distance;
 	}
-	
-	public static boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity) {
+
+	public static boolean isLadder(World world, int x, int y, int z, EntityLiving entity) {
 		for (ISlimevoidHelper helper : helperClasses) {
-			boolean isLadder = helper.isLadder(world, x, y, z, entity);
-			if (isLadder)
-				return true;
+			boolean isLadder = helper.isLadder(	world,
+												x,
+												y,
+												z,
+												entity);
+			if (isLadder) return true;
 		}
 		return false;
 	}

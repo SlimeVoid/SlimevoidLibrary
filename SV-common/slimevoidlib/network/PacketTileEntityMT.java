@@ -17,9 +17,8 @@ import java.io.IOException;
 
 import slimevoidlib.tileentity.TileEntityMT;
 
-
 public class PacketTileEntityMT extends PacketTileEntity {
-	private int textureValue;
+	private int	textureValue;
 
 	public PacketTileEntityMT() {
 		super();
@@ -34,11 +33,10 @@ public class PacketTileEntityMT extends PacketTileEntity {
 		this(channel);
 		this.setCommand("mt");
 		this.setTextureValue(tileentitymt.getTextureValue());
-		this.setPosition(
-				tileentitymt.xCoord,
-				tileentitymt.yCoord,
-				tileentitymt.zCoord,
-				0);
+		this.setPosition(	tileentitymt.xCoord,
+							tileentitymt.yCoord,
+							tileentitymt.zCoord,
+							0);
 		this.isChunkDataPacket = true;
 	}
 
