@@ -14,7 +14,7 @@ package slimevoidlib.util.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -104,7 +104,7 @@ public class SlimevoidHelper {
 									zCoord + zDiff) <= distance;
 	}
 
-	public static boolean isLadder(World world, int x, int y, int z, EntityLiving entity) {
+	public static boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity) {
 		for (ISlimevoidHelper helper : helperClasses) {
 			boolean isLadder = helper.isLadder(	world,
 												x,
