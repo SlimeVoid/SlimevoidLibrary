@@ -53,12 +53,17 @@ public interface ICommonProxy extends IGuiHandler, INetworkConnection {
 	/**
 	 * Register Sided Tick handlers
 	 */
-	public void registerTickHandler();
+	public void registerTickHandlers();
 
 	/**
 	 * Register render information (Client only)
 	 */
 	public void registerRenderInformation();
+
+    /**
+     * Register sided event handlers
+     */
+    public void registerEventHandlers();
 
 	/**
 	 * Retrieves the sided packet handler
