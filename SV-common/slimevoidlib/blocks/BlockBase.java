@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import slimevoidlib.items.ItemBlockBase;
-import slimevoidlib.sounds.SlimevoidStepSound;
-import slimevoidlib.tileentity.TileEntityBase;
-import slimevoidlib.util.helpers.BlockHelper;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
@@ -26,6 +21,10 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import slimevoidlib.items.ItemBlockBase;
+import slimevoidlib.sounds.SlimevoidStepSound;
+import slimevoidlib.tileentity.TileEntityBase;
+import slimevoidlib.util.helpers.BlockHelper;
 
 public abstract class BlockBase extends BlockContainer {
 

@@ -61,7 +61,11 @@ public class SV_CommonProxy implements ICommonProxy {
 	}
 
 	@Override
-	public void registerTickHandler() {
+	public void registerTickHandlers() {
+	}
+
+	@Override
+	public void registerEventHandlers() {
 	}
 
 	@Override
