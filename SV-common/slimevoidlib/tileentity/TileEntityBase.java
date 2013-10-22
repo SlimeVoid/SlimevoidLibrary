@@ -72,9 +72,7 @@ public abstract class TileEntityBase extends TileEntity {
 		return false;
 	}
 
-	public int getExtendedBlockID() {
-		return 0;
-	}
+	public abstract int getExtendedBlockID();
 
 	public abstract int getBlockID();
 
