@@ -9,41 +9,42 @@ import net.minecraft.world.World;
 
 public abstract class ContainerBase extends Container {
 
-	protected InventoryPlayer playerInventory;
-	protected IInventory customInventory;
-	protected World world;
-	
+	protected InventoryPlayer	playerInventory;
+	protected IInventory		customInventory;
+	protected World				world;
+
 	public ContainerBase(InventoryPlayer playerInventory, IInventory customInventory, World world, int playerColOffset, int playerRowOffset) {
 		super();
 		this.playerInventory = playerInventory;
 		this.customInventory = customInventory;
 		this.world = world;
-		this.bindPlayerInventory(playerColOffset, playerRowOffset);
 		this.bindLocalInventory();
+		this.bindPlayerInventory(	playerColOffset,
+									playerRowOffset);
 	}
-	
+
 	protected abstract void bindLocalInventory();
 
 	protected void bindPlayerInventory(int playerColOffset, int playerRowOffset) {
 		// Player inventory
 		for (int row = 0; row < 3; ++row) {
 			for (int column = 0; column < 9; ++column) {
-				int slotIndex = 9 + column + (row * 9);
-				this.addSlotToContainer(new Slot(this.playerInventory, slotIndex, (8 + column * 18 + playerColOffset), (row * 18 + playerRowOffset)));
+				int slotIndex = column + (row * 9);
+				this.addSlotToContainer(new Slot(new InventorySubUpdate(ContainerBase.this, playerInventory, 9, 27), slotIndex, (8 + column * 18 + playerColOffset), (row * 18 + playerRowOffset)));
 			}
 		}
 
 		// Hotbar inventory
 		for (int row = 0; row < 9; ++row) {
 			int slotIndex = row;
-			this.addSlotToContainer(new Slot(this.playerInventory, slotIndex, (8 + row * 18 + playerColOffset), 58 + playerRowOffset));
+			this.addSlotToContainer(new Slot(new InventorySubUpdate(ContainerBase.this, playerInventory, 0, 9), slotIndex, (8 + row * 18 + playerColOffset), 58 + playerRowOffset));
 		}
 	}
-	
+
 	public InventoryPlayer getPlayerInventory() {
 		return this.playerInventory;
 	}
-	
+
 	public IInventory getInventoryData() {
 		return this.customInventory;
 	}
@@ -51,6 +52,26 @@ public abstract class ContainerBase extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return this.customInventory.isUseableByPlayer(entityplayer);
+	}
+
+	/**
+	 * Fake Container Class
+	 * 
+	 */
+
+	protected static class ContainerNull extends Container {
+
+		@Override
+		public boolean canInteractWith(EntityPlayer entityplayer) {
+			return false;
+		}
+
+		@Override
+		public void onCraftMatrixChanged(IInventory inventory) {
+		}
+
+		public ContainerNull() {
+		}
 	}
 
 }
