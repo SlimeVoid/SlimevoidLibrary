@@ -44,6 +44,13 @@ public class ItemBlockBase extends ItemBlock {
 			return itemName;
 		}
 	}
+	
+	@Override
+	public void getSubItems(int id, CreativeTabs tab, List list) {
+		for (int i = 0; i < validItemBlocks.size(); i++) {
+			list.add(new ItemStack(this.itemID, 1, i));
+		}
+	}
 	/*
 	 * @Override public boolean placeBlockAt(ItemStack itemstack, EntityPlayer
 	 * entityplayer, World world, int x, int y, int z, int side, float hitX,
