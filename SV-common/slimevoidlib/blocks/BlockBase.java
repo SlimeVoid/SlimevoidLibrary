@@ -25,6 +25,7 @@ import slimevoidlib.items.ItemBlockBase;
 import slimevoidlib.sounds.SlimevoidStepSound;
 import slimevoidlib.tileentity.TileEntityBase;
 import slimevoidlib.util.helpers.BlockHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public abstract class BlockBase extends BlockContainer {
 
@@ -558,8 +559,12 @@ public abstract class BlockBase extends BlockContainer {
 		}
 	}
 
-	public void addTileEntityMapping(int metadata, Class tileEntityClass) {
+	public void addMapping(int metadata, Class<? extends TileEntity> tileEntityClass, String unlocalizedName) {
 		this.tileEntityMap[metadata] = tileEntityClass;
+		GameRegistry.registerTileEntity(tileEntityClass,
+										unlocalizedName);
+		this.setItemName(	metadata,
+							unlocalizedName);
 	}
 
 	public void setItemName(int metadata, String name) {
