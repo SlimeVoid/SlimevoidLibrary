@@ -2,14 +2,11 @@ package slimevoidlib.items;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import slimevoidlib.blocks.BlockBase;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class ItemBlockBase extends ItemBlock {
 
@@ -44,15 +41,11 @@ public class ItemBlockBase extends ItemBlock {
 			return itemName;
 		}
 	}
-	/*
-	 * @Override public boolean placeBlockAt(ItemStack itemstack, EntityPlayer
-	 * entityplayer, World world, int x, int y, int z, int side, float hitX,
-	 * float hitY, float hitZ, int metadata) { if (!world.setBlock(x, y, z,
-	 * this.itemID, metadata, 0x3)) { return false; } if (world.getBlockId(x, y,
-	 * z) == this.itemID) { BlockBase blockBase = (BlockBase)
-	 * Block.blocksList[this.itemID]; int damage =
-	 * this.getMetadata(itemstack.getItemDamage()); if (blockBase != null) {
-	 * blockBase.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, damage);
-	 * } } return true; }
-	 */
+
+	@Override
+	public void getSubItems(int id, CreativeTabs tab, List list) {
+		for (int i = 0; i < validItemBlocks.size(); i++) {
+			list.add(new ItemStack(this.itemID, 1, i));
+		}
+	}
 }
