@@ -11,9 +11,10 @@
  */
 package slimevoidlib.util;
 
-import slimevoidlib.core.SlimevoidCore;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import slimevoidlib.core.SlimevoidCore;
+import slimevoidlib.core.lib.CoreLib;
 
 /**
  * Used to remove blocks instances from the game - in order to be replaced
@@ -42,13 +43,13 @@ public class BlockRemover {
 			// Set the block in the blocksList to null
 			Block.blocksList[oldBlock.blockID] = null;
 			// Output a success message
-			SlimevoidCore.console(	"EurysCore",
+			SlimevoidCore.console(	CoreLib.MOD_ID,
 									"Block ID [" + oldBlock.blockID
 											+ "] successfully removed.");
 			return true;
 		} else {
 			// Output a failure message
-			SlimevoidCore.console(	"EurysCore",
+			SlimevoidCore.console(	CoreLib.MOD_ID,
 									"Block ID not removed! Either the ID did not exist or was incorrect!");
 			return false;
 		}
