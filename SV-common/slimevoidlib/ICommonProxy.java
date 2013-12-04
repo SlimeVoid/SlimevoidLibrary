@@ -60,10 +60,10 @@ public interface ICommonProxy extends IGuiHandler, INetworkConnection {
 	 */
 	public void registerRenderInformation();
 
-    /**
-     * Register sided event handlers
-     */
-    public void registerEventHandlers();
+	/**
+	 * Register sided event handlers
+	 */
+	public void registerEventHandlers();
 
 	/**
 	 * Retrieves the sided packet handler

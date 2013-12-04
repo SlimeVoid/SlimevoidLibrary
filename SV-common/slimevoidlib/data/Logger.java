@@ -145,7 +145,9 @@ public abstract class Logger {
 		if (writer == null) writer = new LoggerWriter(this.getLoggerName());
 
 		writer.writeStackTrace(e);
-        FMLCommonHandler.instance().raiseException(e, e.getMessage(), false);
+		FMLCommonHandler.instance().raiseException(	e,
+													e.getMessage(),
+													false);
 	}
 
 	/**

@@ -115,4 +115,27 @@ public class SlimevoidHelper {
 		}
 		return false;
 	}
+
+	/**
+	 * Used to trace where a method is being called from
+	 * 
+	 * @param _class
+	 *            the Class to compare against
+	 * @param traceValue
+	 *            the value of the trace level, (DO NOT preempt the stack trace
+	 *            + 1 simply use the trace from where you call this method)
+	 * 
+	 * @return if the trace matches
+	 */
+	public static boolean isReflectedClass(Class _class, int traceValue) {
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		boolean flag = stackTraceElements[traceValue + 1].getClassName().equals(_class.getName());
+		return flag;
+	}
+
+	public static boolean isReflectedMethod(String methodName, int traceValue) {
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		boolean flag = stackTraceElements[traceValue + 1].getMethodName().equals(methodName);
+		return flag;
+	}
 }
