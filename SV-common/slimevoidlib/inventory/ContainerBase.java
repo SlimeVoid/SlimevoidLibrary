@@ -19,13 +19,19 @@ public abstract class ContainerBase extends Container {
 		this.customInventory = customInventory;
 		this.world = world;
 		this.bindLocalInventory();
-		this.bindPlayerInventory(	playerColOffset,
-									playerRowOffset);
+		if (this.shouldBindPlayerInventory()) {
+			this.bindPlayerInventory(	playerColOffset,
+										playerRowOffset);
+		}
+	}
+
+	protected boolean shouldBindPlayerInventory() {
+		return true;
 	}
 
 	protected abstract void bindLocalInventory();
 
-	protected void bindPlayerInventory(int playerColOffset, int playerRowOffset) {
+	protected void bindUpperInventory(int playerColOffset, int playerRowOffset) {
 		// Player inventory
 		for (int row = 0; row < 3; ++row) {
 			for (int column = 0; column < 9; ++column) {
@@ -33,12 +39,21 @@ public abstract class ContainerBase extends Container {
 				this.addSlotToContainer(new Slot(new InventorySubUpdate(ContainerBase.this, playerInventory, 9, 27), slotIndex, (8 + column * 18 + playerColOffset), (row * 18 + playerRowOffset)));
 			}
 		}
+	}
 
+	protected void bindHotBarInventory(int playerColOffset, int playerRowOffset) {
 		// Hotbar inventory
 		for (int row = 0; row < 9; ++row) {
 			int slotIndex = row;
 			this.addSlotToContainer(new Slot(new InventorySubUpdate(ContainerBase.this, playerInventory, 0, 9), slotIndex, (8 + row * 18 + playerColOffset), 58 + playerRowOffset));
 		}
+	}
+
+	protected void bindPlayerInventory(int playerColOffset, int playerRowOffset) {
+		this.bindUpperInventory(playerColOffset,
+								playerRowOffset);
+		this.bindHotBarInventory(	playerColOffset,
+									playerRowOffset);
 	}
 
 	public InventoryPlayer getPlayerInventory() {
