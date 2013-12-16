@@ -130,6 +130,24 @@ public abstract class BlockBase extends BlockContainer {
 		}
 	}
 
+	public void setBlockBoundsForItemRender(int metadata) {
+		TileEntityBase tileentitybase = (TileEntityBase) this.createTileEntity(	null,
+																				metadata);
+		if (tileentitybase != null) {
+			tileentitybase.setBlockBoundsForItemRender(this);
+		}
+	}
+
+	@Override
+	public void setBlockBoundsForItemRender() {
+		this.setBlockBounds(0.0F,
+							0.0F,
+							0.0F,
+							1.0F,
+							1.0F,
+							1.0F);
+	}
+
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
 		int metadata = world.getBlockMetadata(	x,
@@ -181,10 +199,12 @@ public abstract class BlockBase extends BlockContainer {
 	}
 
 	public final void superSetBlockBoundsBasedOnState(World worldObj, int x, int y, int z) {
-		super.setBlockBoundsBasedOnState(	worldObj,
-											x,
-											y,
-											z);
+		this.setBlockBounds(0.0F,
+							0.0F,
+							0.0F,
+							1.0F,
+							1.0F,
+							1.0F);
 	}
 
 	public final MovingObjectPosition superCollisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec) {

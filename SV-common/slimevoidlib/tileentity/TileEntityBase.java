@@ -258,6 +258,10 @@ public abstract class TileEntityBase extends TileEntity {
 													this.zCoord);
 	}
 
+	public void setBlockBoundsForItemRender(BlockBase blockBase) {
+		blockBase.setBlockBoundsForItemRender();
+	}
+
 	public MovingObjectPosition collisionRayTrace(BlockBase blockbase, Vec3 startVec, Vec3 endVec) {
 		return blockbase.superCollisionRayTrace(this.worldObj,
 												this.xCoord,
