@@ -30,9 +30,13 @@ public class ItemHelper {
 	public static String itemstackArrayToIntegers(Object[] input) {
 		String concat = "";
 		for (int i = 0; i < input.length; i++) {
-			concat += i > 0 ? " : " : "";
+			String itemstack = null;
 			if (input[i] instanceof ItemStack) {
-				concat += itemstackToInteger((ItemStack) input[i]);
+				itemstack = itemstackToInteger((ItemStack) input[i]);
+			}
+			if (itemstack != null) {
+				concat += itemstack;
+				concat += i < input.length - 1 ? " : " : "";
 			}
 		}
 		return concat;

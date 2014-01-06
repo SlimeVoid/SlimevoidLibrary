@@ -149,7 +149,6 @@ public class XMLRecipeLoader extends XMLLoader {
 		// Output stack size. Defaults to one.
 		int recipeStackSize = 1;
 
-		boolean outIdIsMeta = false;
 		// Output ID. Must be set or it will skip the recipe.
 		int outId = 0;
 		// Output meta data. Defaults to 0.
@@ -174,48 +173,13 @@ public class XMLRecipeLoader extends XMLLoader {
 			}
 			// Metadata attribute was found.
 			if (recAttrs.item(j).getNodeName().equals("meta")) {
-				try {
-					// Attempt to parse attribute integer.
-					outMeta = Integer.parseInt(recAttrs.item(j).getNodeValue());
-				} catch (NumberFormatException e) {
-				} // Ignore it completely if failed.
-			}
-			// Block ID attribute was found. (This means that we have a meta
-			// based recipe)
-			if (recAttrs.item(j).getNodeName().equals("blockId")) {
-				outIdIsMeta = true;
-				String outIdStr = recAttrs.item(j).getNodeValue();
-				try {
-					// Try to parse attribute integer.
-					outId = Integer.parseInt(outIdStr);
-				} catch (NumberFormatException e) {
-					// Integer parsing failed, try checking if it is a variable
-					// strings.
-					if (xmlVariables.containsKey(outIdStr)) {
-						// If it was a variable string, use the variable mapping
-						// instead.
-						outId = xmlVariables.get(outIdStr);
-					}
-				}
+				String outMetaStr = recAttrs.item(j).getNodeValue();
+				outMeta = xmlValueToInteger(outMetaStr);
 			}
 			// Out ID attribute was found.
 			if (recAttrs.item(j).getNodeName().equals("outId")) {
 				String outIdStr = recAttrs.item(j).getNodeValue();
-				int id = 0;
-				try {
-					// Try to parse attribute integer.
-					id = Integer.parseInt(outIdStr);
-				} catch (NumberFormatException e) {
-					// Integer parsing failed, try checking if it is a variable
-					// strings.
-					if (xmlVariables.containsKey(outIdStr)) {
-						// If it was a variable string, use the variable mapping
-						// instead.
-						id = xmlVariables.get(outIdStr);
-					}
-				}
-				if (outIdIsMeta) outMeta = id;
-				else outId = id;
+				outId = xmlValueToInteger(outIdStr);
 			}
 		}
 
@@ -271,27 +235,12 @@ public class XMLRecipeLoader extends XMLLoader {
 					// ID attribute was found.
 					if (attrs.item(j).getNodeName().equals("id")) {
 						String idStr = attrs.item(j).getNodeValue();
-						try {
-							// Attempt to parse attribute integer.
-							id = Integer.parseInt(idStr);
-						} catch (NumberFormatException e) {
-							// Integer parsing failed, try checking if it is a
-							// variable strings.
-							if (xmlVariables.containsKey(idStr)) {
-								// If it was a variable string, use the variable
-								// mapping instead.
-								id = xmlVariables.get(idStr);
-							}
-						}
+						id = xmlValueToInteger(idStr);
 					}
 					// Metadata attribute was found.
 					if (attrs.item(j).getNodeName().equals("meta")) {
 						String metaStr = attrs.item(j).getNodeValue();
-						try {
-							// Attempt to parse attribute integer.
-							meta = Integer.parseInt(metaStr);
-						} catch (NumberFormatException e) {
-						} // Ignore it completely if failed.
+						meta = xmlValueToInteger(metaStr);
 					}
 				}
 
@@ -335,6 +284,23 @@ public class XMLRecipeLoader extends XMLLoader {
 						recipe.toArray());
 	}
 
+	private static int xmlValueToInteger(String xmlString) {
+		int value = 0;
+		try {
+			// Try to parse attribute integer
+			value = Integer.parseInt(xmlString);
+		} catch (NumberFormatException e) {
+			// Integer parsin failed, try checking if it is a
+			// variable string
+			if (xmlVariables.containsKey(xmlString)) {
+				// If it was a variable string, use the variable
+				// mapping instead
+				value = xmlVariables.get(xmlString);
+			}
+		}
+		return value;
+	}
+
 	/**
 	 * Register a recipe.<br>
 	 * Uses Minecraft API (Forge/Modloader) specific method of registration.
@@ -348,7 +314,7 @@ public class XMLRecipeLoader extends XMLLoader {
 		GameRegistry.addRecipe(	output,
 								input);
 		sendMessage("Adding recipe for: " + output.itemID);
-		sendMessage("Recipe uses: "
+		sendMessage("Recipe requires: "
 					+ ItemHelper.itemstackArrayToIntegers(input));
 	}
 }
