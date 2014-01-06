@@ -26,4 +26,36 @@ public class ItemHelper {
 	public static String correctName(String name) {
 		return Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	}
+
+	public static String itemstackArrayToIntegers(Object[] input) {
+		String concat = "";
+		for (int i = 0; i < input.length; i++) {
+			concat += i > 0 ? " : " : "";
+			if (input[i] instanceof ItemStack) {
+				concat += itemstackToInteger((ItemStack) input[i]);
+			}
+		}
+		return concat;
+	}
+
+	public static String itemstackToInteger(ItemStack itemstack) {
+		return itemstack != null ? itemstack.itemID + " | "
+									+ itemstack.stackSize : "null";
+	}
+
+	public static String itemstackArrayToStrings(Object[] input) {
+		String concat = "";
+		for (int i = 0; i < input.length; i++) {
+			concat += i > 0 ? " + " : "";
+			if (input[i] instanceof ItemStack) {
+				concat += itemstackToString((ItemStack) input[i]);
+			}
+		}
+		return concat;
+	}
+
+	public static String itemstackToString(ItemStack itemstack) {
+		return itemstack != null ? itemstack.getDisplayName() + " | "
+									+ itemstack.stackSize : "null";
+	}
 }

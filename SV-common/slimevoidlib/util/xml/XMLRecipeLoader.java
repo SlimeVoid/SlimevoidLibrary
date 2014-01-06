@@ -22,6 +22,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import net.minecraft.item.ItemStack;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -29,8 +31,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import slimevoidlib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.ItemStack;
 
 public class XMLRecipeLoader extends XMLLoader {
 	/**
@@ -146,6 +148,8 @@ public class XMLRecipeLoader extends XMLLoader {
 
 		// Output stack size. Defaults to one.
 		int recipeStackSize = 1;
+
+		boolean outIdIsMeta = false;
 		// Output ID. Must be set or it will skip the recipe.
 		int outId = 0;
 		// Output meta data. Defaults to 0.
@@ -176,8 +180,10 @@ public class XMLRecipeLoader extends XMLLoader {
 				} catch (NumberFormatException e) {
 				} // Ignore it completely if failed.
 			}
-			// Out ID attribute was found.
-			if (recAttrs.item(j).getNodeName().equals("outId")) {
+			// Block ID attribute was found. (This means that we have a meta
+			// based recipe)
+			if (recAttrs.item(j).getNodeName().equals("blockId")) {
+				outIdIsMeta = true;
 				String outIdStr = recAttrs.item(j).getNodeValue();
 				try {
 					// Try to parse attribute integer.
@@ -191,6 +197,25 @@ public class XMLRecipeLoader extends XMLLoader {
 						outId = xmlVariables.get(outIdStr);
 					}
 				}
+			}
+			// Out ID attribute was found.
+			if (recAttrs.item(j).getNodeName().equals("outId")) {
+				String outIdStr = recAttrs.item(j).getNodeValue();
+				int id = 0;
+				try {
+					// Try to parse attribute integer.
+					id = Integer.parseInt(outIdStr);
+				} catch (NumberFormatException e) {
+					// Integer parsing failed, try checking if it is a variable
+					// strings.
+					if (xmlVariables.containsKey(outIdStr)) {
+						// If it was a variable string, use the variable mapping
+						// instead.
+						id = xmlVariables.get(outIdStr);
+					}
+				}
+				if (outIdIsMeta) outMeta = id;
+				else outId = id;
 			}
 		}
 
@@ -322,6 +347,8 @@ public class XMLRecipeLoader extends XMLLoader {
 	private static void registerRecipe(ItemStack output, Object[] input) {
 		GameRegistry.addRecipe(	output,
 								input);
-		sendMessage("Adding recipe: " + output.itemID);
+		sendMessage("Adding recipe for: " + output.itemID);
+		sendMessage("Recipe uses: "
+					+ ItemHelper.itemstackArrayToIntegers(input));
 	}
 }

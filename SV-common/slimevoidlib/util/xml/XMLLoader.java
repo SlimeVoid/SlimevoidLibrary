@@ -24,6 +24,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import slimevoidlib.core.SlimevoidCore;
+import slimevoidlib.core.lib.CoreLib;
+
 public abstract class XMLLoader {
 	/**
 	 * Variable mapping.
@@ -129,7 +132,8 @@ public abstract class XMLLoader {
 	 *            The message.
 	 */
 	protected static void sendMessage(String message) {
-		System.out.println(message);
+		SlimevoidCore.console(	CoreLib.MOD_ID,
+								message);
 	}
 
 	/**
@@ -139,6 +143,7 @@ public abstract class XMLLoader {
 	 *            The message.
 	 */
 	protected static void endWithError(String error) {
-		System.err.println(error);
+		SlimevoidCore.console(	CoreLib.MOD_ID,
+								error);
 	}
 }
