@@ -17,6 +17,9 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import slimevoidlib.core.SlimevoidCore;
+import slimevoidlib.core.lib.CoreLib;
+
 public class JSParser {
 
 	public static Object parse(String script, String func, Map<String, Object> params) {
@@ -32,7 +35,8 @@ public class JSParser {
 			se.eval(script);
 			return se.eval(func);
 		} catch (ScriptException e) {
-			e.printStackTrace();
+			SlimevoidCore.console(	CoreLib.MOD_ID,
+									e.getLocalizedMessage());
 		}
 		return null;
 	}
