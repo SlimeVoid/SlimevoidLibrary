@@ -14,6 +14,7 @@ package slimevoidlib.util.xml;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,57 +44,7 @@ public class XMLRecipeLoader extends XMLLoader {
 	/**
 	 * Default XML files. Are copied over when not already exists.
 	 */
-	private static Map<String, File>		defaults		= new HashMap<String, File>();
-	private static Map<String, InputStream>	defaultStreams	= new HashMap<String, InputStream>();
-
-	public static void registerDefault(Class loader, String location, String fileName) {
-		InputStream instr = loader.getResourceAsStream(location + "/"
-														+ fileName);
-		defaultStreams.put(	fileName,
-							instr);
-	}
-
-	/**
-	 * Loads XML Recipe files from a directory.
-	 * 
-	 * @param dir
-	 *            Source directory.
-	 */
-	public static void loadFolder(File dir) {
-		// Create the directory if it does not already exist.
-		if (!dir.isDirectory()) dir.mkdir();
-
-		// Iterate through the default files.
-		for (String filename : defaultStreams.keySet()) {
-			// If it does not exist in the source directory; copy defaults over.
-			if (!FileReader.checkIfExists(	filename,
-											dir)) {
-				File newFile = new File(dir.getPath() + File.separator
-										+ filename);
-				if (FileUtils.copyStream(	defaultStreams.get(filename),
-											newFile)) {
-					SlimevoidCore.console(	CoreLib.MOD_ID,
-											"Default was file loaded ["
-													+ newFile.getName() + "]");
-				} else {
-					SlimevoidCore.console(	CoreLib.MOD_ID,
-											"Failed to load default file ["
-													+ newFile.getName() + "]");
-				}
-			} else {
-				SlimevoidCore.console(	CoreLib.MOD_ID,
-										"File ["
-												+ filename
-												+ "] already exists! Skipping...");
-			}
-		}
-
-		// Iterate through XML files in the source directory.
-		for (File xml : dir.listFiles(filter)) {
-			// Load the XML file.
-			loadXML(xml);
-		}
-	}
+	private static Map<String, Map<String, InputStream>>	defaultLocations	= new HashMap<String, Map<String, InputStream>>();
 
 	/**
 	 * Loads default XML Recipe files from a directory.
@@ -101,22 +52,42 @@ public class XMLRecipeLoader extends XMLLoader {
 	 * @param dir
 	 *            Default XML directory.
 	 */
-	public static void loadDefaults(File dir) {
-
-		// Ignore if the dir is not a directory.
-		if (dir == null || !dir.exists() || !dir.isDirectory()) {
-			SlimevoidCore.console(	CoreLib.MOD_ID,
-									"No Such Directory [" + dir + "]");
-			return;
-		}
-
-		// Iterates through all XML files in the directory and adds to default.
-		for (File xml : dir.listFiles(filter)) {
-			SlimevoidCore.console(	CoreLib.MOD_ID,
-									"Default content found [" + dir.getName()
-											+ ":" + xml.getName() + "]");
-			defaults.put(	xml.getName(),
-							xml);
+	public static void registerDefaultsFromLocation(Class loader, String location, String[] fileNames) {
+		if (!defaultLocations.containsKey(location)) {
+			try {
+				String[] locations = FileUtils.getResourceListing(	loader,
+																	location);
+				String[] fileList;
+				if (locations.length > 0) {
+					fileList = locations;
+				} else {
+					SlimevoidCore.console(	CoreLib.MOD_ID,
+											"Caution: Failed to get resource list from ["
+													+ loader.getSimpleName()
+													+ "][" + location + "]");
+					fileList = fileNames;
+				}
+				Map<String, InputStream> defaultStreams = new HashMap<String, InputStream>();
+				for (String file : fileList) {
+					InputStream instr = loader.getResourceAsStream(location
+																	+ "/"
+																	+ file);
+					defaultStreams.put(	file,
+										instr);
+				}
+				defaultLocations.put(	location,
+										defaultStreams);
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"Resource list loaded from ["
+												+ loader.getSimpleName() + "]["
+												+ location + "]");
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -126,24 +97,50 @@ public class XMLRecipeLoader extends XMLLoader {
 	 * @param dir
 	 *            Source directory.
 	 */
-	public static void loadOldFolder(File dir) {
+	public static void loadFolder(String locationKey, File dir) {
 		// Create the directory if it does not already exist.
 		if (!dir.isDirectory()) dir.mkdir();
+		if (defaultLocations.containsKey(locationKey)) {
+			Map<String, InputStream> defaultStreams = defaultLocations.get(locationKey);
 
-		// Iterate through the default files.
-		for (String filename : defaults.keySet()) {
-			// If it does not exist in the source directory; copy defaults over.
-			if (!FileReader.checkIfExists(	filename,
-											dir)) {
-				FileUtils.copyFilesRecusively(	defaults.get(filename),
-												dir);
+			// Iterate through the default files.
+			for (String filename : defaultStreams.keySet()) {
+				// If it does not exist in the source directory; copy defaults
+				// over.
+				if (!FileReader.checkIfExists(	filename,
+												dir)) {
+					File newFile = new File(dir.getPath() + File.separator
+											+ filename);
+					if (FileUtils.copyStream(	defaultStreams.get(filename),
+												newFile)) {
+						SlimevoidCore.console(	CoreLib.MOD_ID,
+												"Default was file loaded ["
+														+ newFile.getName()
+														+ "]");
+					} else {
+						SlimevoidCore.console(	CoreLib.MOD_ID,
+												"Failed to load default file ["
+														+ newFile.getName()
+														+ "]");
+					}
+				} else {
+					SlimevoidCore.console(	CoreLib.MOD_ID,
+											"File ["
+													+ filename
+													+ "] already exists! Skipping...");
+				}
 			}
-		}
 
-		// Iterate through XML files in the source directory.
-		for (File xml : dir.listFiles(filter)) {
-			// Load the XML file.
-			loadXML(xml);
+			// Iterate through XML files in the source directory.
+			for (File xml : dir.listFiles(filter)) {
+				// Load the XML file.
+				loadXML(xml);
+			}
+			defaultLocations.remove(locationKey);
+		} else {
+			SlimevoidCore.console(	CoreLib.MOD_ID,
+									"Caution: Could not load default settings from ["
+											+ locationKey + "]");
 		}
 	}
 
