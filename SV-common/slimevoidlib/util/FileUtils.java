@@ -17,6 +17,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import slimevoidlib.core.SlimevoidCore;
+import slimevoidlib.core.lib.CoreLib;
 
 public class FileUtils {
 	/**
@@ -51,35 +56,49 @@ public class FileUtils {
 			dirURL = clazz.getResource(me);
 		}
 
-		if (dirURL.getProtocol().equals("jar")) {
-			/* A JAR path */
-			String jarPath = dirURL.getPath().substring(5,
-														dirURL.getPath().indexOf("!")); // strip
-																						// out
-																						// only
-																						// the
-																						// JAR
-																						// file
-			JarFile jar = new JarFile(URLDecoder.decode(jarPath,
-														"UTF-8"));
-			Enumeration<JarEntry> entries = jar.entries(); // gives ALL entries
-															// in jar
+		if (dirURL.getProtocol().equals("jar")
+			|| dirURL.getProtocol().equals("zip")) {
+			/* A ZIP/JAR path */
+			String filePath = dirURL.getPath().substring(	5,
+															dirURL.getPath().indexOf("!")); // strip
+																							// out
+																							// only
+																							// the
+																							// file
+			Enumeration<? extends ZipEntry> entries = null;
+			if (dirURL.getProtocol().equals("zip")) {
+				ZipFile zip = new ZipFile(URLDecoder.decode(filePath,
+															"UTF-8"));
+				entries = zip.entries();
+			} else if (dirURL.getProtocol().equals("jar")) {
+				JarFile jar = new JarFile(URLDecoder.decode(filePath,
+															"UTF-8"));
+				entries = jar.entries();
+			}
+			// in jar
 			Set<String> result = new HashSet<String>(); // avoid duplicates in
 														// case it is a
 														// subdirectory
-			while (entries.hasMoreElements()) {
-				String name = entries.nextElement().getName();
-				if (name.startsWith(path)) { // filter according to the path
-					String entry = name.substring(path.length());
-					int checkSubdir = entry.indexOf("/");
-					if (checkSubdir >= 0) {
-						// if it is a subdirectory, we just return the directory
-						// name
-						entry = entry.substring(0,
-												checkSubdir);
+			if (entries != null) {
+				while (entries.hasMoreElements()) {
+					String name = entries.nextElement().getName();
+					if (name.startsWith(path)) { // filter according to the path
+						String entry = name.substring(path.length());
+						int checkSubdir = entry.indexOf("/");
+						if (checkSubdir >= 0) {
+							// if it is a subdirectory, we just return the
+							// directory
+							// name
+							entry = entry.substring(0,
+													checkSubdir);
+						}
+						result.add(entry);
 					}
-					result.add(entry);
 				}
+			} else {
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"Caution: Resource folder [" + path
+												+ "] could not be located!");
 			}
 			return result.toArray(new String[result.size()]);
 		}
