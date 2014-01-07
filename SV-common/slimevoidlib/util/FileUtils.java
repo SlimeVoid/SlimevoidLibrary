@@ -67,13 +67,38 @@ public class FileUtils {
 																							// file
 			Enumeration<? extends ZipEntry> entries = null;
 			if (dirURL.getProtocol().equals("zip")) {
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"Zip protocol loaded!");
 				ZipFile zip = new ZipFile(URLDecoder.decode(filePath,
 															"UTF-8"));
 				entries = zip.entries();
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"ZipFile initialized with the following [Path: "
+												+ filePath + ", Name: "
+												+ zip.getName()
+												+ ", Number of entries: "
+												+ entries.hashCode());
 			} else if (dirURL.getProtocol().equals("jar")) {
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"Jar protocol loaded!");
 				JarFile jar = new JarFile(URLDecoder.decode(filePath,
 															"UTF-8"));
 				entries = jar.entries();
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"JarFile initialized with the following [Path: "
+												+ filePath + ", Name: "
+												+ jar.getName()
+												+ ", Number of entries: "
+												+ entries.hashCode());
+			} else {
+				SlimevoidCore.console(	CoreLib.MOD_ID,
+										"Caution: Failed to read URL ["
+												+ dirURL.getPath()
+												+ "], unknown protocol ["
+												+ dirURL.getProtocol()
+												+ " | Pathed to [" + filePath
+												+ "]");
+
 			}
 			// in jar
 			Set<String> result = new HashSet<String>(); // avoid duplicates in
