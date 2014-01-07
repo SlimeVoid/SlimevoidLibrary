@@ -30,7 +30,7 @@ public class FileReader {
 		return getStringFromInputStream(is);
 	}
 
-	private static String getStringFromInputStream(InputStream is) {
+	public static String getStringFromInputStream(InputStream is) {
 
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();

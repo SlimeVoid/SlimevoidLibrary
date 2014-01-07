@@ -106,7 +106,7 @@ public class FileUtils {
 		return false;
 	}
 
-	private static boolean copyStream(final InputStream is, final File f) {
+	public static boolean copyStream(final InputStream is, final File f) {
 		try {
 			return FileUtils.copyStream(is,
 										new FileOutputStream(f));
@@ -116,7 +116,7 @@ public class FileUtils {
 		return false;
 	}
 
-	private static boolean copyStream(final InputStream is, final OutputStream os) {
+	public static boolean copyStream(final InputStream is, final OutputStream os) {
 		try {
 			final byte[] buf = new byte[1024];
 
