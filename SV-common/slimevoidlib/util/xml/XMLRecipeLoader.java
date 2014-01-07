@@ -31,6 +31,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import slimevoidlib.util.FileReader;
+import slimevoidlib.util.FileUtils;
 import slimevoidlib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -70,14 +72,10 @@ public class XMLRecipeLoader extends XMLLoader {
 		// Iterate through the default files.
 		for (String filename : defaults.keySet()) {
 			// If it does not exist in the source directory; copy defaults over.
-			if (!checkIfExists(	filename,
-								dir)) {
-				try {
-					copyDefaultTo(	defaults.get(filename),
-									dir);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			if (!FileReader.checkIfExists(	filename,
+											dir)) {
+				FileUtils.copyFilesRecusively(	defaults.get(filename),
+												dir);
 			}
 		}
 
@@ -118,18 +116,19 @@ public class XMLRecipeLoader extends XMLLoader {
 		} catch (ParserConfigurationException e) {
 			// This happens when the parser settings are fooked up.
 			// Serious business! Very rare.
-			endWithError("Could not parse XML: " + file.getName());
+			FileReader.endWithError("Could not parse XML: " + file.getName());
 			e.printStackTrace();
 		} catch (SAXException e) {
 			// This happens when the XML markup is fooked up.
 			// The syntax must be correct XML. One root node, closed nodes, etc
 			// etc.
-			endWithError("Could not parse XML markup: " + file.getName());
+			FileReader.endWithError("Could not parse XML markup: "
+									+ file.getName());
 			e.printStackTrace();
 		} catch (IOException e) {
 			// File I/O error.
 			// Did not exist? No read/write permissions?
-			endWithError("Could not read XML: " + file.getName());
+			FileReader.endWithError("Could not read XML: " + file.getName());
 			e.printStackTrace();
 		}
 	}
@@ -185,7 +184,8 @@ public class XMLRecipeLoader extends XMLLoader {
 
 		// Do not continue without ID.
 		if (outId == 0) {
-			endWithError("recipe.outID not set! (" + xmlFile.getName() + ")");
+			FileReader.endWithError("recipe.outID not set! ("
+									+ xmlFile.getName() + ")");
 			return;
 		}
 
@@ -246,8 +246,8 @@ public class XMLRecipeLoader extends XMLLoader {
 
 				// Do not continue without ID.
 				if (id == 0) {
-					endWithError("mapping.id not set! (" + xmlFile.getName()
-									+ ")");
+					FileReader.endWithError("mapping.id not set! ("
+											+ xmlFile.getName() + ")");
 					return;
 				}
 
@@ -313,8 +313,8 @@ public class XMLRecipeLoader extends XMLLoader {
 	private static void registerRecipe(ItemStack output, Object[] input) {
 		GameRegistry.addRecipe(	output,
 								input);
-		sendMessage("Adding recipe for: " + output.itemID);
-		sendMessage("Recipe requires: "
-					+ ItemHelper.itemstackArrayToIntegers(input));
+		FileReader.sendMessage("Adding recipe for: " + output.itemID);
+		FileReader.sendMessage("Recipe requires: "
+								+ ItemHelper.itemstackArrayToIntegers(input));
 	}
 }

@@ -11,36 +11,35 @@
  */
 package slimevoidlib.render;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-
 import slimevoidlib.util.FileReader;
 
 public class WavefrontOBJModelLoader {
-	private static DecimalFormat					df		= new DecimalFormat("#.####");
-	private static Map<File, ModelSlimevoidObject>	cache	= new HashMap<File, ModelSlimevoidObject>();
+	private static DecimalFormat						df		= new DecimalFormat("#.####");
+	private static Map<String, ModelSlimevoidObject>	cache	= new HashMap<String, ModelSlimevoidObject>();
 
-	public ModelSlimevoidObject loadObjFile(ModelBase baseModel, int texW, int texH, File file) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
-		if (cache.containsKey(file)) return cache.get(file);
+	public ModelSlimevoidObject loadObjFile(ModelBase baseModel, int texW, int texH, String string) throws NumberFormatException, ArithmeticException, FaceMissingTextureException {
+		if (cache.containsKey(string)) return cache.get(string);
 
 		ModelSlimevoidObject out = new ModelSlimevoidObject((new ModelRenderer(baseModel, 0, 0)).setTextureSize(texW,
 																												texH));
 
-		String objStr = FileReader.readFile(file);
+		String objStr = FileReader.readFile(string);
 
 		parse(	objStr,
 				out);
 
-		cache.put(	file,
+		cache.put(	string,
 					out);
 
 		sendMessage("Loaded model: " + out.vertexCount() + " vertices, "
-					+ out.polyCount() + " polys [" + file.getName() + "]");
+					+ out.polyCount() + " polys [" + string/* .getName() */
+					+ "]");
 
 		return out;
 	}

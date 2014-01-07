@@ -20,6 +20,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -27,9 +30,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import slimevoidlib.util.FileReader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 
 public class XMLLanguageLoader extends XMLLoader {
 	/**
@@ -91,11 +93,11 @@ public class XMLLanguageLoader extends XMLLoader {
 		// Iterate through the default files.
 		for (String filename : defaults.keySet()) {
 			// If it does not exist in the source directory; copy defaults over.
-			if (!checkIfExists(	filename,
-								dir)) {
+			if (!FileReader.checkIfExists(	filename,
+											dir)) {
 				try {
-					copyDefaultTo(	defaults.get(filename),
-									dir);
+					FileReader.copyDefaultTo(	defaults.get(filename),
+												dir);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -139,18 +141,19 @@ public class XMLLanguageLoader extends XMLLoader {
 		} catch (ParserConfigurationException e) {
 			// This happens when the parser settings are fooked up.
 			// Serious business! Very rare.
-			endWithError("Could not parse XML: " + file.getName());
+			FileReader.endWithError("Could not parse XML: " + file.getName());
 			e.printStackTrace();
 		} catch (SAXException e) {
 			// This happens when the XML markup is fooked up.
 			// The syntax must be correct XML. One root node, closed nodes, etc
 			// etc.
-			endWithError("Could not parse XML markup: " + file.getName());
+			FileReader.endWithError("Could not parse XML markup: "
+									+ file.getName());
 			e.printStackTrace();
 		} catch (IOException e) {
 			// File I/O error.
 			// Did not exist? No read/write permissions?
-			endWithError("Could not read XML: " + file.getName());
+			FileReader.endWithError("Could not read XML: " + file.getName());
 			e.printStackTrace();
 		}
 	}
@@ -191,7 +194,8 @@ public class XMLLanguageLoader extends XMLLoader {
 
 		// Do not continue without ID.
 		if (objId == 0) {
-			endWithError("name.objId not set! (" + xmlFile.getName() + ")");
+			FileReader.endWithError("name.objId not set! (" + xmlFile.getName()
+									+ ")");
 			return;
 		}
 
@@ -245,13 +249,14 @@ public class XMLLanguageLoader extends XMLLoader {
 		else if (items.containsKey(objId)) {
 			obj = items.get(objId);
 		} else {
-			endWithError("Could not find object with ID! " + objId);
+			FileReader.endWithError("Could not find object with ID! " + objId);
 			return;
 		}
 
 		LanguageRegistry.instance().addNameForObject(	obj,
 														lang,
 														name);
-		sendMessage("Adding name: " + objId + ":" + lang + ":" + name);
+		FileReader.sendMessage("Adding name: " + objId + ":" + lang + ":"
+								+ name);
 	}
 }

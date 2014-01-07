@@ -12,20 +12,13 @@
 package slimevoidlib.util.xml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import slimevoidlib.core.SlimevoidCore;
-import slimevoidlib.core.lib.CoreLib;
 
 public abstract class XMLLoader {
 	/**
@@ -59,58 +52,6 @@ public abstract class XMLLoader {
 	}
 
 	/**
-	 * Checks if a file exists in a directory.
-	 * 
-	 * @param filename
-	 *            The filename.
-	 * @param dir
-	 *            The directory.
-	 * @return True if file exists in directory, false otherwise.
-	 */
-	protected static boolean checkIfExists(String filename, File dir) {
-		return (new File(dir.getPath() + File.separator + filename)).exists();
-	}
-
-	/**
-	 * Copies a file to a directory.
-	 * 
-	 * @param from
-	 *            Source file.
-	 * @param toDir
-	 *            Destination directory.
-	 * 
-	 * @throws IOException
-	 */
-	protected static void copyDefaultTo(File from, File toDir) throws IOException {
-		sendMessage("Copying from default: " + from.getName() + "->"
-					+ toDir.getAbsolutePath());
-
-		// Initialize destination file.
-		File to = new File(toDir.getPath() + File.separator + from.getName());
-		if (!to.exists()) {
-			to.createNewFile();
-		}
-
-		// File channels.
-		FileChannel source = null;
-		FileChannel destination = null;
-
-		try {
-			source = new FileInputStream(from).getChannel();
-			destination = new FileOutputStream(to).getChannel();
-			// Copy over entire content from source channel to destination
-			// channel.
-			destination.transferFrom(	source,
-										0,
-										source.size());
-		} finally {
-			// Close the channels when finished.
-			if (source != null) source.close();
-			if (destination != null) destination.close();
-		}
-	}
-
-	/**
 	 * Fetches a value with set tag from a element node.
 	 * 
 	 * @param tag
@@ -123,27 +64,5 @@ public abstract class XMLLoader {
 		NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
 		Node node = nodes.item(0);
 		return node.getNodeValue();
-	}
-
-	/**
-	 * Send a info message, logger or console.
-	 * 
-	 * @param error
-	 *            The message.
-	 */
-	protected static void sendMessage(String message) {
-		SlimevoidCore.console(	CoreLib.MOD_ID,
-								message);
-	}
-
-	/**
-	 * Send a error message, logger or console.
-	 * 
-	 * @param error
-	 *            The message.
-	 */
-	protected static void endWithError(String error) {
-		SlimevoidCore.console(	CoreLib.MOD_ID,
-								error);
 	}
 }
