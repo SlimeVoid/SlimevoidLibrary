@@ -77,7 +77,7 @@ public class FileUtils {
 												+ filePath + ", Name: "
 												+ zip.getName()
 												+ ", Number of entries: "
-												+ entries.hashCode());
+												+ entries);
 			} else if (dirURL.getProtocol().equals("jar")) {
 				SlimevoidCore.console(	CoreLib.MOD_ID,
 										"Jar protocol loaded!");
@@ -89,7 +89,7 @@ public class FileUtils {
 												+ filePath + ", Name: "
 												+ jar.getName()
 												+ ", Number of entries: "
-												+ entries.hashCode());
+												+ entries);
 			} else {
 				SlimevoidCore.console(	CoreLib.MOD_ID,
 										"Caution: Failed to read URL ["
