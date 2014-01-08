@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import slimevoidlib.core.SlimevoidCore;
 import slimevoidlib.core.lib.CoreLib;
@@ -66,19 +65,7 @@ public class FileUtils {
 																							// the
 																							// file
 			Enumeration<? extends ZipEntry> entries = null;
-			if (dirURL.getProtocol().equals("zip")) {
-				SlimevoidCore.console(	CoreLib.MOD_ID,
-										"Zip protocol loaded!");
-				ZipFile zip = new ZipFile(URLDecoder.decode(filePath,
-															"UTF-8"));
-				entries = zip.entries();
-				SlimevoidCore.console(	CoreLib.MOD_ID,
-										"ZipFile initialized with the following [Path: "
-												+ filePath + ", Name: "
-												+ zip.getName()
-												+ ", Number of entries: "
-												+ entries);
-			} else if (dirURL.getProtocol().equals("jar")) {
+			if (dirURL.getProtocol().equals("jar")) {
 				SlimevoidCore.console(	CoreLib.MOD_ID,
 										"Jar protocol loaded!");
 				JarFile jar = new JarFile(URLDecoder.decode(filePath,
@@ -97,7 +84,8 @@ public class FileUtils {
 												+ "], unknown protocol ["
 												+ dirURL.getProtocol()
 												+ " | Pathed to [" + filePath
-												+ "]");
+												+ "]",
+										1);
 
 			}
 			// in jar
@@ -120,16 +108,21 @@ public class FileUtils {
 						result.add(entry);
 					}
 				}
+				return result.toArray(new String[result.size()]);
 			} else {
 				SlimevoidCore.console(	CoreLib.MOD_ID,
-										"Caution: Resource folder [" + path
-												+ "] could not be located!");
+										"Caution: Resource folder entries ["
+												+ path
+												+ "] could not be located!",
+										1);
 			}
-			return result.toArray(new String[result.size()]);
 		}
-
-		throw new UnsupportedOperationException("Cannot list files for URL "
-												+ dirURL);
+		UnsupportedOperationException uOE = new UnsupportedOperationException("Cannot list files for URL "
+																				+ dirURL);
+		SlimevoidCore.console(	CoreLib.MOD_ID,
+								uOE.getLocalizedMessage(),
+								1);
+		throw uOE;
 	}
 
 	public static boolean copyFile(final File toCopy, final File destFile) {
