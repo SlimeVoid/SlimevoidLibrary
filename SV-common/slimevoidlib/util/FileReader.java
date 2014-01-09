@@ -26,7 +26,7 @@ import slimevoidlib.core.lib.CoreLib;
 public class FileReader {
 
 	public static String readFile(String file) {
-		InputStream is = FileReader.class.getResourceAsStream(file);
+		InputStream is = FileReader.class.getClassLoader().getResourceAsStream(file);
 		return getStringFromInputStream(is);
 	}
 

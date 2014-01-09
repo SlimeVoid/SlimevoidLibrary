@@ -20,6 +20,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import slimevoidlib.core.SlimevoidCore;
+import slimevoidlib.core.lib.CoreLib;
+
 public abstract class XMLLoader {
 	/**
 	 * Variable mapping.
@@ -45,10 +48,22 @@ public abstract class XMLLoader {
 	 *            Variable name.
 	 * @param val
 	 *            Variable value.
+	 * @return
 	 */
 	public static void addXmlVariable(String var, int val) {
-		xmlVariables.put(	var,
-							val);
+		Integer flag = xmlVariables.put(var,
+										val);
+
+		if (flag != null) {
+			SlimevoidCore.console(	CoreLib.MOD_ID,
+									"XML Variable replaced ID [" + flag
+											+ "] with ID [" + val
+											+ "] and mapped to " + var);
+		} else {
+			SlimevoidCore.console(	CoreLib.MOD_ID,
+									"XML Variable loaded for [" + var
+											+ "] @ID [" + val + "]");
+		}
 	}
 
 	/**

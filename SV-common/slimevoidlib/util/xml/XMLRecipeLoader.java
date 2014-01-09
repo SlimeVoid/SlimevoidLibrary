@@ -52,40 +52,44 @@ public class XMLRecipeLoader extends XMLLoader {
 	 * @param dir
 	 *            Default XML directory.
 	 */
-	public static void registerDefaultsFromLocation(Class loader, String location, String[] fileNames) {
+	public static void registerDefaultsFromLocation(Class clazz, String location) {
+		// Checks that our location list does not contain a reference already
 		if (!defaultLocations.containsKey(location)) {
 			try {
-				String[] locations = FileUtils.getResourceListing(	loader,
-																	location);
-				String[] fileList;
-				if (locations.length > 0) {
-					fileList = locations;
+				// Retrieves the resource listing based on the path and class
+				// given
+				String[] resourceList = FileUtils.getResourceListing(	clazz,
+																		location);
+				// If we retrieved results continue
+				if (resourceList.length > 0) {
+					// Creates a hashmap of each resource in the list
+					Map<String, InputStream> defaultStreams = new HashMap<String, InputStream>();
+					for (String file : resourceList) {
+						// Returns the file as an InputStream
+						InputStream instr = clazz.getClassLoader().getResourceAsStream(location
+																						+ file);
+						// Places that InputStream against its reference name
+						// for use later
+						defaultStreams.put(	file,
+											instr);
+					}
+					// Adds the InputStream HashMap to our resourceLocations Map
+					defaultLocations.put(	location,
+											defaultStreams);
+					SlimevoidCore.console(	CoreLib.MOD_ID,
+											"Resource list loaded from ["
+													+ clazz.getSimpleName()
+													+ "][" + location + "]");
 				} else {
 					SlimevoidCore.console(	CoreLib.MOD_ID,
 											"Caution: Failed to get resource list from ["
-													+ loader.getSimpleName()
+													+ clazz.getSimpleName()
 													+ "][" + location + "]",
 											1);
-					fileList = fileNames;
 				}
-				Map<String, InputStream> defaultStreams = new HashMap<String, InputStream>();
-				for (String file : fileList) {
-					InputStream instr = loader.getResourceAsStream(location
-																	+ file);
-					defaultStreams.put(	file,
-										instr);
-				}
-				defaultLocations.put(	location,
-										defaultStreams);
-				SlimevoidCore.console(	CoreLib.MOD_ID,
-										"Resource list loaded from ["
-												+ loader.getSimpleName() + "]["
-												+ location + "]");
 			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

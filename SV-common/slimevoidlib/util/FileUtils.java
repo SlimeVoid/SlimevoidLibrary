@@ -29,6 +29,7 @@ public class FileUtils {
 	 * JARs.
 	 * 
 	 * @author Greg Briggs
+	 * @editor Eurymachus
 	 * @param clazz
 	 *            Any java class that lives in the same place as the resources
 	 *            you want.
@@ -39,9 +40,17 @@ public class FileUtils {
 	 * @throws IOException
 	 */
 	public static String[] getResourceListing(Class clazz, String path) throws URISyntaxException, IOException {
-		URL dirURL = clazz.getResource(path);
+		SlimevoidCore.console(	CoreLib.MOD_ID,
+								"Attempting resource load from [" + path
+										+ "] using Class Parent ["
+										+ clazz.getSimpleName() + "]");
+		/* attempts to get a valid URL based on the class file and given path */
+		URL dirURL = clazz.getClassLoader().getResource(path);
+
 		if (dirURL != null && dirURL.getProtocol().equals("file")) {
 			/* A file path: easy enough */
+			SlimevoidCore.console(	CoreLib.MOD_ID,
+									"Found resource in file path!");
 			return new File(dirURL.toURI()).list();
 		}
 
@@ -52,20 +61,17 @@ public class FileUtils {
 			 */
 			String me = clazz.getName().replace(".",
 												"/") + ".class";
-			dirURL = clazz.getResource(me);
+			dirURL = clazz.getClassLoader().getResource(me);
 		}
 
-		if (dirURL.getProtocol().equals("jar")
-			|| dirURL.getProtocol().equals("zip")) {
+		if (dirURL != null) {
 			/* A ZIP/JAR path */
-			String filePath = dirURL.getPath().substring(	5,
-															dirURL.getPath().indexOf("!")); // strip
-																							// out
-																							// only
-																							// the
-																							// file
-			Enumeration<? extends ZipEntry> entries = null;
-			if (dirURL.getProtocol().equals("jar")) {
+			if (dirURL.getProtocol().equals("jar")
+				|| dirURL.getProtocol().equals("zip")) {
+				/* strip out only the file */
+				String filePath = dirURL.getPath().substring(	5,
+																dirURL.getPath().indexOf("!"));
+				Enumeration<? extends ZipEntry> entries = null;
 				SlimevoidCore.console(	CoreLib.MOD_ID,
 										"Jar protocol loaded!");
 				JarFile jar = new JarFile(URLDecoder.decode(filePath,
@@ -77,52 +83,55 @@ public class FileUtils {
 												+ jar.getName()
 												+ ", Number of entries: "
 												+ entries);
+				Set<String> result = new HashSet<String>(); // avoid duplicates
+															// in
+				// case it is a
+				// subdirectory
+				if (entries != null) {
+					while (entries.hasMoreElements()) {
+						String name = entries.nextElement().getName();
+						if (name.startsWith(path)) {
+							/* filter according to the path */
+							String entry = name.substring(path.length());
+							int checkSubdir = entry.indexOf("/");
+							if (checkSubdir >= 0) {
+								/*
+								 * if it is a subdirectory, we just return the
+								 * directory name
+								 */
+								entry = entry.substring(0,
+														checkSubdir);
+							}
+							/* Strip out empty names */
+							if (entry != "") {
+								result.add(entry);
+							}
+						}
+					}
+					if (result.size() > 0) {
+						SlimevoidCore.console(	CoreLib.MOD_ID,
+												"Resource folder loaded ["
+														+ path
+														+ "], Number of resource files ["
+														+ result.size() + "]");
+						return result.toArray(new String[result.size()]);
+					}
+				}
 			} else {
 				SlimevoidCore.console(	CoreLib.MOD_ID,
 										"Caution: Failed to read URL ["
 												+ dirURL.getPath()
 												+ "], unknown protocol ["
 												+ dirURL.getProtocol()
-												+ " | Pathed to [" + filePath
-												+ "]",
+												+ " | Pathed to [" + path + "]",
 										1);
 
 			}
-			// in jar
-			Set<String> result = new HashSet<String>(); // avoid duplicates in
-														// case it is a
-														// subdirectory
-			if (entries != null) {
-				while (entries.hasMoreElements()) {
-					String name = entries.nextElement().getName();
-					if (name.startsWith(path)) { // filter according to the path
-						String entry = name.substring(path.length());
-						int checkSubdir = entry.indexOf("/");
-						if (checkSubdir >= 0) {
-							// if it is a subdirectory, we just return the
-							// directory
-							// name
-							entry = entry.substring(0,
-													checkSubdir);
-						}
-						result.add(entry);
-					}
-				}
-				if (result.size() > 0) {
-					SlimevoidCore.console(	CoreLib.MOD_ID,
-											"Resource folder loaded ["
-													+ path
-													+ "], Number of resource files ["
-													+ result.size() + "]");
-					return result.toArray(new String[result.size()]);
-				}
-			} else {
-				SlimevoidCore.console(	CoreLib.MOD_ID,
-										"Caution: Resource folder entries ["
-												+ path
-												+ "] could not be located!",
-										1);
-			}
+		} else {
+			SlimevoidCore.console(	CoreLib.MOD_ID,
+									"Caution: Resource folder entries [" + path
+											+ "] could not be located!",
+									1);
 		}
 		UnsupportedOperationException uOE = new UnsupportedOperationException("Cannot list files for URL "
 																				+ dirURL);
