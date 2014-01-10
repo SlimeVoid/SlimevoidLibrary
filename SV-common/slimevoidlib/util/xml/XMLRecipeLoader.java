@@ -64,13 +64,13 @@ public class XMLRecipeLoader extends XMLLoader {
 					SlimevoidCore.console(	CoreLib.MOD_ID,
 											"Caution: Failed to get resource list from ["
 													+ loader.getSimpleName()
-													+ "][" + location + "]");
+													+ "][" + location + "]",
+											1);
 					fileList = fileNames;
 				}
 				Map<String, InputStream> defaultStreams = new HashMap<String, InputStream>();
 				for (String file : fileList) {
 					InputStream instr = loader.getResourceAsStream(location
-																	+ "/"
 																	+ file);
 					defaultStreams.put(	file,
 										instr);

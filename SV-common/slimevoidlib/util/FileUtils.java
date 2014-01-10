@@ -108,7 +108,14 @@ public class FileUtils {
 						result.add(entry);
 					}
 				}
-				return result.toArray(new String[result.size()]);
+				if (result.size() > 0) {
+					SlimevoidCore.console(	CoreLib.MOD_ID,
+											"Resource folder loaded ["
+													+ path
+													+ "], Number of resource files ["
+													+ result.size() + "]");
+					return result.toArray(new String[result.size()]);
+				}
 			} else {
 				SlimevoidCore.console(	CoreLib.MOD_ID,
 										"Caution: Resource folder entries ["
