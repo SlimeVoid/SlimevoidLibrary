@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -83,5 +84,20 @@ public class NBTHelper {
 			data.readFully(bytes);
 			return CompressedStreamTools.decompress(bytes);
 		}
+	}
+
+	public static int getTagInteger(ItemStack itemstack, String key, int defaultValue) {
+		NBTTagCompound tag = itemstack.getTagCompound();
+		if (tag == null) {
+			tag = new NBTTagCompound();
+		}
+		if (tag.hasKey(key)) {
+			return tag.getInteger(key);
+		} else {
+			tag.setInteger(	key,
+							defaultValue);
+		}
+		itemstack.setTagCompound(tag);
+		return tag.getInteger(key);
 	}
 }
