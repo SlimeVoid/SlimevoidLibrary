@@ -14,6 +14,7 @@ package slimevoidlib.core;
 import slimevoidlib.ICommonProxy;
 import slimevoidlib.core.lib.CoreLib;
 import slimevoidlib.util.helpers.SlimevoidHelper;
+import slimevoidlib.util.json.JSONLoader;
 import slimevoidlib.util.xml.XMLVariables;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -47,5 +48,6 @@ public class SlimevoidLib {
 
 	@EventHandler
 	public static void SlimevoidLibPostInit(FMLPostInitializationEvent event) {
+		JSONLoader.loadJSON();
 	}
 }

@@ -2,6 +2,7 @@ package slimevoidlib.util.xml;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 
 public class XMLVariables {
 
@@ -13,7 +14,7 @@ public class XMLVariables {
 			}
 		}
 		for (Item item : Item.itemsList) {
-			if (item != null) {
+			if (item != null && !(item instanceof ItemBlock)) {
 				XMLLoader.addXmlVariable(	"$" + item.getUnlocalizedName(),
 											item.itemID);
 

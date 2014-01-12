@@ -40,6 +40,16 @@ public abstract class XMLLoader {
 																}
 															};
 
+	private static int getInteger(String value) {
+		int returns;
+		try {
+			returns = Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+		return returns;
+	}
+
 	/**
 	 * Add a XML variable mapping. Variable name can be used in XML files
 	 * instead of IDs.
@@ -51,6 +61,15 @@ public abstract class XMLLoader {
 	 * @return
 	 */
 	public static void addXmlVariable(String var, int val) {
+		if (xmlVariables.containsKey(var)) {
+			for (int i = 1; i < 4096; i++) {
+				String tempVar = var + i;
+				if (!xmlVariables.containsKey(tempVar)) {
+					var += i;
+					break;
+				}
+			}
+		}
 		Integer flag = xmlVariables.put(var,
 										val);
 
