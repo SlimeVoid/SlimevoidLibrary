@@ -31,7 +31,8 @@ public class ContainerHelper {
 
 		if (stackToMerge.isStackable()) {
 			while (stackToMerge.stackSize > 0
-					&& (!reverseOrder && realSlotStart < slotEnd || reverseOrder && realSlotStart >= slotStart)) {
+					&& (!reverseOrder && realSlotStart < slotEnd || reverseOrder
+																	&& realSlotStart >= slotStart)) {
 				slot = (Slot) container.inventorySlots.get(realSlotStart);
 				stackInSlot = slot.getStack();
 
@@ -73,7 +74,8 @@ public class ContainerHelper {
 				realSlotStart = slotStart;
 			}
 
-			while (!reverseOrder && realSlotStart < slotEnd || reverseOrder && realSlotStart >= slotStart) {
+			while (!reverseOrder && realSlotStart < slotEnd || reverseOrder
+					&& realSlotStart >= slotStart) {
 				slot = (Slot) container.inventorySlots.get(realSlotStart);
 				stackInSlot = slot.getStack();
 
