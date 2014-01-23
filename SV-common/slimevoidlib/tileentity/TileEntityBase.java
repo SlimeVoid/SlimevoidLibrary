@@ -169,7 +169,7 @@ public abstract class TileEntityBase extends TileEntity {
 			return;
 		} else {
 			this.tickSchedule = worldTime;
-			this.dirtyBlock();
+			this.markBlockDirty();
 			return;
 		}
 	}
@@ -178,29 +178,25 @@ public abstract class TileEntityBase extends TileEntity {
 		return 0;
 	}
 
-	public void updateBlockChange() {
-		BlockHelper.updateIndirectNeighbors(this.worldObj,
+	public void updateBlock() {
+		this.getWorldObj().markBlockForUpdate(	this.xCoord,
+												this.yCoord,
+												this.zCoord);
+	}
+
+	public void updateBlockAndNeighbours() {
+		BlockHelper.updateIndirectNeighbors(this.getWorldObj(),
 											this.xCoord,
 											this.yCoord,
 											this.zCoord,
 											this.getBlockID());
-		this.worldObj.markBlockForUpdate(	this.xCoord,
-											this.yCoord,
-											this.zCoord);
+		this.getWorldObj().markBlockForUpdate(	this.xCoord,
+												this.yCoord,
+												this.zCoord);
 	}
 
-	public void updateBlock() {
-		this.worldObj.markBlockForUpdate(	this.xCoord,
-											this.yCoord,
-											this.zCoord);
-		BlockHelper.markBlockDirty(	this.worldObj,
-									this.xCoord,
-									this.yCoord,
-									this.zCoord);
-	}
-
-	public void dirtyBlock() {
-		BlockHelper.markBlockDirty(	this.worldObj,
+	public void markBlockDirty() {
+		BlockHelper.markBlockDirty(	this.getWorldObj(),
 									this.xCoord,
 									this.yCoord,
 									this.zCoord);
@@ -228,7 +224,7 @@ public abstract class TileEntityBase extends TileEntity {
 		else if (this.tickSchedule <= worldTime) {
 			this.tickSchedule = -1L;
 			this.onTileTick();
-			this.dirtyBlock();
+			this.markBlockDirty();
 		}
 	}
 
@@ -338,9 +334,7 @@ public abstract class TileEntityBase extends TileEntity {
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
 		this.readFromNBT(pkt.data);
 		this.onInventoryChanged();
-		this.getWorldObj().markBlockForUpdate(	this.xCoord,
-												this.yCoord,
-												this.zCoord);
+		this.updateBlock();
 	}
 
 	@Override
