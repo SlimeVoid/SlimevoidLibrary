@@ -79,7 +79,7 @@ public class ContainerHelper {
 				slot = (Slot) container.inventorySlots.get(realSlotStart);
 				stackInSlot = slot.getStack();
 
-				if (stackInSlot == null) {
+				if (stackInSlot == null && slot.isItemValid(stackToMerge)) {
 					slot.putStack(stackToMerge.copy());
 					if (stackToMerge.stackSize > slot.getSlotStackLimit()) {
 						slot.getStack().stackSize = slot.getSlotStackLimit();
