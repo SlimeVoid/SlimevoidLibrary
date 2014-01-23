@@ -338,6 +338,9 @@ public abstract class TileEntityBase extends TileEntity {
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
 		this.readFromNBT(pkt.data);
 		this.onInventoryChanged();
+		this.getWorldObj().markBlockForUpdate(	this.xCoord,
+												this.yCoord,
+												this.zCoord);
 	}
 
 	@Override
