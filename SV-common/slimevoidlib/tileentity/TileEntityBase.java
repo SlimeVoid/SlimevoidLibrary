@@ -1,13 +1,11 @@
 package slimevoidlib.tileentity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,10 +58,6 @@ public abstract class TileEntityBase extends TileEntity {
 		this.rotation = newRotation;
 	}
 
-	public void onBlockRemoval(int side, int metadata) {
-
-	}
-
 	public void onTileTick() {
 
 	}
@@ -81,52 +75,23 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public boolean removeBlockByPlayer(EntityPlayer player, BlockBase blockBase) {
-		if (this.worldObj.isRemote) {
-			return true;
-		}
-		int blockId = worldObj.getBlockId(	this.xCoord,
-											this.yCoord,
-											this.zCoord);
-		int metadata = worldObj.getBlockMetadata(	this.xCoord,
+		return blockBase.superRemoveBlockByPlayer(	this.getWorldObj(),
+													player,
+													this.xCoord,
 													this.yCoord,
 													this.zCoord);
-		Block block = Block.blocksList[blockId];
-		if (block == null) {
-			return false;
-		}
-		if (block.canHarvestBlock(	player,
-									metadata)
-			&& !player.capabilities.isCreativeMode) {
-			ArrayList blockDropped = blockBase.getBlockDropped(	this.worldObj,
-																this.xCoord,
-																this.yCoord,
-																this.zCoord,
-																metadata,
-																EnchantmentHelper.getFortuneModifier(player));
-			ItemStack itemstack;
-			for (Iterator stack = blockDropped.iterator(); stack.hasNext(); ItemHelper.dropItem(worldObj,
-																								this.xCoord,
-																								this.yCoord,
-																								this.zCoord,
-																								itemstack))
-				itemstack = (ItemStack) stack.next();
-
-		}
-		return this.worldObj.setBlockToAir(	this.xCoord,
-											this.yCoord,
-											this.zCoord);
 	}
 
 	public ItemStack getPickBlock(MovingObjectPosition target, BlockBase blockBase) {
 		return blockBase.superGetPickBlock(	target,
-											this.worldObj,
+											this.getWorldObj(),
 											this.xCoord,
 											this.yCoord,
 											this.zCoord);
 	}
 
 	public float getBlockHardness(BlockBase blockBase) {
-		return blockBase.superBlockHardness(this.worldObj,
+		return blockBase.superBlockHardness(this.getWorldObj(),
 											this.xCoord,
 											this.yCoord,
 											this.zCoord);
@@ -135,7 +100,7 @@ public abstract class TileEntityBase extends TileEntity {
 	public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, BlockBase blockBase) {
 		return ForgeHooks.blockStrength(blockBase,
 										entityplayer,
-										worldObj,
+										this.getWorldObj(),
 										this.xCoord,
 										this.yCoord,
 										this.zCoord);
@@ -143,7 +108,7 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ, BlockBase blockBase) {
 		return blockBase.superGetExplosionResistance(	entity,
-														this.worldObj,
+														this.getWorldObj(),
 														this.xCoord,
 														this.yCoord,
 														this.zCoord,
@@ -153,21 +118,16 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public int colorMultiplier(BlockBase blockBase) {
-		return blockBase.superColorMultiplier(	this.worldObj,
+		return blockBase.superColorMultiplier(	this.getWorldObj(),
 												this.xCoord,
 												this.yCoord,
 												this.zCoord);
 	}
 
-	public void getItemsDropped(ArrayList<ItemStack> harvestList) {
-		harvestList.add(new ItemStack(this.getBlockID(), 1, this.getExtendedBlockID()));
-		this.addHarvestContents(harvestList);
-	}
-
 	protected abstract void addHarvestContents(ArrayList<ItemStack> harvestList);
 
 	public void scheduleTick(int time) {
-		long worldTime = this.worldObj.getWorldTime() + (long) time;
+		long worldTime = this.getWorldObj().getWorldTime() + (long) time;
 		if (this.tickSchedule > 0L && this.tickSchedule < worldTime) {
 			return;
 		} else {
@@ -205,24 +165,23 @@ public abstract class TileEntityBase extends TileEntity {
 									this.zCoord);
 	}
 
-	public void breakBlock() {
+	public void breakBlock(int side, int metadata) {
 		ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
-		this.getItemsDropped(harvestList);
-		ItemStack itemstack;
-		for (Iterator<ItemStack> stack = harvestList.iterator(); stack.hasNext(); ItemHelper.dropItem(	this.worldObj,
-																										this.xCoord,
-																										this.yCoord,
-																										this.zCoord,
-																										itemstack)) {
-			itemstack = (ItemStack) stack.next();
+		this.addHarvestContents(harvestList);
+		for (ItemStack itemstack : harvestList) {
+			ItemHelper.dropItem(this.getWorldObj(),
+								this.xCoord,
+								this.yCoord,
+								this.zCoord,
+								itemstack);
 		}
 	}
 
 	@Override
 	public void updateEntity() {
-		if (this.worldObj.isRemote) return;
+		if (this.getWorldObj().isRemote) return;
 		if (this.tickSchedule < 0L) return;
-		long worldTime = this.worldObj.getWorldTime();
+		long worldTime = this.getWorldObj().getWorldTime();
 		if (this.tickSchedule > worldTime + 1200L) this.tickSchedule = worldTime + 1200L;
 		else if (this.tickSchedule <= worldTime) {
 			this.tickSchedule = -1L;
@@ -251,7 +210,7 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public void setBlockBoundsBasedOnState(BlockBase blockBase) {
-		blockBase.superSetBlockBoundsBasedOnState(	this.worldObj,
+		blockBase.superSetBlockBoundsBasedOnState(	this.getWorldObj(),
 													this.xCoord,
 													this.yCoord,
 													this.zCoord);
@@ -262,7 +221,7 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public MovingObjectPosition collisionRayTrace(BlockBase blockbase, Vec3 startVec, Vec3 endVec) {
-		return blockbase.superCollisionRayTrace(this.worldObj,
+		return blockbase.superCollisionRayTrace(this.getWorldObj(),
 												this.xCoord,
 												this.yCoord,
 												this.zCoord,
@@ -271,7 +230,7 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public void addCollisionBoxesToList(BlockBase blockBase, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
-		blockBase.superAddCollisionBoxesToList(	this.worldObj,
+		blockBase.superAddCollisionBoxesToList(	this.getWorldObj(),
 												this.xCoord,
 												this.yCoord,
 												this.zCoord,
@@ -281,7 +240,7 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public boolean isBlockSolidOnSide(BlockBase blockBase, ForgeDirection side) {
-		return blockBase.superIsBlockSolidOnSide(	this.worldObj,
+		return blockBase.superIsBlockSolidOnSide(	this.getWorldObj(),
 													this.xCoord,
 													this.yCoord,
 													this.zCoord,
@@ -289,7 +248,7 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public boolean addBlockDestroyEffects(BlockBase blockBase, int meta, EffectRenderer effectRenderer) {
-		return blockBase.superBlockDestroyEffects(	this.worldObj,
+		return blockBase.superBlockDestroyEffects(	this.getWorldObj(),
 													this.xCoord,
 													this.yCoord,
 													this.zCoord,
@@ -298,7 +257,7 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
-		return blockBase.superBlockHitEffects(	this.worldObj,
+		return blockBase.superBlockHitEffects(	this.getWorldObj(),
 												target,
 												effectRenderer);
 	}

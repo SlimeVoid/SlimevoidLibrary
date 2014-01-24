@@ -36,6 +36,7 @@ public abstract class BlockBase extends BlockContainer {
 		this.tileEntityMap = new Class[maxTiles];
 		this.setCreativeTab(this.getCreativeTab());
 		this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
+		this.setHardness(1.0F);
 	}
 
 	public abstract CreativeTabs getCreativeTab();
@@ -59,6 +60,15 @@ public abstract class BlockBase extends BlockContainer {
 		return metadata;
 	}
 
+	public void harvestBlock(World world, EntityPlayer entityplayer, int x, int y, int z, int metadata) {
+		super.harvestBlock(	world,
+							entityplayer,
+							x,
+							y,
+							z,
+							metadata);
+	}
+
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		int metadata = world.getBlockMetadata(	x,
 												y,
@@ -78,6 +88,14 @@ public abstract class BlockBase extends BlockContainer {
 												y,
 												z);
 		}
+	}
+
+	public boolean superRemoveBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+		return super.removeBlockByPlayer(	world,
+											player,
+											x,
+											y,
+											z);
 	}
 
 	@Override
@@ -374,26 +392,13 @@ public abstract class BlockBase extends BlockContainer {
 	@Override
 	public ArrayList getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
 		ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
-		TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(	world,
-																					x,
-																					y,
-																					z,
-																					this.getTileMapData(metadata));
-		if (tileentitybase == null) {
-			return harvestList;
-		} else {
-			tileentitybase.getItemsDropped(harvestList);
-			return harvestList;
-		}
+		harvestList.add(new ItemStack(this.blockID, 1, metadata));
+		return harvestList;
 	}
 
 	@Override
 	public int quantityDroppedWithBonus(int i, Random random) {
 		return 0;
-	}
-
-	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, int x, int y, int z, int damage) {
 	}
 
 	@Override
@@ -440,8 +445,8 @@ public abstract class BlockBase extends BlockContainer {
 																				z,
 																				this.getTileMapData(metadata));
 		if (tileentity != null) {
-			tileentity.onBlockRemoval(	side,
-										metadata);
+			tileentity.breakBlock(	side,
+									metadata);
 		}
 		super.breakBlock(	world,
 							x,
