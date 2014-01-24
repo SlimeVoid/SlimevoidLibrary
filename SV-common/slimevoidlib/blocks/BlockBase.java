@@ -382,7 +382,7 @@ public abstract class BlockBase extends BlockContainer {
 		if (tileentitybase == null) {
 			return harvestList;
 		} else {
-			tileentitybase.addHarvestContents(harvestList);
+			tileentitybase.getItemsDropped(harvestList);
 			return harvestList;
 		}
 	}

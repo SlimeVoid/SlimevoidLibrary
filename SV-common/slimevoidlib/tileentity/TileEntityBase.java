@@ -159,9 +159,12 @@ public abstract class TileEntityBase extends TileEntity {
 												this.zCoord);
 	}
 
-	public void addHarvestContents(ArrayList<ItemStack> harvestList) {
+	public void getItemsDropped(ArrayList<ItemStack> harvestList) {
 		harvestList.add(new ItemStack(this.getBlockID(), 1, this.getExtendedBlockID()));
+		this.addHarvestContents(harvestList);
 	}
+
+	protected abstract void addHarvestContents(ArrayList<ItemStack> harvestList);
 
 	public void scheduleTick(int time) {
 		long worldTime = this.worldObj.getWorldTime() + (long) time;
@@ -204,7 +207,7 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public void breakBlock() {
 		ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
-		this.addHarvestContents(harvestList);
+		this.getItemsDropped(harvestList);
 		ItemStack itemstack;
 		for (Iterator<ItemStack> stack = harvestList.iterator(); stack.hasNext(); ItemHelper.dropItem(	this.worldObj,
 																										this.xCoord,
