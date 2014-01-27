@@ -1,10 +1,27 @@
 package slimevoidlib.util.helpers;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemHelper {
+
+	public static boolean isBlockStack(ItemStack itemstack) {
+		return itemstack != null
+				&& itemstack.getItem() != null
+				&& itemstack.getItem() instanceof ItemBlock
+				&& !Block.blocksList[itemstack.itemID].hasTileEntity(itemstack.getItemDamage());
+	}
+
+	public static boolean isSolidBlockStack(ItemStack itemstack, World world, int x, int y, int z) {
+		return isBlockStack(itemstack)
+				&& Block.blocksList[itemstack.itemID].isBlockNormalCube(world,
+																		x,
+																		y,
+																		z);
+	}
 
 	public static void dropItem(World world, int x, int y, int z, ItemStack itemstack) {
 		if (world.isRemote) {
