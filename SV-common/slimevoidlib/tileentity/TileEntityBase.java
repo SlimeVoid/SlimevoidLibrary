@@ -297,6 +297,9 @@ public abstract class TileEntityBase extends TileEntity {
 		this.readFromNBT(pkt.data);
 		this.onInventoryChanged();
 		this.updateBlock();
+		this.getWorldObj().updateAllLightTypes(	xCoord,
+												yCoord,
+												zCoord);
 	}
 
 	@Override

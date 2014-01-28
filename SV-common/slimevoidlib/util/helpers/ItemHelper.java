@@ -17,10 +17,7 @@ public class ItemHelper {
 
 	public static boolean isSolidBlockStack(ItemStack itemstack, World world, int x, int y, int z) {
 		return isBlockStack(itemstack)
-				&& Block.blocksList[itemstack.itemID].isBlockNormalCube(world,
-																		x,
-																		y,
-																		z);
+				&& Block.blocksList[itemstack.itemID].renderAsNormalBlock();
 	}
 
 	public static void dropItem(World world, int x, int y, int z, ItemStack itemstack) {
