@@ -145,6 +145,9 @@ public abstract class TileEntityBase extends TileEntity {
 		this.getWorldObj().markBlockForUpdate(	this.xCoord,
 												this.yCoord,
 												this.zCoord);
+		this.getWorldObj().updateAllLightTypes(	this.xCoord,
+												this.yCoord,
+												this.zCoord);
 	}
 
 	public void updateBlockAndNeighbours() {
@@ -153,9 +156,7 @@ public abstract class TileEntityBase extends TileEntity {
 											this.yCoord,
 											this.zCoord,
 											this.getBlockID());
-		this.getWorldObj().markBlockForUpdate(	this.xCoord,
-												this.yCoord,
-												this.zCoord);
+		this.updateBlock();
 	}
 
 	public void markBlockDirty() {
@@ -297,9 +298,6 @@ public abstract class TileEntityBase extends TileEntity {
 		this.readFromNBT(pkt.data);
 		this.onInventoryChanged();
 		this.updateBlock();
-		this.getWorldObj().updateAllLightTypes(	xCoord,
-												yCoord,
-												zCoord);
 	}
 
 	@Override
