@@ -39,7 +39,10 @@ public abstract class Logger {
 	 * @author ali4z
 	 */
 	public static enum LogLevel {
-		DEBUG, INFO, WARNING, ERROR
+		DEBUG,
+		WARNING,
+		ERROR,
+		INFO
 	}
 
 	protected Logger() {
