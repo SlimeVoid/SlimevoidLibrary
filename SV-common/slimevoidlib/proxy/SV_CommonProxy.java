@@ -28,82 +28,82 @@ import cpw.mods.fml.common.network.Player;
 
 public class SV_CommonProxy implements ICommonProxy {
 
-	@Override
-	public String getMinecraftDir() {
-		return ".";
-	}
+    @Override
+    public String getMinecraftDir() {
+        return ".";
+    }
 
-	@Override
-	public void registerRenderInformation() {
-	}
+    @Override
+    public void registerRenderInformation() {
+    }
 
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		return null;
-	}
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return null;
+    }
 
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		return null;
-	}
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return null;
+    }
 
-	@Override
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-	}
+    @Override
+    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
+    }
 
-	@Override
-	public IPacketHandling getPacketHandler() {
-		return null;
-	}
+    @Override
+    public IPacketHandling getPacketHandler() {
+        return null;
+    }
 
-	@Override
-	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz) {
-	}
+    @Override
+    public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz) {
+    }
 
-	@Override
-	public void registerTickHandlers() {
-	}
+    @Override
+    public void registerTickHandlers() {
+    }
 
-	@Override
-	public void registerEventHandlers() {
-	}
+    @Override
+    public void registerEventHandlers() {
+    }
 
-	@Override
-	public void preInit() {
-	}
+    @Override
+    public void preInit() {
+    }
 
-	@Override
-	public void registerConfigurationProperties(File configFile) {
-	}
+    @Override
+    public void registerConfigurationProperties(File configFile) {
+    }
 
-	@Override
-	public boolean isClient(World world) {
-		return false;
-	}
+    @Override
+    public boolean isClient(World world) {
+        return false;
+    }
 
-	@Override
-	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
-	}
+    @Override
+    public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
+    }
 
-	@Override
-	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
-		return null;
-	}
+    @Override
+    public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
+        return null;
+    }
 
-	@Override
-	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) {
-	}
+    @Override
+    public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) {
+    }
 
-	@Override
-	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) {
-	}
+    @Override
+    public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) {
+    }
 
-	@Override
-	public void connectionClosed(INetworkManager manager) {
-	}
+    @Override
+    public void connectionClosed(INetworkManager manager) {
+    }
 
-	@Override
-	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) {
-	}
+    @Override
+    public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) {
+    }
 
 }

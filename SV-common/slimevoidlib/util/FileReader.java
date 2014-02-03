@@ -25,113 +25,113 @@ import slimevoidlib.core.lib.CoreLib;
 
 public class FileReader {
 
-	public static String readFile(String file) {
-		InputStream is = FileReader.class.getClassLoader().getResourceAsStream(file);
-		return getStringFromInputStream(is);
-	}
+    public static String readFile(String file) {
+        InputStream is = FileReader.class.getClassLoader().getResourceAsStream(file);
+        return getStringFromInputStream(is);
+    }
 
-	public static String getStringFromInputStream(InputStream is) {
+    public static String getStringFromInputStream(InputStream is) {
 
-		BufferedReader br = null;
-		StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
 
-		String line;
-		String ls = System.getProperty("line.separator");
-		try {
+        String line;
+        String ls = System.getProperty("line.separator");
+        try {
 
-			br = new BufferedReader(new InputStreamReader(is));
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-				sb.append(ls);
-			}
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append(ls);
+            }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
-		return sb.toString();
+        return sb.toString();
 
-	}
+    }
 
-	/**
-	 * Checks if a file exists in a directory.
-	 * 
-	 * @param filename
-	 *            The filename.
-	 * @param dir
-	 *            The directory.
-	 * @return True if file exists in directory, false otherwise.
-	 */
-	public static boolean checkIfExists(String filename, File dir) {
-		return (new File(dir.getPath() + File.separator + filename)).exists();
-	}
+    /**
+     * Checks if a file exists in a directory.
+     * 
+     * @param filename
+     *            The filename.
+     * @param dir
+     *            The directory.
+     * @return True if file exists in directory, false otherwise.
+     */
+    public static boolean checkIfExists(String filename, File dir) {
+        return (new File(dir.getPath() + File.separator + filename)).exists();
+    }
 
-	/**
-	 * Copies a file to a directory.
-	 * 
-	 * @param from
-	 *            Source file.
-	 * @param toDir
-	 *            Destination directory.
-	 * 
-	 * @throws IOException
-	 */
-	public static void copyDefaultTo(File from, File toDir) throws IOException {
-		sendMessage("Copying from default: " + from.getName() + "->"
-					+ toDir.getAbsolutePath());
+    /**
+     * Copies a file to a directory.
+     * 
+     * @param from
+     *            Source file.
+     * @param toDir
+     *            Destination directory.
+     * 
+     * @throws IOException
+     */
+    public static void copyDefaultTo(File from, File toDir) throws IOException {
+        sendMessage("Copying from default: " + from.getName() + "->"
+                    + toDir.getAbsolutePath());
 
-		// Initialize destination file.
-		File to = new File(toDir.getPath() + File.separator + from.getName());
-		if (!to.exists()) {
-			to.createNewFile();
-		}
+        // Initialize destination file.
+        File to = new File(toDir.getPath() + File.separator + from.getName());
+        if (!to.exists()) {
+            to.createNewFile();
+        }
 
-		// File channels.
-		FileChannel source = null;
-		FileChannel destination = null;
+        // File channels.
+        FileChannel source = null;
+        FileChannel destination = null;
 
-		try {
-			source = new FileInputStream(from).getChannel();
-			destination = new FileOutputStream(to).getChannel();
-			// Copy over entire content from source channel to destination
-			// channel.
-			destination.transferFrom(	source,
-										0,
-										source.size());
-		} finally {
-			// Close the channels when finished.
-			if (source != null) source.close();
-			if (destination != null) destination.close();
-		}
-	}
+        try {
+            source = new FileInputStream(from).getChannel();
+            destination = new FileOutputStream(to).getChannel();
+            // Copy over entire content from source channel to destination
+            // channel.
+            destination.transferFrom(source,
+                                     0,
+                                     source.size());
+        } finally {
+            // Close the channels when finished.
+            if (source != null) source.close();
+            if (destination != null) destination.close();
+        }
+    }
 
-	/**
-	 * Send a info message, logger or console.
-	 * 
-	 * @param error
-	 *            The message.
-	 */
-	public static void sendMessage(String message) {
-		SlimevoidCore.console(	CoreLib.MOD_ID,
-								message);
-	}
+    /**
+     * Send a info message, logger or console.
+     * 
+     * @param error
+     *            The message.
+     */
+    public static void sendMessage(String message) {
+        SlimevoidCore.console(CoreLib.MOD_ID,
+                              message);
+    }
 
-	/**
-	 * Send a error message, logger or console.
-	 * 
-	 * @param error
-	 *            The message.
-	 */
-	public static void endWithError(String error) {
-		SlimevoidCore.console(	CoreLib.MOD_ID,
-								error);
-	}
+    /**
+     * Send a error message, logger or console.
+     * 
+     * @param error
+     *            The message.
+     */
+    public static void endWithError(String error) {
+        SlimevoidCore.console(CoreLib.MOD_ID,
+                              error);
+    }
 }

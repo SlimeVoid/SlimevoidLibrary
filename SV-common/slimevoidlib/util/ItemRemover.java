@@ -23,33 +23,33 @@ import slimevoidlib.core.lib.CoreLib;
  */
 public class ItemRemover {
 
-	/**
-	 * Remove a vanilla Item instance
-	 * 
-	 * @param oldItem
-	 *            The item to be removed
-	 * 
-	 * @return if the item was removed or not
-	 */
-	public static boolean removeVanillaItem(Item oldItem) {
-		// if the the item in itemsList with the itemID of the oldItem is
-		// initialized
+    /**
+     * Remove a vanilla Item instance
+     * 
+     * @param oldItem
+     *            The item to be removed
+     * 
+     * @return if the item was removed or not
+     */
+    public static boolean removeVanillaItem(Item oldItem) {
+        // if the the item in itemsList with the itemID of the oldItem is
+        // initialized
 
-		int itemID = oldItem.itemID; // shiftedIndex
+        int itemID = oldItem.itemID; // shiftedIndex
 
-		if (Item.itemsList[itemID] != null) {
-			// Set the block in the blocksList to null
-			Item.itemsList[itemID] = null;
-			// Output a success message
-			SlimevoidCore.console(	CoreLib.MOD_ID,
-									"Item ID [" + itemID
-											+ "] successfully removed.");
-			return true;
-		} else {
-			// Output a failure message
-			SlimevoidCore.console(	CoreLib.MOD_ID,
-									"Item ID not removed! Either the ID did not exist or was incorrect!");
-			return false;
-		}
-	}
+        if (Item.itemsList[itemID] != null) {
+            // Set the block in the blocksList to null
+            Item.itemsList[itemID] = null;
+            // Output a success message
+            SlimevoidCore.console(CoreLib.MOD_ID,
+                                  "Item ID [" + itemID
+                                          + "] successfully removed.");
+            return true;
+        } else {
+            // Output a failure message
+            SlimevoidCore.console(CoreLib.MOD_ID,
+                                  "Item ID not removed! Either the ID did not exist or was incorrect!");
+            return false;
+        }
+    }
 }

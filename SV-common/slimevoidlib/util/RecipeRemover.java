@@ -27,46 +27,46 @@ import net.minecraft.item.crafting.IRecipe;
 
 public class RecipeRemover {
 
-	// set of recipes to remove
-	static Set<Integer>	itemSet	= new HashSet<Integer>();
+    // set of recipes to remove
+    static Set<Integer> itemSet = new HashSet<Integer>();
 
-	private static void flush() {
-		itemSet.clear();
-	}
+    private static void flush() {
+        itemSet.clear();
+    }
 
-	public static void registerItemRecipeToRemove(Object object) {
-		if (object instanceof Block) {
-			itemSet.add(((Block) object).blockID);
-		}
-		if (object instanceof Item) {
-			itemSet.add(((Item) object).itemID); // shiftedIndex
-		}
-	}
+    public static void registerItemRecipeToRemove(Object object) {
+        if (object instanceof Block) {
+            itemSet.add(((Block) object).blockID);
+        }
+        if (object instanceof Item) {
+            itemSet.add(((Item) object).itemID); // shiftedIndex
+        }
+    }
 
-	public static void removeCrafting() {
+    public static void removeCrafting() {
 
-		// remove everything from the list
-		@SuppressWarnings("unchecked")
-		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		Iterator<IRecipe> it = recipes.iterator();
-		List<IRecipe> matches = new ArrayList<IRecipe>(); // recipes to remove
-		while (it.hasNext()) {
-			IRecipe recipe = it.next();
-			ItemStack output = recipe.getRecipeOutput();
+        // remove everything from the list
+        @SuppressWarnings("unchecked")
+        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+        Iterator<IRecipe> it = recipes.iterator();
+        List<IRecipe> matches = new ArrayList<IRecipe>(); // recipes to remove
+        while (it.hasNext()) {
+            IRecipe recipe = it.next();
+            ItemStack output = recipe.getRecipeOutput();
 
-			if (output != null) {
-				int itemID = output.getItem().itemID; // shiftedIndex
-				if (itemSet.contains(itemID)) {
-					matches.add(recipe);
-				}
-			}
-		}
-		for (IRecipe recipe : matches) {
-			SlimevoidCore.console(	"EurysCore",
-									"Removing recipe for "
-											+ recipe.getRecipeOutput().getDisplayName());
-			recipes.remove(recipe);
-		}
-		flush();
-	}
+            if (output != null) {
+                int itemID = output.getItem().itemID; // shiftedIndex
+                if (itemSet.contains(itemID)) {
+                    matches.add(recipe);
+                }
+            }
+        }
+        for (IRecipe recipe : matches) {
+            SlimevoidCore.console("EurysCore",
+                                  "Removing recipe for "
+                                          + recipe.getRecipeOutput().getDisplayName());
+            recipes.remove(recipe);
+        }
+        flush();
+    }
 }

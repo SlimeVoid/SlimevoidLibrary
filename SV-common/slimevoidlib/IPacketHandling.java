@@ -17,9 +17,9 @@ import slimevoidlib.network.PacketTileEntity;
 import slimevoidlib.network.PacketUpdate;
 
 public interface IPacketHandling {
-	public void handleTileEntityPacket(PacketTileEntity packet, EntityPlayer entityplayer, World world);
+    public void handleTileEntityPacket(PacketTileEntity packet, EntityPlayer entityplayer, World world);
 
-	public void handleGuiPacket(PacketUpdate packet, EntityPlayer entityplayer, World world);
+    public void handleGuiPacket(PacketUpdate packet, EntityPlayer entityplayer, World world);
 
-	public void handlePacket(PacketUpdate packet, EntityPlayer entityplayer, World world);
+    public void handlePacket(PacketUpdate packet, EntityPlayer entityplayer, World world);
 }

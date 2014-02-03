@@ -25,29 +25,29 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(
-		modid = CoreLib.MOD_ID,
-		name = CoreLib.MOD_NAME,
-		version = CoreLib.MOD_VERSION)
+        modid = CoreLib.MOD_ID,
+        name = CoreLib.MOD_NAME,
+        version = CoreLib.MOD_VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class SlimevoidLib {
-	@SidedProxy(
-			clientSide = CoreLib.MOD_CLIENT_PROXY,
-			serverSide = CoreLib.MOD_COMMON_PROXY)
-	public static ICommonProxy	proxy;
+    @SidedProxy(
+            clientSide = CoreLib.MOD_CLIENT_PROXY,
+            serverSide = CoreLib.MOD_COMMON_PROXY)
+    public static ICommonProxy proxy;
 
-	@EventHandler
-	public static void SlimevoidLibPreInit(FMLPreInitializationEvent event) {
-		proxy.preInit();
-		SlimevoidHelper.init();
-	}
+    @EventHandler
+    public static void SlimevoidLibPreInit(FMLPreInitializationEvent event) {
+        proxy.preInit();
+        SlimevoidHelper.init();
+    }
 
-	@EventHandler
-	public static void SlimevoidLibInit(FMLInitializationEvent event) {
-		XMLVariables.registerDefaultXMLVariables();
-	}
+    @EventHandler
+    public static void SlimevoidLibInit(FMLInitializationEvent event) {
+        XMLVariables.registerDefaultXMLVariables();
+    }
 
-	@EventHandler
-	public static void SlimevoidLibPostInit(FMLPostInitializationEvent event) {
-		JSONLoader.loadJSON();
-	}
+    @EventHandler
+    public static void SlimevoidLibPostInit(FMLPostInitializationEvent event) {
+        JSONLoader.loadJSON();
+    }
 }

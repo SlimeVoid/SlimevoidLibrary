@@ -28,80 +28,80 @@ import net.minecraft.world.World;
  * 
  */
 public abstract class PacketEntity extends PacketUpdate {
-	private int	entityId;
+    private int entityId;
 
-	public PacketEntity() {
-		super(PacketIds.ENTITY);
-	}
+    public PacketEntity() {
+        super(PacketIds.ENTITY);
+    }
 
-	/**
-	 * Get the entityId for this packet
-	 * 
-	 * @return The entity ID
-	 */
-	public int getEntityId() {
-		return this.entityId;
-	}
+    /**
+     * Get the entityId for this packet
+     * 
+     * @return The entity ID
+     */
+    public int getEntityId() {
+        return this.entityId;
+    }
 
-	/**
-	 * Set the entityId for this packet
-	 * 
-	 * @param entityId
-	 *            The entity ID
-	 */
-	public void setEntityId(int entityId) {
-		this.entityId = entityId;
-	}
+    /**
+     * Set the entityId for this packet
+     * 
+     * @param entityId
+     *            The entity ID
+     */
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
 
-	@Override
-	public void writeData(DataOutputStream data) throws IOException {
-		super.writeData(data);
-		data.writeInt(this.entityId);
-	}
+    @Override
+    public void writeData(DataOutputStream data) throws IOException {
+        super.writeData(data);
+        data.writeInt(this.entityId);
+    }
 
-	@Override
-	public void readData(DataInputStream data) throws IOException {
-		super.readData(data);
-		this.entityId = data.readInt();
-	}
+    @Override
+    public void readData(DataInputStream data) throws IOException {
+        super.readData(data);
+        this.entityId = data.readInt();
+    }
 
-	@Override
-	public boolean targetExists(World world) {
-		// Get the loaded entities for the world
-		@SuppressWarnings("unchecked")
-		List<? extends Entity> entities = world.loadedEntityList;
-		// For each entity within the world
-		for (int i = 0; i < entities.size(); i++) {
-			// Get the current entity
-			Entity entity = entities.get(i);
-			// Is entity id of current loaded entity equal to this entity Id
-			if (entity != null && entity.entityId == this.getEntityId()) {
-				// Entity is loaded and exists
-				return true;
-			}
-		}
-		// Entity does not exist or is not loaded
-		return false;
-	}
+    @Override
+    public boolean targetExists(World world) {
+        // Get the loaded entities for the world
+        @SuppressWarnings("unchecked")
+        List<? extends Entity> entities = world.loadedEntityList;
+        // For each entity within the world
+        for (int i = 0; i < entities.size(); i++) {
+            // Get the current entity
+            Entity entity = entities.get(i);
+            // Is entity id of current loaded entity equal to this entity Id
+            if (entity != null && entity.entityId == this.getEntityId()) {
+                // Entity is loaded and exists
+                return true;
+            }
+        }
+        // Entity does not exist or is not loaded
+        return false;
+    }
 
-	public Entity getEntity(World world) {
-		// If entity exists within the world
-		if (targetExists(world)) {
-			// Get the loaded entity list
-			@SuppressWarnings("unchecked")
-			List<? extends Entity> entities = world.loadedEntityList;
-			// For each entity within the world
-			for (int i = 0; i < entities.size(); i++) {
-				// Get the current entity
-				Entity entity = entities.get(i);
-				// Is entity id of current loaded entity equal to this entity Id
-				if (entity != null && entity.entityId == this.getEntityId()) {
-					// Entity is loaded return the loaded entity
-					return entity;
-				}
-			}
-		}
-		// Entity does not exist or is not loaded return nothing
-		return null;
-	}
+    public Entity getEntity(World world) {
+        // If entity exists within the world
+        if (targetExists(world)) {
+            // Get the loaded entity list
+            @SuppressWarnings("unchecked")
+            List<? extends Entity> entities = world.loadedEntityList;
+            // For each entity within the world
+            for (int i = 0; i < entities.size(); i++) {
+                // Get the current entity
+                Entity entity = entities.get(i);
+                // Is entity id of current loaded entity equal to this entity Id
+                if (entity != null && entity.entityId == this.getEntityId()) {
+                    // Entity is loaded return the loaded entity
+                    return entity;
+                }
+            }
+        }
+        // Entity does not exist or is not loaded return nothing
+        return null;
+    }
 }

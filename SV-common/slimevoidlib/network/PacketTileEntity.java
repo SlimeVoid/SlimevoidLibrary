@@ -24,40 +24,40 @@ import slimevoidlib.util.helpers.SlimevoidHelper;
  */
 public abstract class PacketTileEntity extends PacketUpdate {
 
-	public PacketTileEntity() {
-		super(PacketIds.TILE);
-	}
+    public PacketTileEntity() {
+        super(PacketIds.TILE);
+    }
 
-	/**
-	 * Get the tileentity instance for this packet
-	 * 
-	 * @param world
-	 *            The world in which the tileentity resides
-	 * 
-	 * @return The tileentity
-	 */
-	public TileEntity getTileEntity(World world) {
-		if (this.targetExists(world)) {
-			return SlimevoidHelper.getBlockTileEntity(	world,
-														this.xPosition,
-														this.yPosition,
-														this.zPosition);
-		}
-		return null;
-	}
+    /**
+     * Get the tileentity instance for this packet
+     * 
+     * @param world
+     *            The world in which the tileentity resides
+     * 
+     * @return The tileentity
+     */
+    public TileEntity getTileEntity(World world) {
+        if (this.targetExists(world)) {
+            return SlimevoidHelper.getBlockTileEntity(world,
+                                                      this.xPosition,
+                                                      this.yPosition,
+                                                      this.zPosition);
+        }
+        return null;
+    }
 
-	@Override
-	public boolean targetExists(World world) {
-		if (SlimevoidHelper.targetExists(	world,
-											this.xPosition,
-											this.yPosition,
-											this.zPosition)
-			&& Block.blocksList[SlimevoidHelper.getBlockId(	world,
-															this.xPosition,
-															this.yPosition,
-															this.zPosition)].hasTileEntity(0)) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean targetExists(World world) {
+        if (SlimevoidHelper.targetExists(world,
+                                         this.xPosition,
+                                         this.yPosition,
+                                         this.zPosition)
+            && Block.blocksList[SlimevoidHelper.getBlockId(world,
+                                                           this.xPosition,
+                                                           this.yPosition,
+                                                           this.zPosition)].hasTileEntity(0)) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -24,42 +24,42 @@ import slimevoidlib.core.lib.CoreLib;
  */
 public class BlockRemover {
 
-	/**
-	 * Remove a vanilla Block instance and it's associated ItemBlock instance
-	 * 
-	 * @param oldBlock
-	 *            The block to be removed
-	 * @param shouldRemoveItem
-	 *            Whether the associated ItemBlock should attempt to be removed
-	 * 
-	 * @return if the block was removed or not
-	 */
-	public static boolean removeVanillaBlock(Block oldBlock, boolean shouldRemoveItem) {
-		// if the the block in blocksList with the blockID of the oldBlock is
-		// initialized
-		if (Block.blocksList[oldBlock.blockID] != null) {
-			// Checks if the block is also has an ItemBlock associated with it
-			if (shouldRemoveItem) {
-				if (Item.itemsList[oldBlock.blockID] != null) {
-					Item.itemsList[oldBlock.blockID] = null;
-				} else {
-					SlimevoidCore.console(	CoreLib.MOD_ID,
-											"ItemBlock ID [" + oldBlock.blockID
-													+ "] could not be removed.");
-				}
-			}
-			// Set the block in the blocksList to null
-			Block.blocksList[oldBlock.blockID] = null;
-			// Output a success message
-			SlimevoidCore.console(	CoreLib.MOD_ID,
-									"Block ID [" + oldBlock.blockID
-											+ "] successfully removed.");
-			return true;
-		} else {
-			// Output a failure message
-			SlimevoidCore.console(	CoreLib.MOD_ID,
-									"Block ID not removed! Either the ID did not exist or was incorrect!");
-			return false;
-		}
-	}
+    /**
+     * Remove a vanilla Block instance and it's associated ItemBlock instance
+     * 
+     * @param oldBlock
+     *            The block to be removed
+     * @param shouldRemoveItem
+     *            Whether the associated ItemBlock should attempt to be removed
+     * 
+     * @return if the block was removed or not
+     */
+    public static boolean removeVanillaBlock(Block oldBlock, boolean shouldRemoveItem) {
+        // if the the block in blocksList with the blockID of the oldBlock is
+        // initialized
+        if (Block.blocksList[oldBlock.blockID] != null) {
+            // Checks if the block is also has an ItemBlock associated with it
+            if (shouldRemoveItem) {
+                if (Item.itemsList[oldBlock.blockID] != null) {
+                    Item.itemsList[oldBlock.blockID] = null;
+                } else {
+                    SlimevoidCore.console(CoreLib.MOD_ID,
+                                          "ItemBlock ID [" + oldBlock.blockID
+                                                  + "] could not be removed.");
+                }
+            }
+            // Set the block in the blocksList to null
+            Block.blocksList[oldBlock.blockID] = null;
+            // Output a success message
+            SlimevoidCore.console(CoreLib.MOD_ID,
+                                  "Block ID [" + oldBlock.blockID
+                                          + "] successfully removed.");
+            return true;
+        } else {
+            // Output a failure message
+            SlimevoidCore.console(CoreLib.MOD_ID,
+                                  "Block ID not removed! Either the ID did not exist or was incorrect!");
+            return false;
+        }
+    }
 }

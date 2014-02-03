@@ -22,16 +22,16 @@ package slimevoidlib.network;
  * 
  */
 public class PacketIds {
-	// Packet ID for Login information
-	public static final int	LOGIN	= 0;
-	// Packet ID for Basic Update information
-	public static final int	UPDATE	= 1;
-	// Packet ID for GUI update/open
-	public static final int	GUI		= 2;
-	// Packet ID for TileEntity information
-	public static final int	TILE	= 3;
-	// Packet ID for Entity information
-	public static final int	ENTITY	= 4;
-	// Packet ID for Player notification e.g. Client side messages
-	public static final int	PLAYER	= 5;
+    // Packet ID for Login information
+    public static final int LOGIN  = 0;
+    // Packet ID for Basic Update information
+    public static final int UPDATE = 1;
+    // Packet ID for GUI update/open
+    public static final int GUI    = 2;
+    // Packet ID for TileEntity information
+    public static final int TILE   = 3;
+    // Packet ID for Entity information
+    public static final int ENTITY = 4;
+    // Packet ID for Player notification e.g. Client side messages
+    public static final int PLAYER = 5;
 }

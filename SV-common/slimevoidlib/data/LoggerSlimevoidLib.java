@@ -13,19 +13,19 @@ package slimevoidlib.data;
 
 public class LoggerSlimevoidLib extends Logger {
 
-	private static Logger	instance;
+    private static Logger instance;
 
-	@Override
-	protected String getLoggerName() {
-		return "SVLib";
-	}
+    @Override
+    protected String getLoggerName() {
+        return "SVLib";
+    }
 
-	public static Logger getInstance(String name) {
-		if (instance == null) instance = new LoggerSlimevoidLib();
+    public static Logger getInstance(String name) {
+        if (instance == null) instance = new LoggerSlimevoidLib();
 
-		instance.setName(name);
+        instance.setName(name);
 
-		return instance;
-	}
+        return instance;
+    }
 
 }

@@ -13,8 +13,8 @@ package slimevoidlib.network;
 
 public abstract class PacketNotifyPlayer extends PacketUpdate {
 
-	public PacketNotifyPlayer() {
-		super(PacketIds.PLAYER);
-	}
+    public PacketNotifyPlayer() {
+        super(PacketIds.PLAYER);
+    }
 
 }

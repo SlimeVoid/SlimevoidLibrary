@@ -27,88 +27,88 @@ import cpw.mods.fml.common.network.Player;
 
 public interface ICommonProxy extends IGuiHandler, INetworkConnection {
 
-	/**
-	 * Should be called prior to any other configuration
-	 */
-	public void preInit();
+    /**
+     * Should be called prior to any other configuration
+     */
+    public void preInit();
 
-	/**
-	 * Retrieves the Minecraft directory
-	 * 
-	 * @return the Path
-	 */
-	public String getMinecraftDir();
+    /**
+     * Retrieves the Minecraft directory
+     * 
+     * @return the Path
+     */
+    public String getMinecraftDir();
 
-	/**
-	 * Registers sided Configuration
-	 */
-	public void registerConfigurationProperties(File configFile);
+    /**
+     * Registers sided Configuration
+     */
+    public void registerConfigurationProperties(File configFile);
 
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
 
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z);
 
-	/**
-	 * Register Sided Tick handlers
-	 */
-	public void registerTickHandlers();
+    /**
+     * Register Sided Tick handlers
+     */
+    public void registerTickHandlers();
 
-	/**
-	 * Register render information (Client only)
-	 */
-	public void registerRenderInformation();
+    /**
+     * Register render information (Client only)
+     */
+    public void registerRenderInformation();
 
-	/**
-	 * Register sided event handlers
-	 */
-	public void registerEventHandlers();
+    /**
+     * Register sided event handlers
+     */
+    public void registerEventHandlers();
 
-	/**
-	 * Retrieves the sided packet handler
-	 * 
-	 * @return Packet Handler
-	 */
-	public IPacketHandling getPacketHandler();
+    /**
+     * Retrieves the sided packet handler
+     * 
+     * @return Packet Handler
+     */
+    public IPacketHandling getPacketHandler();
 
-	/**
-	 * Register tileentity renderer (Client only)
-	 * 
-	 * @param clazz
-	 *            the TileEntity class to register for
-	 */
-	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
+    /**
+     * Register tileentity renderer (Client only)
+     * 
+     * @param clazz
+     *            the TileEntity class to register for
+     */
+    public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
 
-	/**
-	 * Checks if we're looking at the Client side session.
-	 * 
-	 * @return True or false.
-	 */
-	public boolean isClient(World world);
+    /**
+     * Checks if we're looking at the Client side session.
+     * 
+     * @return True or false.
+     */
+    public boolean isClient(World world);
 
-	/*
-	 * Network Connection Area
-	 */
+    /*
+     * Network Connection Area
+     */
 
-	@Override
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player);
+    @Override
+    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player);
 
-	@Override
-	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager);
+    @Override
+    public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager);
 
-	@Override
-	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager);
+    @Override
+    public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager);
 
-	@Override
-	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager);
+    @Override
+    public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager);
 
-	@Override
-	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager);
+    @Override
+    public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager);
 
-	@Override
-	public void connectionClosed(INetworkManager manager);
+    @Override
+    public void connectionClosed(INetworkManager manager);
 
-	@Override
-	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login);
+    @Override
+    public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login);
 }
