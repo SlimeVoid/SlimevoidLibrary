@@ -1,0 +1,99 @@
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file 'C:\Programming\Minecraft\1.7.2\Git\SlimevoidLibrary\build.gradle' line: 18
+
+* What went wrong:
+A problem occurred evaluating root project 'SlimevoidLibrary'.
+> Could not generate a proxy class for class net.minecraftforge.gradle.user.UserExtension.
+
+* Try:
+Run with --info or --debug option to get more log output.
+
+* Exception is:
+org.gradle.api.GradleScriptException: A problem occurred evaluating root project 'SlimevoidLibrary'.
+	at org.gradle.groovy.scripts.internal.DefaultScriptRunnerFactory$ScriptRunnerImpl.run(DefaultScriptRunnerFactory.java:54)
+	at org.gradle.configuration.DefaultScriptPluginFactory$ScriptPluginImpl.apply(DefaultScriptPluginFactory.java:127)
+	at org.gradle.configuration.BuildScriptProcessor.evaluate(BuildScriptProcessor.java:38)
+	at org.gradle.configuration.LifecycleProjectEvaluator.evaluate(LifecycleProjectEvaluator.java:44)
+	at org.gradle.api.internal.project.AbstractProject.evaluate(AbstractProject.java:464)
+	at org.gradle.api.internal.project.AbstractProject.evaluate(AbstractProject.java:77)
+	at org.gradle.configuration.DefaultBuildConfigurer$ConfigureProject.execute(DefaultBuildConfigurer.java:38)
+	at org.gradle.configuration.DefaultBuildConfigurer$ConfigureProject.execute(DefaultBuildConfigurer.java:36)
+	at org.gradle.api.internal.project.AbstractProject.configure(AbstractProject.java:440)
+	at org.gradle.api.internal.project.AbstractProject.allprojects(AbstractProject.java:435)
+	at org.gradle.configuration.DefaultBuildConfigurer.configure(DefaultBuildConfigurer.java:32)
+	at org.gradle.initialization.DefaultGradleLauncher.doBuildStages(DefaultGradleLauncher.java:142)
+	at org.gradle.initialization.DefaultGradleLauncher.doBuild(DefaultGradleLauncher.java:113)
+	at org.gradle.initialization.DefaultGradleLauncher.getBuildAnalysis(DefaultGradleLauncher.java:92)
+	at org.gradle.tooling.internal.provider.BuildModelAction.run(BuildModelAction.java:73)
+	at org.gradle.tooling.internal.provider.DelegatingBuildModelAction.run(DelegatingBuildModelAction.java:44)
+	at org.gradle.tooling.internal.provider.ConfiguringBuildAction.run(ConfiguringBuildAction.java:103)
+	at org.gradle.launcher.exec.InProcessGradleLauncherActionExecuter.execute(InProcessGradleLauncherActionExecuter.java:39)
+	at org.gradle.launcher.daemon.server.exec.ExecuteBuild.doBuild(ExecuteBuild.java:45)
+	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.WatchForDisconnection.execute(WatchForDisconnection.java:42)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.ResetDeprecationLogger.execute(ResetDeprecationLogger.java:24)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.StartStopIfBuildAndStop.execute(StartStopIfBuildAndStop.java:33)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.ReturnResult.execute(ReturnResult.java:34)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.ForwardClientInput$2.call(ForwardClientInput.java:70)
+	at org.gradle.launcher.daemon.server.exec.ForwardClientInput$2.call(ForwardClientInput.java:68)
+	at org.gradle.util.Swapper.swap(Swapper.java:38)
+	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(ForwardClientInput.java:68)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(LogToClient.java:60)
+	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(EstablishBuildEnvironment.java:59)
+	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.java:45)
+	at org.gradle.launcher.daemon.server.DaemonStateCoordinator.runCommand(DaemonStateCoordinator.java:186)
+	at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy.doBuild(StartBuildOrRespondWithBusy.java:49)
+	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.HandleStop.execute(HandleStop.java:36)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.CatchAndForwardDaemonFailure.execute(CatchAndForwardDaemonFailure.java:32)
+	at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:125)
+	at org.gradle.launcher.daemon.server.exec.DefaultDaemonCommandExecuter.executeCommand(DefaultDaemonCommandExecuter.java:48)
+	at org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler$ConnectionWorker.handleCommand(DefaultIncomingConnectionHandler.java:155)
+	at org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler$ConnectionWorker.receiveAndHandleCommand(DefaultIncomingConnectionHandler.java:128)
+	at org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler$ConnectionWorker.run(DefaultIncomingConnectionHandler.java:116)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:66)
+Caused by: org.gradle.api.GradleException: Could not generate a proxy class for class net.minecraftforge.gradle.user.UserExtension.
+	at org.gradle.api.internal.AbstractClassGenerator.generate(AbstractClassGenerator.java:201)
+	at org.gradle.api.internal.ClassGeneratorBackedInstantiator.newInstance(ClassGeneratorBackedInstantiator.java:36)
+	at org.gradle.api.internal.plugins.DefaultConvention.create(DefaultConvention.java:115)
+	at net.minecraftforge.gradle.common.BasePlugin.apply(BasePlugin.java:60)
+	at net.minecraftforge.gradle.common.BasePlugin.apply(BasePlugin.java:36)
+	at org.gradle.api.internal.plugins.DefaultProjectsPluginContainer.providePlugin(DefaultProjectsPluginContainer.java:107)
+	at org.gradle.api.internal.plugins.DefaultProjectsPluginContainer.addPluginInternal(DefaultProjectsPluginContainer.java:71)
+	at org.gradle.api.internal.plugins.DefaultProjectsPluginContainer.apply(DefaultProjectsPluginContainer.java:37)
+	at org.gradle.api.internal.plugins.DefaultObjectConfigurationAction.applyPlugin(DefaultObjectConfigurationAction.java:101)
+	at org.gradle.api.internal.plugins.DefaultObjectConfigurationAction.access$200(DefaultObjectConfigurationAction.java:32)
+	at org.gradle.api.internal.plugins.DefaultObjectConfigurationAction$3.run(DefaultObjectConfigurationAction.java:72)
+	at org.gradle.api.internal.plugins.DefaultObjectConfigurationAction.execute(DefaultObjectConfigurationAction.java:114)
+	at org.gradle.api.internal.project.AbstractProject.apply(AbstractProject.java:846)
+	at org.gradle.api.Project$apply.call(Unknown Source)
+	at org.gradle.api.internal.project.ProjectScript.apply(ProjectScript.groovy:34)
+	at org.gradle.api.Script$apply.callCurrent(Unknown Source)
+	at build_68tbl1te2akigkdon91ba5nr22.run(C:\Programming\Minecraft\1.7.2\Git\SlimevoidLibrary\build.gradle:18)
+	at org.gradle.groovy.scripts.internal.DefaultScriptRunnerFactory$ScriptRunnerImpl.run(DefaultScriptRunnerFactory.java:52)
+	... 53 more
+Caused by: java.lang.NoClassDefFoundError: org/gradle/api/ProjectConfigurationException
+	at org.gradle.api.internal.AbstractClassGenerator.generate(AbstractClassGenerator.java:100)
+	... 70 more
+Caused by: java.lang.ClassNotFoundException: org.gradle.api.ProjectConfigurationException
+	... 71 more
+
+
+BUILD FAILED
+
+Total time: 45.827 secs

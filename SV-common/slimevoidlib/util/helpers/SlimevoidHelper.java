@@ -14,6 +14,7 @@ package slimevoidlib.util.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -45,17 +46,17 @@ public class SlimevoidHelper {
         }
     }
 
-    public static int getBlockId(World world, int x, int y, int z) {
+    public static Block getBlock(World world, int x, int y, int z) {
         for (ISlimevoidHelper helper : helperClasses) {
-            int id = helper.getBlockId(world,
+            Block id = helper.getBlock(world,
                                        x,
                                        y,
                                        z);
-            if (id > 0) return id;
+            if (id != null) return id;
         }
-        return world.getBlockId(x,
-                                y,
-                                z);
+        return world.getBlock(x,
+                              y,
+                              z);
     }
 
     public static TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z) {
@@ -68,9 +69,9 @@ public class SlimevoidHelper {
                 return tileentity;
             }
         }
-        return world.getBlockTileEntity(x,
-                                        y,
-                                        z);
+        return world.getTileEntity(x,
+                                   y,
+                                   z);
     }
 
     public static boolean targetExists(World world, int x, int y, int z) {

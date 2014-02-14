@@ -37,7 +37,7 @@ public class ContainerHelper {
                 stackInSlot = slot.getStack();
 
                 if (stackInSlot != null
-                    && stackInSlot.itemID == stackToMerge.itemID
+                    && stackInSlot.getItem() == stackToMerge.getItem()
                     && (!stackToMerge.getHasSubtypes() || stackToMerge.getItemDamage() == stackInSlot.getItemDamage())
                     && ItemStack.areItemStackTagsEqual(stackToMerge,
                                                        stackInSlot)) {

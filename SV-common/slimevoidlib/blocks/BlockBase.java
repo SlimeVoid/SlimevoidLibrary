@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
@@ -15,12 +16,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import slimevoidlib.items.ItemBlockBase;
 import slimevoidlib.sounds.SlimevoidStepSound;
 import slimevoidlib.tileentity.TileEntityBase;
@@ -31,8 +32,8 @@ public abstract class BlockBase extends BlockContainer {
 
     protected Class[] tileEntityMap;
 
-    protected BlockBase(int blockID, Material material, int maxTiles) {
-        super(blockID, material);
+    protected BlockBase(Material material, int maxTiles) {
+        super(material);
         this.tileEntityMap = new Class[maxTiles];
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
@@ -69,7 +70,8 @@ public abstract class BlockBase extends BlockContainer {
                            metadata);
     }
 
-    public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    @Override
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
         int metadata = world.getBlockMetadata(x,
                                               y,
                                               z);
@@ -82,20 +84,20 @@ public abstract class BlockBase extends BlockContainer {
             return tileentitybase.removeBlockByPlayer(player,
                                                       this);
         } else {
-            return super.removeBlockByPlayer(world,
-                                             player,
-                                             x,
-                                             y,
-                                             z);
-        }
-    }
-
-    public boolean superRemoveBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-        return super.removeBlockByPlayer(world,
+            return super.removedByPlayer(world,
                                          player,
                                          x,
                                          y,
                                          z);
+        }
+    }
+
+    public boolean superRemoveBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+        return super.removedByPlayer(world,
+                                     player,
+                                     x,
+                                     y,
+                                     z);
     }
 
     @Override
@@ -245,7 +247,7 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
         int metadata = world.getBlockMetadata(x,
                                               y,
                                               z);
@@ -255,23 +257,23 @@ public abstract class BlockBase extends BlockContainer {
                                                                                    z,
                                                                                    this.getTileMapData(metadata));
         if (tileentitybase != null) {
-            return tileentitybase.isBlockSolidOnSide(this,
-                                                     side);
+            return tileentitybase.isSideSolid(this,
+                                              side);
         } else {
-            return super.isBlockSolidOnSide(world,
-                                            x,
-                                            y,
-                                            z,
-                                            side);
+            return super.isSideSolid(world,
+                                     x,
+                                     y,
+                                     z,
+                                     side);
         }
     }
 
-    public boolean superIsBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
-        return super.isBlockSolidOnSide(world,
-                                        x,
-                                        y,
-                                        z,
-                                        side);
+    public boolean superSideSolid(World world, int x, int y, int z, ForgeDirection side) {
+        return super.isSideSolid(world,
+                                 x,
+                                 y,
+                                 z,
+                                 side);
     }
 
     @Override
@@ -390,9 +392,9 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public ArrayList getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+    public ArrayList getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
-        harvestList.add(new ItemStack(this.blockID, 1, metadata));
+        harvestList.add(new ItemStack(this, 1, metadata));
         return harvestList;
     }
 
@@ -402,7 +404,7 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         int metadata = world.getBlockMetadata(x,
                                               y,
                                               z);
@@ -412,12 +414,11 @@ public abstract class BlockBase extends BlockContainer {
                                                                                    z,
                                                                                    this.getTileMapData(metadata));
         if (tileentitybase != null) {
-            tileentitybase.onBlockNeighborChange(blockID);
+            tileentitybase.onBlockNeighborChange(block);
         } else {
-            world.setBlock(x,
-                           y,
-                           z,
-                           0);
+            world.setBlockToAir(x,
+                                y,
+                                z);
         }
     }
 
@@ -438,21 +439,21 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int side, int metadata) {
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                x,
                                                                                y,
                                                                                z,
                                                                                this.getTileMapData(metadata));
         if (tileentity != null) {
-            tileentity.breakBlock(side,
+            tileentity.breakBlock(block,
                                   metadata);
         }
         super.breakBlock(world,
                          x,
                          y,
                          z,
-                         side,
+                         block,
                          metadata);
     }
 
@@ -474,7 +475,7 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public Icon getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
+    public IIcon getIcon(IBlockAccess iblockaccess, int x, int y, int z, int side) {
         int metadata = iblockaccess.getBlockMetadata(x,
                                                      y,
                                                      z);
@@ -515,17 +516,17 @@ public abstract class BlockBase extends BlockContainer {
         }
     }
 
-    public boolean superBlockDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-        return super.addBlockDestroyEffects(world,
-                                            x,
-                                            y,
-                                            z,
-                                            meta,
-                                            effectRenderer);
+    public boolean superDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+        return super.addDestroyEffects(world,
+                                       x,
+                                       y,
+                                       z,
+                                       meta,
+                                       effectRenderer);
     }
 
     @Override
-    public boolean addBlockDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
         int metadata = world.getBlockMetadata(x,
                                               y,
                                               z);
@@ -539,23 +540,23 @@ public abstract class BlockBase extends BlockContainer {
                                                      meta,
                                                      effectRenderer);
         } else {
-            return super.addBlockDestroyEffects(world,
-                                                x,
-                                                y,
-                                                z,
-                                                meta,
-                                                effectRenderer);
+            return super.addDestroyEffects(world,
+                                           x,
+                                           y,
+                                           z,
+                                           meta,
+                                           effectRenderer);
         }
     }
 
-    public boolean superBlockHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
-        return super.addBlockHitEffects(world,
-                                        target,
-                                        effectRenderer);
+    public boolean superHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        return super.addHitEffects(world,
+                                   target,
+                                   effectRenderer);
     }
 
     @Override
-    public boolean addBlockHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+    public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
         int x = target.blockX, y = target.blockY, z = target.blockZ;
         int metadata = world.getBlockMetadata(x,
                                               y,
@@ -570,9 +571,9 @@ public abstract class BlockBase extends BlockContainer {
                                                  target,
                                                  effectRenderer);
         } else {
-            return super.addBlockHitEffects(world,
-                                            target,
-                                            effectRenderer);
+            return super.addHitEffects(world,
+                                       target,
+                                       effectRenderer);
         }
     }
 
@@ -593,7 +594,7 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     public void setItemName(int metadata, String name) {
-        Item item = Item.itemsList[this.blockID];
+        Item item = Item.getItemFromBlock(this);
         if (item != null) {
             ((ItemBlockBase) item).setMetaName(metadata,
                                                (new StringBuilder()).append("tile.").append(name).toString());
@@ -610,8 +611,9 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
-        return null;
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        return this.createTileEntity(world,
+                                     metadata);
     }
 
 }

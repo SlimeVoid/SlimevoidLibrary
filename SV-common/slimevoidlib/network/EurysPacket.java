@@ -16,7 +16,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraft.network.play.server.S3FPacketCustomPayload;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Packet Information Base
@@ -94,10 +98,14 @@ public abstract class EurysPacket {
         return getID() + " " + getClass().getSimpleName();
     }
 
+    public FMLProxyPacket getPacket() {
+        return FMLCommonHandler.instance().getSide() == Side.SERVER ? new FMLProxyPacket(this.getServerPacket()) : new FMLProxyPacket(this.getClientPacket());
+    }
+
     /**
      * Retrieves the Custom Packet and Payload data as Packet250CustomPayload
      */
-    public Packet250CustomPayload getPacket() {
+    public C17PacketCustomPayload getClientPacket() {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         DataOutputStream data = new DataOutputStream(bytes);
         try {
@@ -106,11 +114,28 @@ public abstract class EurysPacket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Packet250CustomPayload packet = new Packet250CustomPayload();
-        packet.channel = this.channel;
-        packet.data = bytes.toByteArray();
-        packet.length = packet.data.length;
-        packet.isChunkDataPacket = this.isChunkDataPacket;
+        C17PacketCustomPayload packet = new C17PacketCustomPayload(this.channel, bytes.toByteArray());
+        // packet.channel = this.channel;
+        // packet.data = bytes.toByteArray();
+        // packet.length = packet.data.length;
+        // packet.isChunkDataPacket = this.isChunkDataPacket;
+        return packet;
+    }
+
+    public S3FPacketCustomPayload getServerPacket() {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        DataOutputStream data = new DataOutputStream(bytes);
+        try {
+            data.writeByte(getID());
+            writeData(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        S3FPacketCustomPayload packet = new S3FPacketCustomPayload(this.channel, bytes.toByteArray());
+        // packet.channel = this.channel;
+        // packet.data = bytes.toByteArray();
+        // packet.length = packet.data.length;
+        // packet.isChunkDataPacket = this.isChunkDataPacket;
         return packet;
     }
 }

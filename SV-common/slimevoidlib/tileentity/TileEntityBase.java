@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.StepSound;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.util.ForgeDirection;
 import slimevoidlib.blocks.BlockBase;
 import slimevoidlib.core.lib.NBTLib;
 import slimevoidlib.util.helpers.BlockHelper;
@@ -38,7 +38,7 @@ public abstract class TileEntityBase extends TileEntity {
         this.active = false;
     }
 
-    public void onBlockNeighborChange(int direction) {
+    public void onBlockNeighborChange(Block block) {
 
     }
 
@@ -145,9 +145,9 @@ public abstract class TileEntityBase extends TileEntity {
         this.getWorldObj().markBlockForUpdate(this.xCoord,
                                               this.yCoord,
                                               this.zCoord);
-        this.getWorldObj().updateAllLightTypes(this.xCoord,
-                                               this.yCoord,
-                                               this.zCoord);
+        this.getWorldObj()./* updateAllLightTypes */func_147451_t(this.xCoord,
+                                                                  this.yCoord,
+                                                                  this.zCoord);
     }
 
     public void updateBlockAndNeighbours() {
@@ -155,7 +155,7 @@ public abstract class TileEntityBase extends TileEntity {
                                             this.xCoord,
                                             this.yCoord,
                                             this.zCoord,
-                                            this.getBlockID());
+                                            this.getBlockType());
         this.updateBlock();
     }
 
@@ -166,7 +166,7 @@ public abstract class TileEntityBase extends TileEntity {
                                    this.zCoord);
     }
 
-    public void breakBlock(int side, int metadata) {
+    public void breakBlock(Block block, int metadata) {
         ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
         this.addHarvestContents(harvestList);
         for (ItemStack itemstack : harvestList) {
@@ -205,9 +205,9 @@ public abstract class TileEntityBase extends TileEntity {
         return side;
     }
 
-    public Icon getBlockTexture(int x, int y, int z, int metadata, int side) {
-        return Block.blocksList[this.getBlockID()].getIcon(this.getRotatedSide(side),
-                                                           metadata);
+    public IIcon getBlockTexture(int x, int y, int z, int metadata, int side) {
+        return this.getBlockType().getIcon(this.getRotatedSide(side),
+                                           metadata);
     }
 
     public void setBlockBoundsBasedOnState(BlockBase blockBase) {
@@ -240,27 +240,27 @@ public abstract class TileEntityBase extends TileEntity {
                                                anEntity);
     }
 
-    public boolean isBlockSolidOnSide(BlockBase blockBase, ForgeDirection side) {
-        return blockBase.superIsBlockSolidOnSide(this.getWorldObj(),
-                                                 this.xCoord,
-                                                 this.yCoord,
-                                                 this.zCoord,
-                                                 side);
+    public boolean isSideSolid(BlockBase blockBase, ForgeDirection side) {
+        return blockBase.superSideSolid(this.getWorldObj(),
+                                        this.xCoord,
+                                        this.yCoord,
+                                        this.zCoord,
+                                        side);
     }
 
     public boolean addBlockDestroyEffects(BlockBase blockBase, int meta, EffectRenderer effectRenderer) {
-        return blockBase.superBlockDestroyEffects(this.getWorldObj(),
-                                                  this.xCoord,
-                                                  this.yCoord,
-                                                  this.zCoord,
-                                                  meta,
-                                                  effectRenderer);
+        return blockBase.superDestroyEffects(this.getWorldObj(),
+                                             this.xCoord,
+                                             this.yCoord,
+                                             this.zCoord,
+                                             meta,
+                                             effectRenderer);
     }
 
     public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
-        return blockBase.superBlockHitEffects(this.getWorldObj(),
-                                              target,
-                                              effectRenderer);
+        return blockBase.superHitEffects(this.getWorldObj(),
+                                         target,
+                                         effectRenderer);
     }
 
     /**
@@ -269,7 +269,7 @@ public abstract class TileEntityBase extends TileEntity {
      * 
      * @return a Step Sound
      */
-    public StepSound getStepSound() {
+    public SoundType getStepSound() {
         return null;
     }
 
@@ -294,17 +294,21 @@ public abstract class TileEntityBase extends TileEntity {
     }
 
     @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
-        this.readFromNBT(pkt.data);
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        this.readFromNBT(pkt.func_148857_g());
         this.onInventoryChanged();
         this.updateBlock();
+    }
+
+    public void onInventoryChanged() {
+        this.markDirty();
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
-        Packet packet = new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbttagcompound);
+        Packet packet = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbttagcompound);
         return packet;
     }
 }

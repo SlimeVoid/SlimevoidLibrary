@@ -1,8 +1,8 @@
 package slimevoidlib.sounds;
 
-import net.minecraft.block.StepSound;
+import net.minecraft.block.Block.SoundType;
 
-public class SlimevoidStepSound extends StepSound {
+public class SlimevoidStepSound extends SoundType {
 
     /**
      * This is a facade class used for the BlockBase of Slimevoid Mods
@@ -17,17 +17,25 @@ public class SlimevoidStepSound extends StepSound {
 
     @Override
     public String getBreakSound() {
-        return "dig.slimevoid." + this.stepSoundName;
+        return "dig.slimevoid." + this.soundName;
     }
 
     @Override
+    public String getStepResourcePath() {
+        return this.getStepSound();
+    }
+
     public String getStepSound() {
-        return "step.slimevoid." + this.stepSoundName;
+        return "step.slimevoid." + this.soundName;
     }
 
     @Override
+    public String func_150496_b() {
+        return this.getPlaceSound();
+    }
+
     public String getPlaceSound() {
-        return "place.slimevoid." + this.stepSoundName;
+        return "place.slimevoid." + this.soundName;
     }
 
 }

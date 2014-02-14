@@ -1,33 +1,25 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version. This program is distributed in the hope that it will be
- * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details. You should have received a copy of the GNU
- * Lesser General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- */
 package slimevoidlib.network.handlers;
 
-import java.io.ByteArrayInputStream;
+import io.netty.buffer.ByteBufInputStream;
+
 import java.io.DataInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 import slimevoidlib.IPacketExecutor;
 import slimevoidlib.data.Logger;
 import slimevoidlib.data.LoggerSlimevoidLib;
 import slimevoidlib.network.PacketUpdate;
-import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
-public abstract class SubPacketHandler implements IPacketHandler {
+public abstract class SubPacketHandler {
 
     private Map<String, IPacketExecutor> executors = new HashMap<String, IPacketExecutor>();
 
@@ -53,16 +45,37 @@ public abstract class SubPacketHandler implements IPacketHandler {
                       executor);
     }
 
+    @SubscribeEvent
     /**
-     * Receive a packet from the handler.<br>
+     * Receive a Server packet from the handler.<br>
      * Assembles the packet into an wireless packet and routes to
      * handlePacket().
      */
-    @Override
-    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-        EntityPlayer entityplayer = (EntityPlayer) player;
-        World world = entityplayer.worldObj;
-        DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+    public void onServerPacket(ServerCustomPacketEvent event) {
+        EntityPlayerMP entityplayer = ((NetHandlerPlayServer) event.handler).playerEntity;
+        ByteBufInputStream bbis = new ByteBufInputStream(event.packet.payload());
+        DataInputStream data = new DataInputStream(bbis);
+        this.assemblePacket(entityplayer.getEntityWorld(),
+                            entityplayer,
+                            data);
+    }
+
+    @SubscribeEvent
+    /**
+     * Receive a Client packet from the handler.<br>
+     * Assembles the packet into an wireless packet and routes to
+     * handlePacket().
+     */
+    public void onClientPacket(ClientCustomPacketEvent event) {
+        EntityPlayer entityplayer = Minecraft.getMinecraft().thePlayer;
+        ByteBufInputStream bbis = new ByteBufInputStream(event.packet.payload());
+        DataInputStream data = new DataInputStream(bbis);
+        this.assemblePacket(entityplayer.getEntityWorld(),
+                            entityplayer,
+                            data);
+    }
+
+    protected void assemblePacket(World world, EntityPlayer entityplayer, DataInputStream data) {
         try {
             // Assemble packet
             int packetID = data.read();
@@ -99,7 +112,7 @@ public abstract class SubPacketHandler implements IPacketHandler {
                                                                                                  "handlePacket("
                                                                                                          + packet.toString()
                                                                                                          + ", world,"
-                                                                                                         + entityplayer.username
+                                                                                                         + entityplayer.getGameProfile().getName()
                                                                                                          + ")",
                                                                                                  Logger.LogLevel.DEBUG);
         // Fetch the command.
@@ -115,7 +128,7 @@ public abstract class SubPacketHandler implements IPacketHandler {
                                                                                                      "handlePacket("
                                                                                                              + packet.toString()
                                                                                                              + ", world,"
-                                                                                                             + entityplayer.username
+                                                                                                             + entityplayer.getGameProfile().getName()
                                                                                                              + ") - UNKNOWN COMMAND",
                                                                                                      LoggerSlimevoidLib.LogLevel.WARNING);
             throw new RuntimeException("Tried to get a Packet Executor for command: "
@@ -123,4 +136,5 @@ public abstract class SubPacketHandler implements IPacketHandler {
                                        + " that has not been registered.");
         }
     }
+
 }

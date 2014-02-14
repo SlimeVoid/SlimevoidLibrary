@@ -11,8 +11,8 @@
  */
 package slimevoidlib.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import slimevoidlib.data.LoggerSlimevoidLib;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class SlimevoidCore {
     public static void console(String modName, String s, int type) {
@@ -25,15 +25,15 @@ public class SlimevoidCore {
                                                           LoggerSlimevoidLib.LogLevel.DEBUG);
             break;
         case 1:
-            FMLCommonHandler.instance().getFMLLogger().warning("[" + modName
-                                                               + "] " + s);
+            FMLCommonHandler.instance().getFMLLogger().warn("[" + modName
+                                                            + "] " + s);
             LoggerSlimevoidLib.getInstance(modName).write(false,
                                                           s,
                                                           LoggerSlimevoidLib.LogLevel.WARNING);
             break;
         case 2:
-            FMLCommonHandler.instance().getFMLLogger().severe("[" + modName
-                                                              + "] " + s);
+            FMLCommonHandler.instance().getFMLLogger().fatal("[" + modName
+                                                             + "] " + s);
             LoggerSlimevoidLib.getInstance(modName).write(false,
                                                           s,
                                                           LoggerSlimevoidLib.LogLevel.ERROR);

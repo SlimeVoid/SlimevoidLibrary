@@ -11,20 +11,20 @@ import cpw.mods.fml.relauncher.Side;
 
 public class BlockHelper {
 
-    public static void notifyBlock(World world, int x, int y, int z, int blockID) {
-        Block block = Block.blocksList[world.getBlockId(x,
-                                                        y,
-                                                        z)];
+    public static void notifyBlock(World world, int x, int y, int z, Block source) {
+        Block block = world.getBlock(x,
+                                     y,
+                                     z);
         if (block != null) {
             block.onNeighborBlockChange(world,
                                         x,
                                         y,
                                         z,
-                                        blockID);
+                                        source);
         }
     }
 
-    public static void updateIndirectNeighbors(World world, int x, int y, int z, int blockID) {
+    public static void updateIndirectNeighbors(World world, int x, int y, int z, Block block) {
         if (world.isRemote
             || FMLCommonHandler.instance().getSide() == Side.CLIENT) return;
         for (int inDirX = -3; inDirX <= 3; inDirX++) {
@@ -38,7 +38,7 @@ public class BlockHelper {
                                     x + inDirX,
                                     y + inDirY,
                                     z + inDirZ,
-                                    blockID);
+                                    block);
                     }
                 }
 
@@ -83,8 +83,7 @@ public class BlockHelper {
                                                   z);
     }
 
-    public static void playBlockPlaceNoise(World world, int x, int y, int z, int blockID) {
-        Block block = Block.blocksList[blockID];
+    public static void playBlockPlaceNoise(World world, int x, int y, int z, Block block) {
         world.playSoundEffect((float) x + 0.5F,
                               (float) y + 0.5F,
                               (float) z + 0.5F,

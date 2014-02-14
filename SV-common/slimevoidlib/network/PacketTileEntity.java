@@ -11,7 +11,6 @@
  */
 package slimevoidlib.network;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import slimevoidlib.util.helpers.SlimevoidHelper;
@@ -52,10 +51,10 @@ public abstract class PacketTileEntity extends PacketUpdate {
                                          this.xPosition,
                                          this.yPosition,
                                          this.zPosition)
-            && Block.blocksList[SlimevoidHelper.getBlockId(world,
-                                                           this.xPosition,
-                                                           this.yPosition,
-                                                           this.zPosition)].hasTileEntity(0)) {
+            && SlimevoidHelper.getBlock(world,
+                                          this.xPosition,
+                                          this.yPosition,
+                                          this.zPosition).hasTileEntity(0)) {
             return true;
         }
         return false;

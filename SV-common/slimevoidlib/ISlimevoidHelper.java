@@ -11,6 +11,7 @@
  */
 package slimevoidlib;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +21,7 @@ import net.minecraft.world.World;
 public interface ISlimevoidHelper {
 
     /**
-     * Gets the block ID for the block
+     * Gets the block from location
      * 
      * @param world
      *            the world of the target
@@ -30,9 +31,9 @@ public interface ISlimevoidHelper {
      *            the yCoord
      * @param z
      *            the zCoord
-     * @return the block Id
+     * @return the block
      */
-    public int getBlockId(World world, int x, int y, int z);
+    public Block getBlock(World world, int x, int y, int z);
 
     /**
      * Gets the tile entity for the block

@@ -12,12 +12,12 @@ public class ItemHelper {
         return itemstack != null
                && itemstack.getItem() != null
                && itemstack.getItem() instanceof ItemBlock
-               && !Block.blocksList[itemstack.itemID].hasTileEntity(itemstack.getItemDamage());
+               && !Block.getBlockFromItem(itemstack.getItem()).hasTileEntity(itemstack.getItemDamage());
     }
 
     public static boolean isSolidBlockStack(ItemStack itemstack, World world, int x, int y, int z) {
         return isBlockStack(itemstack)
-               && Block.blocksList[itemstack.itemID].renderAsNormalBlock();
+               && Block.getBlockFromItem(itemstack.getItem()).renderAsNormalBlock();
     }
 
     public static void dropItem(World world, int x, int y, int z, ItemStack itemstack) {
@@ -46,7 +46,7 @@ public class ItemHelper {
         for (int i = 0; i < input.length; i++) {
             String itemstack = null;
             if (input[i] instanceof ItemStack) {
-                itemstack = itemstackToInteger((ItemStack) input[i]);
+                itemstack = itemstackToName((ItemStack) input[i]);
             }
             if (itemstack != null) {
                 concat += itemstack;
@@ -56,8 +56,8 @@ public class ItemHelper {
         return concat;
     }
 
-    public static String itemstackToInteger(ItemStack itemstack) {
-        return itemstack != null ? itemstack.itemID + " | "
+    public static String itemstackToName(ItemStack itemstack) {
+        return itemstack != null ? itemstack.getDisplayName() + " | "
                                    + itemstack.stackSize : "null";
     }
 

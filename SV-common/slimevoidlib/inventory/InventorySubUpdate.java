@@ -50,8 +50,8 @@ public class InventorySubUpdate implements IInventory {
     }
 
     @Override
-    public String getInvName() {
-        return parent.getInvName();
+    public String getInventoryName() {
+        return parent.getInventoryName();
     }
 
     @Override
@@ -60,8 +60,8 @@ public class InventorySubUpdate implements IInventory {
     }
 
     @Override
-    public void onInventoryChanged() {
-        parent.onInventoryChanged();
+    public void markDirty() {
+        parent.markDirty();
     }
 
     @Override
@@ -70,15 +70,15 @@ public class InventorySubUpdate implements IInventory {
     }
 
     @Override
-    public void openChest() {
+    public void openInventory() {
     }
 
     @Override
-    public void closeChest() {
+    public void closeInventory() {
     }
 
     @Override
-    public boolean isInvNameLocalized() {
+    public boolean hasCustomInventoryName() {
         return false;
     }
 

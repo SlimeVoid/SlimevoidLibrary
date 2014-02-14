@@ -75,7 +75,7 @@ public abstract class PacketEntity extends PacketUpdate {
             // Get the current entity
             Entity entity = entities.get(i);
             // Is entity id of current loaded entity equal to this entity Id
-            if (entity != null && entity.entityId == this.getEntityId()) {
+            if (entity != null && entity.getEntityId() == this.getEntityId()) {
                 // Entity is loaded and exists
                 return true;
             }
@@ -95,7 +95,8 @@ public abstract class PacketEntity extends PacketUpdate {
                 // Get the current entity
                 Entity entity = entities.get(i);
                 // Is entity id of current loaded entity equal to this entity Id
-                if (entity != null && entity.entityId == this.getEntityId()) {
+                if (entity != null
+                    && entity.getEntityId() == this.getEntityId()) {
                     // Entity is loaded return the loaded entity
                     return entity;
                 }

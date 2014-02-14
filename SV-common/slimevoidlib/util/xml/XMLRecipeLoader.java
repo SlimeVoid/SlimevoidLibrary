@@ -24,6 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.w3c.dom.Document;
@@ -37,7 +38,6 @@ import slimevoidlib.core.SlimevoidCore;
 import slimevoidlib.core.lib.CoreLib;
 import slimevoidlib.util.FileReader;
 import slimevoidlib.util.FileUtils;
-import slimevoidlib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class XMLRecipeLoader extends XMLLoader {
@@ -209,7 +209,7 @@ public class XMLRecipeLoader extends XMLLoader {
         int recipeStackSize = 1;
 
         // Output ID. Must be set or it will skip the recipe.
-        int outId = 0;
+        Item outItem = null;
         // Output meta data. Defaults to 0.
         int outMeta = 0;
 
@@ -238,12 +238,12 @@ public class XMLRecipeLoader extends XMLLoader {
             // Out ID attribute was found.
             if (recAttrs.item(j).getNodeName().equals("outId")) {
                 String outIdStr = recAttrs.item(j).getNodeValue();
-                outId = xmlValueToInteger(outIdStr);
+                outItem = xmlValueToItem(outIdStr);
             }
         }
 
         // Do not continue without ID.
-        if (outId == 0) {
+        if (outItem == null) {
             FileReader.endWithError("recipe.outID not set! ("
                                     + xmlFile.getName() + ")");
             return;
@@ -286,7 +286,7 @@ public class XMLRecipeLoader extends XMLLoader {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 NamedNodeMap attrs = node.getAttributes();
                 // The input object's ID.
-                int id = 0;
+                Item item = null;
                 // The input object's metadata.
                 int meta = 0;
 
@@ -295,7 +295,7 @@ public class XMLRecipeLoader extends XMLLoader {
                     // ID attribute was found.
                     if (attrs.item(j).getNodeName().equals("id")) {
                         String idStr = attrs.item(j).getNodeValue();
-                        id = xmlValueToInteger(idStr);
+                        item = xmlValueToItem(idStr);
                     }
                     // Metadata attribute was found.
                     if (attrs.item(j).getNodeName().equals("meta")) {
@@ -305,7 +305,7 @@ public class XMLRecipeLoader extends XMLLoader {
                 }
 
                 // Do not continue without ID.
-                if (id == 0) {
+                if (item == null) {
                     FileReader.endWithError("mapping.id not set! ("
                                             + xmlFile.getName() + ")");
                     return;
@@ -314,7 +314,7 @@ public class XMLRecipeLoader extends XMLLoader {
                 // Add the input mapping to the recipe map.
                 // The node's value is the variable.
                 recipeMap.put(node.getChildNodes().item(0).getNodeValue(),
-                              new ItemStack(id, 1, meta));
+                              new ItemStack(item, 1, meta));
             }
         }
 
@@ -340,7 +340,7 @@ public class XMLRecipeLoader extends XMLLoader {
 
         // Register recipe.
         // Output itemstack and convert the list to object array.
-        registerRecipe(new ItemStack(outId, recipeStackSize, outMeta),
+        registerRecipe(new ItemStack(outItem, recipeStackSize, outMeta),
                        recipe.toArray());
     }
 
@@ -361,6 +361,23 @@ public class XMLRecipeLoader extends XMLLoader {
         return value;
     }
 
+    private static Item xmlValueToItem(String xmlString) {
+        int value = 0;
+        try {
+            // Try to parse attribute integer
+            value = Integer.parseInt(xmlString);
+        } catch (NumberFormatException e) {
+            // Integer parsin failed, try checking if it is a
+            // variable string
+            if (xmlVariables.containsKey(xmlString)) {
+                // If it was a variable string, use the variable
+                // mapping instead
+                value = xmlVariables.get(xmlString);
+            }
+        }
+        return Item.getItemById(value);
+    }
+
     /**
      * Register a recipe.<br>
      * Uses Minecraft API (Forge/Modloader) specific method of registration.
@@ -373,8 +390,7 @@ public class XMLRecipeLoader extends XMLLoader {
     private static void registerRecipe(ItemStack output, Object[] input) {
         GameRegistry.addRecipe(output,
                                input);
-        FileReader.sendMessage("Adding recipe for: " + output.itemID);
-        FileReader.sendMessage("Recipe requires: "
-                               + ItemHelper.itemstackArrayToIntegers(input));
+        FileReader.sendMessage("Adding recipe for: "
+                               + output.getUnlocalizedName());
     }
 }

@@ -1,5 +1,7 @@
 package slimevoidlib.util.xml;
 
+import java.util.Iterator;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -7,16 +9,20 @@ import net.minecraft.item.ItemBlock;
 public class XMLVariables {
 
     public static void registerDefaultXMLVariables() {
-        for (Block block : Block.blocksList) {
+        Iterator<Block> blocks = Block.blockRegistry.iterator();
+        while (blocks.hasNext()) {
+            Block block = blocks.next();
             if (block != null) {
                 XMLLoader.addXmlVariable("$" + block.getUnlocalizedName(),
-                                         block.blockID);
+                                         Block.getIdFromBlock(block));
             }
         }
-        for (Item item : Item.itemsList) {
+        Iterator<Item> items = Item.itemRegistry.iterator();
+        while (items.hasNext()) {
+            Item item = items.next();
             if (item != null && !(item instanceof ItemBlock)) {
                 XMLLoader.addXmlVariable("$" + item.getUnlocalizedName(),
-                                         item.itemID);
+                                         Item.getIdFromItem(item));
 
             }
         }
