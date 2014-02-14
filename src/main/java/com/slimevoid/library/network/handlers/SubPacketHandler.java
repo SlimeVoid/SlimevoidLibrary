@@ -6,15 +6,16 @@ import java.io.DataInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.world.World;
+
 import com.slimevoid.library.IPacketExecutor;
 import com.slimevoid.library.data.Logger;
 import com.slimevoid.library.data.LoggerSlimevoidLib;
 import com.slimevoid.library.network.PacketUpdate;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
@@ -51,7 +52,8 @@ public abstract class SubPacketHandler {
      */
     public void onPacketData(ServerCustomPacketEvent event) {
         EntityPlayerMP entityplayer = ((NetHandlerPlayServer) event.handler).playerEntity;
-        DataInputStream data = new DataInputStream(new ByteBufInputStream(event.packet.payload()));
+        ByteBufInputStream bytes = new ByteBufInputStream(event.packet.payload());
+        DataInputStream data = new DataInputStream(bytes);
         this.assemblePacket(entityplayer.getEntityWorld(),
                             entityplayer,
                             data);
@@ -64,7 +66,8 @@ public abstract class SubPacketHandler {
      */
     public void onPacketData(ClientCustomPacketEvent event) {
         EntityPlayerMP entityplayer = ((NetHandlerPlayServer) event.handler).playerEntity;
-        DataInputStream data = new DataInputStream(new ByteBufInputStream(event.packet.payload()));
+        ByteBufInputStream bytes = new ByteBufInputStream(event.packet.payload());
+        DataInputStream data = new DataInputStream(bytes);
         this.assemblePacket(entityplayer.getEntityWorld(),
                             entityplayer,
                             data);
@@ -72,8 +75,6 @@ public abstract class SubPacketHandler {
 
     protected void assemblePacket(World world, EntityPlayer entityplayer, DataInputStream data) {
         try {
-            // Assemble packet
-            int packetID = data.read();
             PacketUpdate pU = this.createNewPacket();
             pU.readData(data);
             // Route to handlePacket()
