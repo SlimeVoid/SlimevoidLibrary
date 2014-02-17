@@ -45,7 +45,7 @@ public abstract class ContainerBase extends Container {
         // Hotbar inventory
         for (int row = 0; row < 9; ++row) {
             int slotIndex = row;
-            this.addSlotToContainer(new Slot(new InventorySubUpdate(ContainerBase.this, playerInventory, 0, 9), slotIndex, (8 + row * 18 + playerColOffset), 58 + playerRowOffset));
+            this.addSlotToContainer(new Slot(playerInventory, slotIndex, (8 + row * 18 + playerColOffset), 58 + playerRowOffset));
         }
     }
 

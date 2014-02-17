@@ -20,6 +20,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -302,6 +303,19 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
 
     public void onInventoryChanged() {
         this.markDirty();
+        this.onInventoryHasChanged(this.worldObj,
+                                   this.xCoord,
+                                   this.yCoord,
+                                   this.zCoord);
+    }
+
+    /**
+     * If we need to send information to the client it should be done here
+     */
+    protected void onInventoryHasChanged(World world, int x, int y, int z) {
+        world.markBlockForUpdate(x,
+                                 y,
+                                 z);
     }
 
     @Override
