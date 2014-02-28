@@ -1,4 +1,4 @@
-package slimevoidlib.core.lib;
+package com.slimevoid.library.core.lib;
 
 import java.io.File;
 

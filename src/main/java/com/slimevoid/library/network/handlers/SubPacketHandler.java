@@ -132,5 +132,4 @@ public abstract class SubPacketHandler {
                                        + " that has not been registered.");
         }
     }
-
 }

@@ -12,6 +12,7 @@
 package com.slimevoid.library.core;
 
 import com.slimevoid.library.ICommonProxy;
+import com.slimevoid.library.core.lib.ConfigurationLib;
 import com.slimevoid.library.core.lib.CoreLib;
 import com.slimevoid.library.util.helpers.SlimevoidHelper;
 import com.slimevoid.library.util.json.JSONLoader;
@@ -37,11 +38,16 @@ public class SlimevoidLib {
     @EventHandler
     public static void SlimevoidLibPreInit(FMLPreInitializationEvent event) {
         proxy.preInit();
+        ConfigurationLib.preInit(event.getSuggestedConfigurationFile());
         SlimevoidHelper.init();
     }
 
     @EventHandler
     public static void SlimevoidLibInit(FMLInitializationEvent event) {
+
+        proxy.preInit();
+        SlimevoidHelper.init();
+        ConfigurationLib.init();
         XMLVariables.registerDefaultXMLVariables();
     }
 

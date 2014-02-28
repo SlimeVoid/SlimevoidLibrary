@@ -1,4 +1,4 @@
-package slimevoidlib.blocks;
+package com.slimevoid.library.blocks;
 
 import java.util.List;
 import java.util.Random;
