@@ -6,14 +6,15 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public abstract class BlockTransientLight extends Block {
 
-    public BlockTransientLight(int id) {
-        super(id, Material.air);
+    public BlockTransientLight() {
+        super(Material.air);
     }
 
     public boolean isAirBlock(World world, int x, int y, int z) {
@@ -55,7 +56,7 @@ public abstract class BlockTransientLight extends Block {
             world.scheduleBlockUpdate(x,
                                       y,
                                       z,
-                                      blockID,
+                                      this,
                                       tickRate(world));
         }
     }
@@ -80,7 +81,7 @@ public abstract class BlockTransientLight extends Block {
             world.scheduleBlockUpdate(x,
                                       y,
                                       z,
-                                      blockID,
+                                      this,
                                       tickRate(world));
         }
     }
@@ -97,17 +98,17 @@ public abstract class BlockTransientLight extends Block {
         return RenderingRegistry.getNextAvailableRenderId();
     }
 
-    public static void setBlock(int blockID, int x, int y, int z, World world) {
+    public static void setBlock(Block block, int x, int y, int z, World world) {
         if (!world.isRemote) {
-            if ((world.getBlockId(x,
-                                  y,
-                                  z) == 0 || world.getBlockId(x,
-                                                              y,
-                                                              z) == blockID)) {
+            if ((world.getBlock(x,
+                                y,
+                                z) == Blocks.air || world.getBlock(x,
+                                                                   y,
+                                                                   z) == block)) {
                 world.setBlock(x,
                                y,
                                z,
-                               blockID,
+                               block,
                                0,
                                2);
             }
