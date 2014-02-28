@@ -10,7 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-public class BlockTransientLight extends Block {
+public abstract class BlockTransientLight extends Block {
 
     public BlockTransientLight(int id) {
         super(id, Material.air);
@@ -51,6 +51,13 @@ public class BlockTransientLight extends Block {
 
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
+        if (!world.isRemote) {
+            world.scheduleBlockUpdate(x,
+                                      y,
+                                      z,
+                                      blockID,
+                                      tickRate(world));
+        }
     }
 
     @Override
@@ -60,14 +67,51 @@ public class BlockTransientLight extends Block {
 
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
-        world.setBlockToAir(x,
-                            y,
-                            z);
+        if (!world.isRemote) {
+            if (!this.handleLightingConditions(world,
+                                               x,
+                                               y,
+                                               z,
+                                               random)) {
+                world.setBlockToAir(x,
+                                    y,
+                                    z);
+            }
+            world.scheduleBlockUpdate(x,
+                                      y,
+                                      z,
+                                      blockID,
+                                      tickRate(world));
+        }
     }
+
+    /**
+     * This method should return true if you handled lighting updates otherwise
+     * the block will remove itself automatically on this tick
+     * 
+     */
+    protected abstract boolean handleLightingConditions(World world, int x, int y, int z, Random random);
 
     @Override
     public int getRenderType() {
         return RenderingRegistry.getNextAvailableRenderId();
+    }
+
+    public static void setBlock(int blockID, int x, int y, int z, World world) {
+        if (!world.isRemote) {
+            if ((world.getBlockId(x,
+                                  y,
+                                  z) == 0 || world.getBlockId(x,
+                                                              y,
+                                                              z) == blockID)) {
+                world.setBlock(x,
+                               y,
+                               z,
+                               blockID,
+                               0,
+                               2);
+            }
+        }
     }
 
 }
