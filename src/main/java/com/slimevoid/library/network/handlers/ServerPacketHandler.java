@@ -12,10 +12,9 @@ import com.slimevoid.library.data.LoggerSlimevoidLib;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
-public class PacketHandler implements IPacketHandler {
+public class ServerPacketHandler implements IPacketHandler {
 
     public static FMLEventChannel          listener;
 
@@ -24,7 +23,7 @@ public class PacketHandler implements IPacketHandler {
     /**
      * Initializes the commonHandler Map
      */
-    public PacketHandler() {
+    public ServerPacketHandler() {
         handlers = new HashMap<Integer, SubPacketHandler>();
     }
 
@@ -38,11 +37,11 @@ public class PacketHandler implements IPacketHandler {
      */
     public void registerPacketHandler(int packetID, SubPacketHandler handler) {
         if (handlers.containsKey(packetID)) {
-            LoggerSlimevoidLib.getInstance(Logger.filterClassName(PacketHandler.class.toString())).write(false,
-                                                                                                         "PacketID ["
-                                                                                                                 + packetID
-                                                                                                                 + "] already registered.",
-                                                                                                         Logger.LogLevel.ERROR);
+            LoggerSlimevoidLib.getInstance(Logger.filterClassName(ServerPacketHandler.class.toString())).write(false,
+                                                                                                               "PacketID ["
+                                                                                                                       + packetID
+                                                                                                                       + "] already registered.",
+                                                                                                               Logger.LogLevel.ERROR);
             throw new RuntimeException("PacketID [" + packetID
                                        + "] already registered.");
         }
@@ -58,11 +57,11 @@ public class PacketHandler implements IPacketHandler {
      */
     public SubPacketHandler getPacketHandler(int packetID) {
         if (!handlers.containsKey(packetID)) {
-            LoggerSlimevoidLib.getInstance(Logger.filterClassName(PacketHandler.class.toString())).write(false,
-                                                                                                         "Tried to get a Packet Handler for ID: "
-                                                                                                                 + packetID
-                                                                                                                 + " that has not been registered.",
-                                                                                                         Logger.LogLevel.WARNING);
+            LoggerSlimevoidLib.getInstance(Logger.filterClassName(ServerPacketHandler.class.toString())).write(false,
+                                                                                                               "Tried to get a Packet Handler for ID: "
+                                                                                                                       + packetID
+                                                                                                                       + " that has not been registered.",
+                                                                                                               Logger.LogLevel.WARNING);
             throw new RuntimeException("Tried to get a Packet Handler for ID: "
                                        + packetID
                                        + " that has not been registered.");
@@ -70,21 +69,8 @@ public class PacketHandler implements IPacketHandler {
         return handlers.get(packetID);
     }
 
-    @Override
     @SubscribeEvent
     public void onServerPacket(ServerCustomPacketEvent event) {
-        DataInputStream data = new DataInputStream(new ByteBufInputStream(event.packet.payload()));
-        try {
-            int packetID = data.read();
-            this.getPacketHandler(packetID).onPacketData(event);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    @SubscribeEvent
-    public void onClientPacket(ClientCustomPacketEvent event) {
         DataInputStream data = new DataInputStream(new ByteBufInputStream(event.packet.payload()));
         try {
             int packetID = data.read();
