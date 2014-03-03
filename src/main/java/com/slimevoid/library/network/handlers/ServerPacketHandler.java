@@ -11,12 +11,9 @@ import com.slimevoid.library.data.Logger;
 import com.slimevoid.library.data.LoggerSlimevoidLib;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
 public class ServerPacketHandler implements IPacketHandler {
-
-    public static FMLEventChannel          listener;
 
     private Map<Integer, SubPacketHandler> handlers;
 

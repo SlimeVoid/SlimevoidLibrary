@@ -50,6 +50,15 @@ public abstract class EurysPacket {
     }
 
     /**
+     * Retrieves the channel for this packet
+     * 
+     * @return channel
+     */
+    public String getChannel() {
+        return this.channel;
+    }
+
+    /**
      * Writes data to the packet
      * 
      * @param data

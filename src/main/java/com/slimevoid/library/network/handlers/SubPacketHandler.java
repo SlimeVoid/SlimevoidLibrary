@@ -16,6 +16,7 @@ import com.slimevoid.library.data.Logger;
 import com.slimevoid.library.data.LoggerSlimevoidLib;
 import com.slimevoid.library.network.PacketUpdate;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
@@ -65,7 +66,7 @@ public abstract class SubPacketHandler {
      * handlePacket().
      */
     public void onPacketData(ClientCustomPacketEvent event) {
-        EntityPlayerMP entityplayer = ((NetHandlerPlayServer) event.handler).playerEntity;
+        EntityPlayer entityplayer = FMLClientHandler.instance().getClientPlayerEntity();
         ByteBufInputStream bytes = new ByteBufInputStream(event.packet.payload());
         DataInputStream data = new DataInputStream(bytes);
         this.assemblePacket(entityplayer.getEntityWorld(),
