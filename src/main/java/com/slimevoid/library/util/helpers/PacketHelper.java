@@ -9,6 +9,7 @@ import com.slimevoid.library.network.PacketUpdate;
 
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 /**
  * Client and Server channels must be registered independently
@@ -17,7 +18,7 @@ public class PacketHelper {
 
     public static HashMap<String, FMLEventChannel> listener = new HashMap<String, FMLEventChannel>();
 
-    public static void registerClientPacketHandler(String modChannel, IPacketHandler handler) {
+    public static void registerClientListener(String modChannel, IPacketHandler handler) {
         /*
          * Register Listeners
          */
@@ -30,7 +31,7 @@ public class PacketHelper {
         listener.get(modChannel).register(handler);
     }
 
-    public static void registerPacketHandler(String modChannel, IPacketHandler handler) {
+    public static void registerListener(String modChannel, IPacketHandler handler) {
         /*
          * Register Listeners
          */
@@ -48,6 +49,15 @@ public class PacketHelper {
 
     public static void sendToServer(PacketUpdate packet) {
         listener.get(packet.getChannel()).sendToServer(packet.getPacket());
+    }
+
+    public static void broadcastPacket(PacketUpdate packet) {
+        listener.get(packet.getChannel()).sendToAll(packet.getPacket());
+    }
+
+    public static void sendToAllAround(PacketUpdate packet, int x, int y, int z, int range, int dimension) {
+        listener.get(packet.getChannel()).sendToAllAround(packet.getPacket(),
+                                                          new TargetPoint(dimension, x, y, z, range));
     }
 
 }
