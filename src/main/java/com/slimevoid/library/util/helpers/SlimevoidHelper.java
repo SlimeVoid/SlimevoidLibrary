@@ -14,15 +14,15 @@ package com.slimevoid.library.util.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.slimevoid.library.ISlimevoidHelper;
-import com.slimevoid.library.core.SlimevoidCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.slimevoid.library.ISlimevoidHelper;
+import com.slimevoid.library.core.SlimevoidCore;
 
 public class SlimevoidHelper {
 
@@ -106,7 +106,7 @@ public class SlimevoidHelper {
                                     zCoord + zDiff) <= distance;
     }
 
-    public static boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity) {
+    public static boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isLadder = helper.isLadder(world,
                                                x,

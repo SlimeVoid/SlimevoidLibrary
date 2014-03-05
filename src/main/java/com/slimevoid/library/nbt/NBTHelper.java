@@ -15,11 +15,58 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTHelper {
+
+    /**
+     * Writes an ItemStack to a, Output Stream
+     * 
+     * @param data
+     * @param itemstack
+     */
+    public static void writeItemStack(DataOutputStream data, ItemStack itemstack) throws IOException {
+        if (itemstack == null) {
+            data.writeShort(-1);
+        } else {
+            data.writeShort(Item.getIdFromItem(itemstack.getItem()));
+            data.writeByte(itemstack.stackSize);
+            data.writeShort(itemstack.getItemDamage());
+            NBTTagCompound nbttagcompound = null;
+
+            if (itemstack.getItem().isDamageable()
+                || itemstack.getItem().getShareTag()) {
+                nbttagcompound = itemstack.stackTagCompound;
+            }
+
+            writeNBTTagCompound(nbttagcompound,
+                                data);
+        }
+    }
+
+    /**
+     * Reads an ItemStack from an Input Stream
+     * 
+     * @param data
+     * @return
+     * @throws IOException
+     */
+    public static ItemStack readItemStack(DataInputStream data) throws IOException {
+        ItemStack itemstack = null;
+        short short1 = data.readShort();
+
+        if (short1 >= 0) {
+            byte b0 = data.readByte();
+            short short2 = data.readShort();
+            itemstack = new ItemStack(Item.getItemById(short1), b0, short2);
+            itemstack.stackTagCompound = readNBTTagCompound(data);
+        }
+
+        return itemstack;
+    }
 
     /**
      * Writes a String to the DataOutputStream

@@ -111,5 +111,5 @@ public interface ISlimevoidHelper {
      * 
      * @return true of false
      */
-    public boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity);
+    public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity);
 }
