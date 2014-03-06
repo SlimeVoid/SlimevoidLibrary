@@ -72,6 +72,7 @@ public class ClientPacketHandler implements IPacketHandler {
         try {
             int packetID = data.read();
             this.getPacketHandler(packetID).onPacketData(event);
+            data.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

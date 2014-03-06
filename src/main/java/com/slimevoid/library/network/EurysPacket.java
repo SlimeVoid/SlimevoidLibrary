@@ -11,6 +11,9 @@
  */
 package com.slimevoid.library.network;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -108,30 +111,38 @@ public abstract class EurysPacket {
     }
 
     public FMLProxyPacket getPacket() {
-        return FMLCommonHandler.instance().getSide() == Side.SERVER ? new FMLProxyPacket(this.getServerPacket()) : new FMLProxyPacket(this.getClientPacket());
+        boolean isServer = FMLCommonHandler.instance().getSide() == Side.SERVER;
+        Side target = isServer ? Side.CLIENT : Side.SERVER;
+        byte[] bytes = this.getByteArray();
+        ByteBuf buffer;
+        try {
+            buffer = Unpooled.wrappedBuffer(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            buffer = Unpooled.EMPTY_BUFFER;
+        }
+        FMLProxyPacket fmlPacket = new FMLProxyPacket(buffer, this.getChannel());
+        fmlPacket.setTarget(target);
+        // FMLProxyPacket fmlSidedPacket = isServer ? new
+        // FMLProxyPacket(this.getServerPacket()) : new
+        // FMLProxyPacket(this.getClientPacket());
+        return fmlPacket;
     }
 
     /**
      * Retrieves the Custom Packet and Payload data as Packet250CustomPayload
      */
     public C17PacketCustomPayload getClientPacket() {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream data = new DataOutputStream(bytes);
-        try {
-            data.writeByte(getID());
-            writeData(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        C17PacketCustomPayload packet = new C17PacketCustomPayload(this.channel, bytes.toByteArray());
-        // packet.channel = this.channel;
-        // packet.data = bytes.toByteArray();
-        // packet.length = packet.data.length;
-        // packet.isChunkDataPacket = this.isChunkDataPacket;
+        C17PacketCustomPayload packet = new C17PacketCustomPayload(this.getChannel(), this.getByteArray());
         return packet;
     }
 
     public S3FPacketCustomPayload getServerPacket() {
+        S3FPacketCustomPayload packet = new S3FPacketCustomPayload(this.getChannel(), this.getByteArray());
+        return packet;
+    }
+
+    private byte[] getByteArray() {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         DataOutputStream data = new DataOutputStream(bytes);
         try {
@@ -140,11 +151,6 @@ public abstract class EurysPacket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        S3FPacketCustomPayload packet = new S3FPacketCustomPayload(this.channel, bytes.toByteArray());
-        // packet.channel = this.channel;
-        // packet.data = bytes.toByteArray();
-        // packet.length = packet.data.length;
-        // packet.isChunkDataPacket = this.isChunkDataPacket;
-        return packet;
+        return bytes.toByteArray();
     }
 }

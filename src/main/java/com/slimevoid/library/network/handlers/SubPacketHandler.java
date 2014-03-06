@@ -82,9 +82,9 @@ public abstract class SubPacketHandler {
             PacketUpdate pU = this.createNewPacket();
             pU.readData(data);
             // Route to handlePacket()
-            handlePacket(pU,
-                         world,
-                         entityplayer);
+            this.handlePacket(pU,
+                              world,
+                              entityplayer);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -4,42 +4,51 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import com.slimevoid.library.IPacketHandler;
 import com.slimevoid.library.network.PacketUpdate;
+import com.slimevoid.library.network.handlers.ClientPacketHandler;
+import com.slimevoid.library.network.handlers.ServerPacketHandler;
 
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Client and Server channels must be registered independently
  */
 public class PacketHelper {
 
-    public static HashMap<String, FMLEventChannel> listener = new HashMap<String, FMLEventChannel>();
+    private static HashMap<String, FMLEventChannel> listener = new HashMap<String, FMLEventChannel>();
 
-    public static void registerClientListener(String modChannel, IPacketHandler handler) {
-        /*
-         * Register Listeners
-         */
-        // ClientPacketHandler.listener =
-        // NetworkRegistry.INSTANCE.newEventDrivenChannel(modChannel);
-        if (!listener.containsKey(modChannel)) {
-            listener.put(modChannel,
-                         NetworkRegistry.INSTANCE.newEventDrivenChannel(modChannel));
-        }
-        listener.get(modChannel).register(handler);
+    /**
+     * Register Listener for mod Channel
+     * 
+     * Should be called in the Main class of the mod 
+     * @param modChannel
+     */
+    public static void registerListener(String modChannel) {
+        listener.put(modChannel,
+                     NetworkRegistry.INSTANCE.newEventDrivenChannel(modChannel));
     }
 
-    public static void registerListener(String modChannel, IPacketHandler handler) {
+    @SideOnly(Side.CLIENT)
+    public static void registerClientHandler(String modChannel, ClientPacketHandler handler) {
         /*
-         * Register Listeners
+         * Register Handler for Listener
          */
-        if (!listener.containsKey(modChannel)) {
-            listener.put(modChannel,
-                         NetworkRegistry.INSTANCE.newEventDrivenChannel(modChannel));
+        if (listener.containsKey(modChannel)) {
+            listener.get(modChannel).register(handler);
         }
-        listener.get(modChannel).register(handler);
+    }
+
+    public static void registerServerHandler(String modChannel, ServerPacketHandler handler) {
+        /*
+         * Register Handler for Listener
+         */
+        if (listener.containsKey(modChannel)) {
+            listener.get(modChannel).register(handler);
+        }
     }
 
     public static void sendToPlayer(PacketUpdate packet, EntityPlayerMP entityplayer) {

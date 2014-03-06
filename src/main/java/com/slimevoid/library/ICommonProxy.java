@@ -25,6 +25,10 @@ public interface ICommonProxy extends IGuiHandler {
      */
     public void preInit();
 
+    public void init();
+
+    public void postInit();
+
     /**
      * Retrieves the Minecraft directory
      * 
