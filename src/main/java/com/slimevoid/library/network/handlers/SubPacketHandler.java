@@ -19,6 +19,8 @@ import com.slimevoid.library.network.PacketUpdate;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SubPacketHandler {
 
@@ -65,6 +67,7 @@ public abstract class SubPacketHandler {
      * Assembles the packet into an wireless packet and routes to
      * handlePacket().
      */
+    @SideOnly(Side.CLIENT)
     public void onPacketData(ClientCustomPacketEvent event) {
         EntityPlayer entityplayer = FMLClientHandler.instance().getClientPlayerEntity();
         ByteBufInputStream bytes = new ByteBufInputStream(event.packet.payload());
