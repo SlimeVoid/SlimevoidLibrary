@@ -21,8 +21,8 @@ public class ReflectionHelper {
     public boolean setFinalStaticFieldAtIndex(int declaredIndex, Object newValue) {
         try {
             Field declaredField = this._clazz.getDeclaredFields()[declaredIndex];
-            setFinalStatic(declaredField,
-                           newValue);
+            this.setFinalStatic(declaredField,
+                                newValue);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,6 +40,24 @@ public class ReflectionHelper {
 
         field.set(null,
                   newValue);
+    }
+
+    public Object getPrivateFieldAtIndex(int declaredIndex) {
+        try {
+            Field declaredField = this._clazz.getDeclaredFields()[declaredIndex];
+            return this.getPrivate(declaredField);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Object getPrivate(Field field) throws Exception {
+        boolean flag = field.isAccessible();
+        field.setAccessible(true);
+        Object result = field.get(field);
+        field.setAccessible(flag);
+        return result;
     }
 
 }
