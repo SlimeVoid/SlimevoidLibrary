@@ -3,6 +3,18 @@ package com.slimevoid.library.util.helpers;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+/**
+ * Example Usage:
+ * 
+ * Object privateVariable =
+ * ReflectionHelper.getInstance([ClassName].class).getPrivateFieldAtIndex(0);
+ * 
+ * if (privateVariable instanceof Block) { Block block = (Block)
+ * privateVariable; }
+ * 
+ * @author Gregory Jones
+ * 
+ */
 public class ReflectionHelper {
 
     public Class _clazz;
