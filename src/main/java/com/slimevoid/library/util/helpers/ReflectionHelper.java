@@ -6,11 +6,11 @@ import java.lang.reflect.Modifier;
 /**
  * Example Usage:
  * 
- * Object privateVariable =
- * ReflectionHelper.getInstance([ClassName].class).getPrivateFieldAtIndex(0);
+ * Object privateVariable = ReflectionHelper.getInstance([ClassName].class).getPrivateFieldAtIndex(0);
  * 
- * if (privateVariable instanceof Block) { Block block = (Block)
- * privateVariable; }
+ * if (privateVariable instanceof Block) {
+ *      Block block = (Block) privateVariable;
+ * }
  * 
  * @author Gregory Jones
  * 
