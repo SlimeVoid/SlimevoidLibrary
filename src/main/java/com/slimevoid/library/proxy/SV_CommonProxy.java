@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.slimevoid.library.ICommonProxy;
-import com.slimevoid.library.IPacketHandling;
 
 public class SV_CommonProxy implements ICommonProxy {
 
@@ -38,11 +37,6 @@ public class SV_CommonProxy implements ICommonProxy {
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return null;
-    }
-
-    @Override
-    public IPacketHandling getPacketHandler() {
         return null;
     }
 

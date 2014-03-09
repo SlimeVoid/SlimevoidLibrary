@@ -63,13 +63,6 @@ public interface ICommonProxy extends IGuiHandler {
     public void registerEventHandlers();
 
     /**
-     * Retrieves the sided packet handler
-     * 
-     * @return Packet Handler
-     */
-    public IPacketHandling getPacketHandler();
-
-    /**
      * Register tileentity renderer (Client only)
      * 
      * @param clazz

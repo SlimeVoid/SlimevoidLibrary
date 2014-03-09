@@ -11,14 +11,15 @@
  */
 package com.slimevoid.library.nbt;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.network.ByteBufUtils;
 
 public class NBTHelper {
 
@@ -28,23 +29,9 @@ public class NBTHelper {
      * @param data
      * @param itemstack
      */
-    public static void writeItemStack(DataOutputStream data, ItemStack itemstack) throws IOException {
-        if (itemstack == null) {
-            data.writeShort(-1);
-        } else {
-            data.writeShort(Item.getIdFromItem(itemstack.getItem()));
-            data.writeByte(itemstack.stackSize);
-            data.writeShort(itemstack.getItemDamage());
-            NBTTagCompound nbttagcompound = null;
-
-            if (itemstack.getItem().isDamageable()
-                || itemstack.getItem().getShareTag()) {
-                nbttagcompound = itemstack.stackTagCompound;
-            }
-
-            writeNBTTagCompound(nbttagcompound,
-                                data);
-        }
+    public static void writeItemStack(ByteBuf data, ItemStack itemstack) {
+        ByteBufUtils.writeItemStack(data,
+                                    itemstack);
     }
 
     /**
@@ -54,18 +41,8 @@ public class NBTHelper {
      * @return
      * @throws IOException
      */
-    public static ItemStack readItemStack(DataInputStream data) throws IOException {
-        ItemStack itemstack = null;
-        short short1 = data.readShort();
-
-        if (short1 >= 0) {
-            byte b0 = data.readByte();
-            short short2 = data.readShort();
-            itemstack = new ItemStack(Item.getItemById(short1), b0, short2);
-            itemstack.stackTagCompound = readNBTTagCompound(data);
-        }
-
-        return itemstack;
+    public static ItemStack readItemStack(ByteBuf data) {
+        return ByteBufUtils.readItemStack(data);
     }
 
     /**
@@ -105,29 +82,16 @@ public class NBTHelper {
     /**
      * Writes a compressed NBTTagCompound to the OutputStream
      */
-    public static void writeNBTTagCompound(NBTTagCompound nbttagcompound, DataOutputStream data) throws IOException {
-        if (nbttagcompound == null) {
-            data.writeShort(-1);
-        } else {
-            byte[] bytes = CompressedStreamTools.compress(nbttagcompound);
-            data.writeShort((short) bytes.length);
-            data.write(bytes);
-        }
+    public static void writeNBTTagCompound(NBTTagCompound nbttagcompound, ByteBuf data) {
+        ByteBufUtils.writeTag(data,
+                              nbttagcompound);
     }
 
     /**
      * Reads a compressed NBTTagCompound from the InputStream
      */
-    public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException {
-        short nbtSize = data.readShort();
-
-        if (nbtSize < 0) {
-            return null;
-        } else {
-            byte[] bytes = new byte[nbtSize];
-            data.readFully(bytes);
-            return CompressedStreamTools.decompress(bytes);
-        }
+    public static NBTTagCompound readNBTTagCompound(ByteBuf data) {
+        return ByteBufUtils.readTag(data);
     }
 
     public static int getTagInteger(ItemStack itemstack, String key, int defaultValue) {
