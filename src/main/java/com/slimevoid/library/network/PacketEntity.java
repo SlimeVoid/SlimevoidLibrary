@@ -11,9 +11,9 @@
  */
 package com.slimevoid.library.network;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -27,7 +27,7 @@ import net.minecraft.world.World;
  * @author Eurymachus
  * 
  */
-public abstract class PacketEntity extends PacketUpdate {
+public abstract class PacketEntity extends SlimevoidPayload {
     private int entityId;
 
     public PacketEntity() {
@@ -54,14 +54,16 @@ public abstract class PacketEntity extends PacketUpdate {
     }
 
     @Override
-    public void writeData(DataOutputStream data) throws IOException {
-        super.writeData(data);
+    public void writeData(ChannelHandlerContext ctx, ByteBuf data) {
+        super.writeData(ctx,
+                        data);
         data.writeInt(this.entityId);
     }
 
     @Override
-    public void readData(DataInputStream data) throws IOException {
-        super.readData(data);
+    public void readData(ChannelHandlerContext ctx, ByteBuf data) {
+        super.readData(ctx,
+                       data);
         this.entityId = data.readInt();
     }
 
@@ -82,27 +84,5 @@ public abstract class PacketEntity extends PacketUpdate {
         }
         // Entity does not exist or is not loaded
         return false;
-    }
-
-    public Entity getEntity(World world) {
-        // If entity exists within the world
-        if (targetExists(world)) {
-            // Get the loaded entity list
-            @SuppressWarnings("unchecked")
-            List<? extends Entity> entities = world.loadedEntityList;
-            // For each entity within the world
-            for (int i = 0; i < entities.size(); i++) {
-                // Get the current entity
-                Entity entity = entities.get(i);
-                // Is entity id of current loaded entity equal to this entity Id
-                if (entity != null
-                    && entity.getEntityId() == this.getEntityId()) {
-                    // Entity is loaded return the loaded entity
-                    return entity;
-                }
-            }
-        }
-        // Entity does not exist or is not loaded return nothing
-        return null;
     }
 }

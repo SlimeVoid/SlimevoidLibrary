@@ -11,10 +11,10 @@
  */
 package com.slimevoid.library.network;
 
-import com.slimevoid.library.util.helpers.SlimevoidHelper;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import com.slimevoid.library.util.helpers.SlimevoidHelper;
 
 /**
  * Packet for sending TileEntity information
@@ -22,7 +22,7 @@ import net.minecraft.world.World;
  * @author Eurymachus
  * 
  */
-public abstract class PacketTileEntity extends PacketUpdate {
+public abstract class PacketTileEntity extends SlimevoidPayload {
 
     public PacketTileEntity() {
         super(PacketIds.TILE);
@@ -53,9 +53,9 @@ public abstract class PacketTileEntity extends PacketUpdate {
                                          this.yPosition,
                                          this.zPosition)
             && SlimevoidHelper.getBlock(world,
-                                          this.xPosition,
-                                          this.yPosition,
-                                          this.zPosition).hasTileEntity(0)) {
+                                        this.xPosition,
+                                        this.yPosition,
+                                        this.zPosition).hasTileEntity(0)) {
             return true;
         }
         return false;

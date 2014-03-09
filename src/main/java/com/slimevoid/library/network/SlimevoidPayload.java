@@ -1,24 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version. This program is distributed in the hope that it will be
- * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details. You should have received a copy of the GNU
- * Lesser General Public License along with this program. If not, see
- * <http://www.gnu.org/licenses/>
- */
 package com.slimevoid.library.network;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import net.minecraft.nbt.NBTTagCompound;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.world.World;
-
-import com.slimevoid.library.nbt.NBTHelper;
+import cpw.mods.fml.common.network.ByteBufUtils;
 
 /**
  * Packet Information for Reading/Writing packet data
@@ -34,9 +19,7 @@ import com.slimevoid.library.nbt.NBTHelper;
  * @author Eurymachus
  * 
  */
-public abstract class PacketUpdate extends EurysPacket {
-    private int          packetId;
-
+public abstract class SlimevoidPayload extends SlimevoidPacket {
     public PacketPayload payload;
 
     public int           xPosition;
@@ -49,6 +32,15 @@ public abstract class PacketUpdate extends EurysPacket {
     public float         hitZ;
 
     public String        command;
+
+    public SlimevoidPayload(int packetId) {
+        this.setPacketId(packetId);
+    }
+
+    public SlimevoidPayload(int packetId, PacketPayload payload) {
+        this.setPacketId(packetId);
+        this.payload = payload;
+    }
 
     /**
      * Set the position x, y, z and side if applicable
@@ -85,55 +77,20 @@ public abstract class PacketUpdate extends EurysPacket {
         this.hitZ = hitZ;
     }
 
-    public PacketUpdate(int packetId, PacketPayload payload) {
-        this(packetId);
-        this.payload = payload;
+    public String getCommand() {
+        return !this.command.isEmpty() ? this.command : "";
     }
 
-    public PacketUpdate(int packetId) {
-        this.packetId = packetId;
-        this.isChunkDataPacket = true;
-    }
-
-    /**
-     * Writes a String to the DataOutputStream
-     */
-    protected static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException {
-        NBTHelper.writeString(par0Str,
-                              par1DataOutputStream);
-    }
-
-    /**
-     * Reads a string from a packet
-     */
-    protected static String readString(DataInputStream par0DataInputStream, int par1) throws IOException {
-        return NBTHelper.readString(par0DataInputStream,
-                                    par1);
-    }
-
-    /**
-     * Writes a compressed NBTTagCompound to the OutputStream
-     */
-    protected static void writeNBTTagCompound(NBTTagCompound nbttagcompound, DataOutputStream data) throws IOException {
-        NBTHelper.writeNBTTagCompound(nbttagcompound,
-                                      data);
-    }
-
-    /**
-     * Reads a compressed NBTTagCompound from the InputStream
-     */
-    protected static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException {
-        return NBTHelper.readNBTTagCompound(data);
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     @Override
-    public void writeData(DataOutputStream data) throws IOException {
-        if (this.command == null || this.command.isEmpty()
-            || this.command.equals("")) {
-            data.writeUTF("sv");
-        } else {
-            data.writeUTF(this.getCommand());
-        }
+    public void writeData(ChannelHandlerContext ctx, ByteBuf data) {
+        data.writeByte(this.getPacketId());
+
+        ByteBufUtils.writeUTF8String(data,
+                                     this.getCommand());
 
         data.writeInt(this.xPosition);
         data.writeInt(this.yPosition);
@@ -168,7 +125,8 @@ public abstract class PacketUpdate extends EurysPacket {
         for (int i = 0; i < this.payload.getFloatSize(); i++)
             data.writeFloat(this.payload.getFloatPayload(i));
         for (int i = 0; i < this.payload.getStringSize(); i++)
-            data.writeUTF(this.payload.getStringPayload(i));
+            ByteBufUtils.writeUTF8String(data,
+                                         this.payload.getStringPayload(i));
         for (int i = 0; i < this.payload.getBoolSize(); i++)
             data.writeBoolean(this.payload.getBoolPayload(i));
         for (int i = 0; i < this.payload.getDoubleSize(); i++)
@@ -176,8 +134,10 @@ public abstract class PacketUpdate extends EurysPacket {
     }
 
     @Override
-    public void readData(DataInputStream data) throws IOException {
-        this.setCommand(data.readUTF());
+    public void readData(ChannelHandlerContext ctx, ByteBuf data) {
+        // this.setPacketId(data.readByte());
+
+        this.setCommand(ByteBufUtils.readUTF8String(data));
 
         this.setPosition(data.readInt(),
                          data.readInt(),
@@ -203,7 +163,7 @@ public abstract class PacketUpdate extends EurysPacket {
                                          data.readFloat());
         for (int i = 0; i < this.payload.getStringSize(); i++)
             this.payload.setStringPayload(i,
-                                          data.readUTF());
+                                          ByteBufUtils.readUTF8String(data));
         for (int i = 0; i < this.payload.getBoolSize(); i++)
             this.payload.setBoolPayload(i,
                                         data.readBoolean());
@@ -212,26 +172,7 @@ public abstract class PacketUpdate extends EurysPacket {
                                           data.readDouble());
     }
 
-    /**
-     * Used to check that a target of (usually x, y, z) exists
-     * 
-     * @param world
-     *            The World in which to check for target
-     * 
-     * @return true or false
-     */
-    public abstract boolean targetExists(World world);
-
-    public String getCommand() {
-        return !this.command.isEmpty() ? this.command : "sv";
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    @Override
-    public int getID() {
-        return this.packetId;
+    public boolean targetExists(World world) {
+        return false;
     }
 }

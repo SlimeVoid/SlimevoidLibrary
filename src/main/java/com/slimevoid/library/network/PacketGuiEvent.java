@@ -1,10 +1,9 @@
 package com.slimevoid.library.network;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 
-public abstract class PacketGuiEvent extends PacketUpdate {
+public abstract class PacketGuiEvent extends SlimevoidPayload {
 
     private int guiID;
 
@@ -21,14 +20,16 @@ public abstract class PacketGuiEvent extends PacketUpdate {
     }
 
     @Override
-    public void writeData(DataOutputStream data) throws IOException {
-        super.writeData(data);
+    public void writeData(ChannelHandlerContext ctx, ByteBuf data) {
+        super.writeData(ctx,
+                        data);
         data.writeInt(this.guiID);
     }
 
     @Override
-    public void readData(DataInputStream data) throws IOException {
-        super.readData(data);
+    public void readData(ChannelHandlerContext ctx, ByteBuf data) {
+        super.readData(ctx,
+                       data);
         this.guiID = data.readInt();
     }
 
