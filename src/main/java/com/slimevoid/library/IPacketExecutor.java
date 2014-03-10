@@ -14,7 +14,7 @@ package com.slimevoid.library;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import com.slimevoid.library.network.SlimevoidPayload;
+import com.slimevoid.library.network.PacketUpdate;
 
 public interface IPacketExecutor {
     /**
@@ -27,5 +27,5 @@ public interface IPacketExecutor {
      * @param entityplayer
      *            The player associated with the current Packet Data
      */
-    public void execute(SlimevoidPayload packet, World world, EntityPlayer entityplayer);
+    public void execute(PacketUpdate packet, World world, EntityPlayer entityplayer);
 }

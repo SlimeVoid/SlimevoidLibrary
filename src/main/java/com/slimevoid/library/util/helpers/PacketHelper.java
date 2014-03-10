@@ -5,7 +5,7 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import com.google.common.collect.Maps;
-import com.slimevoid.library.network.SlimevoidPayload;
+import com.slimevoid.library.network.PacketUpdate;
 import com.slimevoid.library.network.handlers.PacketPipeline;
 
 import cpw.mods.fml.relauncher.Side;
@@ -33,20 +33,20 @@ public class PacketHelper {
         channels.get(modChannel).initialize(modChannel);
     }
 
-    public static void sendToPlayer(SlimevoidPayload packet, EntityPlayerMP entityplayer) {
+    public static void sendToPlayer(PacketUpdate packet, EntityPlayerMP entityplayer) {
         channels.get(packet.getChannel()).sendToPlayer(packet,
                                                        entityplayer);
     }
 
-    public static void sendToServer(SlimevoidPayload packet) {
+    public static void sendToServer(PacketUpdate packet) {
         channels.get(packet.getChannel()).sendToServer(packet);
     }
 
-    public static void broadcastPacket(SlimevoidPayload packet) {
+    public static void broadcastPacket(PacketUpdate packet) {
         channels.get(packet.getChannel()).broadcastPacket(packet);
     }
 
-    public static void sendToAllAround(SlimevoidPayload packet, int x, int y, int z, int range, int dimension) {
+    public static void sendToAllAround(PacketUpdate packet, int x, int y, int z, int range, int dimension) {
         channels.get(packet.getChannel()).sendToAllAround(packet,
                                                           x,
                                                           y,

@@ -15,8 +15,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import com.slimevoid.library.data.Logger;
 import com.slimevoid.library.data.LoggerSlimevoidLib;
-import com.slimevoid.library.network.SlimevoidPacket;
-import com.slimevoid.library.network.SlimevoidPayload;
+import com.slimevoid.library.network.EurysPacket;
+import com.slimevoid.library.network.PacketUpdate;
 
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -27,14 +27,14 @@ import cpw.mods.fml.relauncher.Side;
 
 @ChannelHandler.Sharable
 public class PacketPipeline extends
-        MessageToMessageCodec<FMLProxyPacket, SlimevoidPacket> {
+        MessageToMessageCodec<FMLProxyPacket, EurysPacket> {
 
     private EnumMap<Side, FMLEmbeddedChannel> channels;
 
     private Map<Integer, SubPacketHandler>    handlers;
 
     /**
-     * Initializes the commonHandler Map
+     * Constructs the PacketPipeline and initialises SubHandler Map
      */
     public PacketPipeline() {
         handlers = new HashMap<Integer, SubPacketHandler>();
@@ -88,7 +88,7 @@ public class PacketPipeline extends
     }
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, SlimevoidPacket msg, List<Object> out) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, EurysPacket msg, List<Object> out) throws Exception {
         ByteBuf buffer = Unpooled.buffer();
         if (!this.handlers.containsKey(msg.getPacketId())) {
             throw new NullPointerException("No Packet Registered for: "
@@ -110,23 +110,23 @@ public class PacketPipeline extends
 
     }
 
-    public void sendToPlayer(SlimevoidPayload packet, EntityPlayerMP entityplayer) {
+    public void sendToPlayer(PacketUpdate packet, EntityPlayerMP entityplayer) {
         this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
         this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(entityplayer);
         this.channels.get(Side.SERVER).writeAndFlush(packet);
     }
 
-    public void sendToServer(SlimevoidPayload packet) {
+    public void sendToServer(PacketUpdate packet) {
         this.channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         this.channels.get(Side.CLIENT).writeAndFlush(packet);
     }
 
-    public void broadcastPacket(SlimevoidPayload packet) {
+    public void broadcastPacket(PacketUpdate packet) {
         this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
         this.channels.get(Side.SERVER).writeAndFlush(packet);
     }
 
-    public void sendToAllAround(SlimevoidPayload packet, int x, int y, int z, int range, int dimension) {
+    public void sendToAllAround(PacketUpdate packet, int x, int y, int z, int range, int dimension) {
         this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
         this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(new TargetPoint(dimension, x, y, z, range));
         this.channels.get(Side.SERVER).writeAndFlush(packet);

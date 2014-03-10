@@ -27,7 +27,7 @@ import net.minecraft.world.World;
  * @author Eurymachus
  * 
  */
-public abstract class PacketEntity extends SlimevoidPayload {
+public abstract class PacketEntity extends PacketUpdate {
     private int entityId;
 
     public PacketEntity() {

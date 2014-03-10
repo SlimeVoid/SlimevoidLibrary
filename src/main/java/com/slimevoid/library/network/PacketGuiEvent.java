@@ -3,7 +3,7 @@ package com.slimevoid.library.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
-public abstract class PacketGuiEvent extends SlimevoidPayload {
+public abstract class PacketGuiEvent extends PacketUpdate {
 
     private int guiID;
 

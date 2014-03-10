@@ -17,7 +17,7 @@ import com.google.common.collect.Maps;
 import com.slimevoid.library.IPacketExecutor;
 import com.slimevoid.library.data.Logger;
 import com.slimevoid.library.data.LoggerSlimevoidLib;
-import com.slimevoid.library.network.SlimevoidPayload;
+import com.slimevoid.library.network.PacketUpdate;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -43,7 +43,7 @@ public abstract class SubPacketHandler {
      * @param executor
      *            The executor
      */
-    public void registerClientPacketHandler(String commandString, IPacketExecutor executor) {
+    public void registerClientExecutor(String commandString, IPacketExecutor executor) {
         if (executors.get(Side.CLIENT).containsKey(commandString)) {
             LoggerSlimevoidLib.getInstance(Logger.filterClassName(this.toString())).write(false,
                                                                                           "Command String ["
@@ -65,7 +65,7 @@ public abstract class SubPacketHandler {
      * @param executor
      *            The executor
      */
-    public void registerPacketHandler(String commandString, IPacketExecutor executor) {
+    public void registerServerExecutor(String commandString, IPacketExecutor executor) {
         if (executors.get(Side.SERVER).containsKey(commandString)) {
             LoggerSlimevoidLib.getInstance(Logger.filterClassName(this.toString())).write(false,
                                                                                           "Command String ["
@@ -84,7 +84,7 @@ public abstract class SubPacketHandler {
      * 
      * @return new Packet
      */
-    protected abstract SlimevoidPayload createNewPacket();
+    protected abstract PacketUpdate createNewPacket();
 
     /**
      * Handles a received packet.
@@ -96,7 +96,7 @@ public abstract class SubPacketHandler {
      * @param entityplayer
      *            The sending player.
      */
-    protected void handleClientPacket(SlimevoidPayload packet, World world, EntityPlayer entityplayer) {
+    protected void handleClientPacket(PacketUpdate packet, World world, EntityPlayer entityplayer) {
         LoggerSlimevoidLib.getInstance(Logger.filterClassName(this.getClass().toString())).write(world.isRemote,
                                                                                                  "handlePacket("
                                                                                                          + packet.toString()
@@ -136,7 +136,7 @@ public abstract class SubPacketHandler {
      * @param entityplayer
      *            The sending player.
      */
-    protected void handleServerPacket(SlimevoidPayload packet, World world, EntityPlayer entityplayer) {
+    protected void handleServerPacket(PacketUpdate packet, World world, EntityPlayer entityplayer) {
         LoggerSlimevoidLib.getInstance(Logger.filterClassName(this.getClass().toString())).write(world.isRemote,
                                                                                                  "handlePacket("
                                                                                                          + packet.toString()
@@ -168,7 +168,7 @@ public abstract class SubPacketHandler {
 
     public void onPacketData(ChannelHandlerContext ctx, ByteBuf data, List<Object> out) {
         EntityPlayer entityplayer = null;
-        SlimevoidPayload packet = this.createNewPacket();
+        PacketUpdate packet = this.createNewPacket();
         packet.readData(ctx,
                         data);
         switch (FMLCommonHandler.instance().getEffectiveSide()) {

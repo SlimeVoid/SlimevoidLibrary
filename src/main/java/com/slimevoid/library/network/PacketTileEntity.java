@@ -22,7 +22,7 @@ import com.slimevoid.library.util.helpers.SlimevoidHelper;
  * @author Eurymachus
  * 
  */
-public abstract class PacketTileEntity extends SlimevoidPayload {
+public abstract class PacketTileEntity extends PacketUpdate {
 
     public PacketTileEntity() {
         super(PacketIds.TILE);

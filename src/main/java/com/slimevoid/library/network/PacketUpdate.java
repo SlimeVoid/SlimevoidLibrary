@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
  * @author Eurymachus
  * 
  */
-public abstract class SlimevoidPayload extends SlimevoidPacket {
+public abstract class PacketUpdate extends EurysPacket {
     public PacketPayload payload;
 
     public int           xPosition;
@@ -33,11 +33,11 @@ public abstract class SlimevoidPayload extends SlimevoidPacket {
 
     public String        command;
 
-    public SlimevoidPayload(int packetId) {
+    public PacketUpdate(int packetId) {
         this.setPacketId(packetId);
     }
 
-    public SlimevoidPayload(int packetId, PacketPayload payload) {
+    public PacketUpdate(int packetId, PacketPayload payload) {
         this.setPacketId(packetId);
         this.payload = payload;
     }

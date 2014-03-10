@@ -11,7 +11,7 @@
  */
 package com.slimevoid.library.network;
 
-public abstract class PacketNotifyPlayer extends SlimevoidPayload {
+public abstract class PacketNotifyPlayer extends PacketUpdate {
 
     public PacketNotifyPlayer() {
         super(PacketIds.PLAYER);
