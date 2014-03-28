@@ -17,10 +17,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-group = "com.slimevoid"
+group = "net.slimevoid.library"
 archivesBaseName = "SlimevoidLib"
 version = "2.0.4.5"
-minecraft.version = "1.7.2-10.12.0.1024"
+
+minecraft {
+     version = "1.7.2-10.12.0.1024"
+}
 
 dependencies {
 	compile 'net.sourceforge.argo:argo:3.4'
