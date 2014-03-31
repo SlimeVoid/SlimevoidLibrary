@@ -1,4 +1,9 @@
 /bin
 /jar
 /.gradle
-/build
+/build/classes
+/build/dependency-cache
+/build/sources
+/build/resources
+/build/tmp
+/build/unpacked
