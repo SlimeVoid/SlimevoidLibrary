@@ -6,6 +6,7 @@ build
 .classpath
 .project
 .settings
+eclipse
 bin
 
 # run configuration
