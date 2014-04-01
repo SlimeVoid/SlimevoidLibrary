@@ -1,9 +1,12 @@
-/bin
-/jar
-/.gradle
-/build/classes
-/build/dependency-cache
-/build/sources
-/build/resources
-/build/tmp
-/build/unpacked
+# gradle stuff
+build
+.gradle
+
+# eclipse stuff
+.classpath
+.project
+.settings
+bin
+
+# run configuration
+run
