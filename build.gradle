@@ -15,10 +15,15 @@ buildscript {
     }
 }
 
+configurations {
+    deployJars
+}
+
+apply plugin: 'maven'
 apply plugin: 'forge'
 
 version = "2.0.4.5"
-group= "net.slimevoid.library" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "net.slimevoid.library"
 archivesBaseName = "SlimevoidLib"
 
 minecraft {
@@ -38,5 +43,68 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+uploadArchives {
+    repositories {
+        add getProject().repositories.mavenLocal()
+    }
+    repositories.mavenDeployer {
+        configuration = configurations.deployJars
+
+        if (project.hasProperty("filesmaven")) {
+            logger.info('Publishing to files server')
+            repository(url: project.filesmaven.url) {
+                authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
+            }
+        } else {
+            logger.info('Publishing to repo folder')
+            repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
+        }
+
+        pom {
+            groupId = project.group
+            version = project.version
+            artifactId = project.archivesBaseName
+        }
+        pom.project {
+            name project.archivesBaseName
+            packaging 'jar'
+            description 'SlimevoidLibrary'
+            url 'https://github.com/Slimevoid/SlimevoidLibrary'
+
+            scm {
+                url 'https://github.com/Slimevoid/SlimevoidLibrary'
+                connection 'scm:git:git://github.com/Slimevoid/SlimevoidLibrary.git'
+                developerConnection 'scm:git:git@Slimevoid/SlimevoidLibrary.git'
+            }
+
+            issueManagement {
+                system 'github'
+                url 'https://github.com/Slimevoid/SlimevoidLibrary/issues'
+            }
+
+            licenses {
+                license {
+                    name 'Lesser General Public Licence'
+                    url 'https://raw.github.com/Slimevoid/SlimevoidLibrary/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'Eurymachus'
+                    name 'Eurymachus'
+                    roles { role 'developer' }
+                }
+                developer {
+                    id 'Tarig0'
+                    name 'Tarig'
+                    roles { role 'contributor' }
+                }
+            }
+        }
     }
 }
