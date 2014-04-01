@@ -5,25 +5,11 @@
  R4wk, ZeuX, IngisKahn      
  MCP Data version : unknown
 ****************************
-:compileApiJava UP-TO-DATE
-:processApiResources UP-TO-DATE
-:apiClasses UP-TO-DATE
-:sourceMainJava UP-TO-DATE
-:compileJava UP-TO-DATE
-:processResources UP-TO-DATE
-:classes UP-TO-DATE
-:jar
-:extractUserDev
-:genSrgs UP-TO-DATE
-:reobf
-:assemble
-:compileTestJava UP-TO-DATE
-:processTestResources UP-TO-DATE
-:testClasses UP-TO-DATE
-:test UP-TO-DATE
-:check UP-TO-DATE
-:build
+:eclipseClasspath
+:eclipseJdt
+:eclipseProject
+:eclipse
 
 BUILD SUCCESSFUL
 
-Total time: 27.416 secs
+Total time: 13.524 secs
