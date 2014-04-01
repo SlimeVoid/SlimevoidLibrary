@@ -2,10 +2,10 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>net.slimevoid.library</groupId>
-  <artifactId>SlimevoidLib</artifactId>
+  <groupId>net.slimevoid</groupId>
+  <artifactId>SlimevoidLibrary</artifactId>
   <version>2.0.4.5</version>
-  <name>SlimevoidLib</name>
+  <name>SlimevoidLibrary</name>
   <description>SlimevoidLibrary</description>
   <url>https://github.com/Slimevoid/SlimevoidLibrary</url>
   <licenses>
@@ -24,7 +24,7 @@
       </roles>
     </developer>
     <developer>
-      <id>Tari0</id>
+      <id>Tarig0</id>
       <name>Tarig</name>
       <roles>
         <role>contributor</role>

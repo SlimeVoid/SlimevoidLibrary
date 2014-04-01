@@ -1,4 +1,2 @@
-call %CD%\gradlew.bat clean
-call %CD%\gradlew.bat setupDecompWorkspace
-call %CD%\gradlew.bat eclipse
+call %CD%\setup.bat
 call %CD%\gradlew.bat build
