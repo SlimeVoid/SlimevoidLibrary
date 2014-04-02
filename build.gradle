@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenCentral()
-        mavenLocal()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -17,11 +16,12 @@ buildscript {
 }
 
 configurations {
-    deployJars
+	deployJars
 }
 
 apply plugin: 'maven'
 apply plugin: 'forge'
+apply plugin: 'eclipse'
 
 version = "2.0.4.5"
 group= "net.slimevoid"
@@ -47,23 +47,24 @@ processResources
     }
 }
 
-uploadArchives {
-    repositories {
-        add getProject().repositories.mavenLocal()
-    }
-    repositories.mavenDeployer {
-        configuration = configurations.deployJars
+dependencies {
+    deployJars "org.apache.maven.wagon:wagon-ssh:2.2"
+}
 
-        if (project.hasProperty("filesmaven")) {
-            logger.info('Publishing to files server')
-            repository(url: project.filesmaven.url) {
-                authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
+uploadArchives {
+    repositories.mavenDeployer {
+    	configuration = configurations.deployJars
+        if (project.hasProperty("slimevoidUsername")) {
+            snapshotRepository(url: "scp://hydadedi.playat.ch/maven/snapshots") {
+                authentication(userName: "${slimevoidUsername}", password: "${slimevoidPassword}")
+            }
+            repository(url: "scp://hydadedi.playat.ch/maven/repos") {
+                authentication(userName: "${slimevoidUsername}", password: "${slimevoidPassword}")
             }
         } else {
-            logger.info('Publishing to repo folder')
-            repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
+            snapshotRepository(url: 'file://localhost/' + project.file('build/snapshot').getAbsolutePath())
+            repository(url: 'file://localhost/' + project.file('build/repo').getAbsolutePath())
         }
-
         pom {
             groupId = project.group
             version = project.version
