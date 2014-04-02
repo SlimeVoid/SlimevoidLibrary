@@ -55,14 +55,10 @@ uploadArchives {
     repositories.mavenDeployer {
     	configuration = configurations.deployJars
         if (project.hasProperty("slimevoidUsername")) {
-            snapshotRepository(url: "scp://hydadedi.playat.ch/maven/snapshots/") {
-                authentication(userName: "${slimevoidUsername}", password: "${slimevoidPassword}")
-            }
-            repository(url: "scp://hydadedi.playat.ch/maven/repos/") {
-                authentication(userName: "${slimevoidUsername}", password: "${slimevoidPassword}")
+            repository(url: "scp://hyda.slimevoid.net/home/maven/www/repos") {
+                authentication(userName: slimevoidUsername, password: slimevoidPassword)
             }
         } else {
-            snapshotRepository(url: 'file://localhost/' + project.file('build/snapshot').getAbsolutePath())
             repository(url: 'file://localhost/' + project.file('build/repo').getAbsolutePath())
         }
         pom {
