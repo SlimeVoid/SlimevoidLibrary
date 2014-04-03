@@ -2,12 +2,12 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            name = 'forge'
+            url = 'http://files.minecraftforge.net/maven'
         }
         maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
     }
     dependencies {
@@ -23,16 +23,18 @@ apply plugin: 'maven'
 apply plugin: 'forge'
 apply plugin: 'eclipse'
 
-version = "2.0.4.5"
-group= "net.slimevoid"
-archivesBaseName = "SlimevoidLibrary"
+version = '2.0.4.5'
+group= 'net.slimevoid'
+archivesBaseName = 'SlimevoidLibrary'
 
 minecraft {
-    version = "1.7.2-10.12.0.1024"
-    assetDir = "eclipse/assets"
+    version = '1.7.2-10.12.0.1024'
+    assetDir = 'eclipse/assets'
+    
+    replaceIn "net/slimevoid/library/core/lib/CoreLib.java"
+    replace "@VERSION@", project.version
 }
-processResources
-{
+processResources {
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
@@ -48,14 +50,14 @@ processResources
 }
 
 dependencies {
-    deployJars "org.apache.maven.wagon:wagon-ssh:2.2"
+    deployJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
 
 uploadArchives {
     repositories.mavenDeployer {
     	configuration = configurations.deployJars
         if (project.hasProperty("slimevoidUsername")) {
-            repository(url: "scp://hyda.slimevoid.net/home/maven/www/repos") {
+            repository(url: 'scp://hyda.slimevoid.net/home/maven/www/repos') {
                 authentication(userName: slimevoidUsername, password: slimevoidPassword)
             }
         } else {
