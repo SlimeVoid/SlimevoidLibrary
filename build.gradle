@@ -24,6 +24,8 @@ apply plugin: 'forge'
 apply plugin: 'eclipse'
 
 def mc = '1.7.2-10.12.0.1024'
+def pack = 'library'
+def github = 'SlimevoidLibrary'
 version = '2.0.4.5'
 group= 'net.slimevoid'
 archivesBaseName = 'SlimevoidLibrary'
@@ -32,8 +34,8 @@ minecraft {
     version = mc
     assetDir = 'eclipse/assets'
     
-    replaceIn "net/slimevoid/library/core/lib/CoreLib.java"
-    replace "@VERSION@", project.version
+    replaceIn 'net/slimevoid/' + pack + '/core/lib/CoreLib.java'
+    replace '@VERSION@', project.version
 }
 
 processResources {
@@ -73,24 +75,24 @@ uploadArchives {
         pom.project {
             name project.archivesBaseName
             packaging 'jar'
-            description 'SlimevoidLibrary'
-            url 'https://github.com/Slimevoid/SlimevoidLibrary'
+            description archivesBaseName
+            url 'https://github.com/Slimevoid/' + github
 
             scm {
-                url 'https://github.com/Slimevoid/SlimevoidLibrary'
-                connection 'scm:git:git://github.com/Slimevoid/SlimevoidLibrary.git'
-                developerConnection 'scm:git:git@Slimevoid/SlimevoidLibrary.git'
+                url 'https://github.com/Slimevoid/' + github
+                connection 'scm:git:git://github.com/Slimevoid/' + github + '.git'
+                developerConnection 'scm:git:git@Slimevoid/' + github + '.git'
             }
 
             issueManagement {
                 system 'github'
-                url 'https://github.com/Slimevoid/SlimevoidLibrary/issues'
+                url 'https://github.com/Slimevoid/' + github + '/issues'
             }
 
             licenses {
                 license {
                     name 'Lesser General Public Licence'
-                    url 'https://raw.github.com/Slimevoid/SlimevoidLibrary/master/LICENSE'
+                    url 'https://raw.github.com/Slimevoid/' + github + '/master/LICENSE'
                     distribution 'repo'
                 }
             }
@@ -102,9 +104,9 @@ uploadArchives {
                     roles { role 'developer' }
                 }
                 developer {
-                    id 'Tarig0'
-                    name 'Tarig'
-                    roles { role 'contributor' }
+                    id 'Slimevoid'
+                    name 'Slimevoid Dev Team'
+                    roles { role 'developer' }
                 }
             }
         }
