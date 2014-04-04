@@ -27,7 +27,7 @@ def mc = '1.7.2-10.12.0.1024'
 def pack = 'library'
 def github = 'SlimevoidLibrary'
 version = '2.0.4.5'
-group= 'net.slimevoid'
+group = 'net.slimevoid'
 archivesBaseName = 'SlimevoidLibrary'
 
 minecraft {
