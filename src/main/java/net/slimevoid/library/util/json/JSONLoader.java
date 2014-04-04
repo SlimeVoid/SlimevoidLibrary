@@ -10,8 +10,7 @@ import java.util.HashMap;
 import net.slimevoid.library.core.SlimevoidCore;
 import net.slimevoid.library.core.lib.CoreLib;
 import net.slimevoid.library.util.FileUtils;
-
-import com.google.gson.JsonSyntaxException;
+import argo.saj.InvalidSyntaxException;
 
 public abstract class JSONLoader {
 
@@ -50,7 +49,7 @@ public abstract class JSONLoader {
     public void loadFile() {
         try {
             this.parseJSON(this.readFile());
-        } catch (JsonSyntaxException e) {
+        } catch (InvalidSyntaxException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -125,7 +124,7 @@ public abstract class JSONLoader {
         return null;
     }
 
-    protected abstract void parseJSON(String string) throws JsonSyntaxException;
+    protected abstract void parseJSON(String string) throws InvalidSyntaxException;
 
     protected abstract String getModID();
 

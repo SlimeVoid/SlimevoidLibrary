@@ -19,6 +19,10 @@ configurations {
 	deployJars
 }
 
+repositories {
+	mavenCentral()
+}
+
 apply plugin: 'maven'
 apply plugin: 'forge'
 apply plugin: 'eclipse'
@@ -29,6 +33,10 @@ def github = 'SlimevoidLibrary'
 version = '2.0.4.5'
 group = 'net.slimevoid'
 archivesBaseName = 'SlimevoidLibrary'
+
+dependencies {
+    compile 'net.sourceforge.argo:argo:3.10'
+}
 
 minecraft {
     version = mc
