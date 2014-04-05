@@ -15,10 +15,6 @@ buildscript {
     }
 }
 
-configurations {
-	deployJars
-}
-
 repositories {
 	mavenCentral()
 }
@@ -61,11 +57,33 @@ processResources {
     }
 }
 
+task sourceJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+}
+
+task deobfJar(type: Jar) {
+	from sourceSets.main.output
+	classifier = 'dev'
+}
+
+build.dependsOn sourceJar,deobfJar
+
+configurations {
+	deployJars
+}
+
 dependencies {
     deployJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
 
+artifacts {
+	archives sourceJar
+	archives deobfJar
+}
+
 uploadArchives {
+	dependsOn 'reobf'
     repositories.mavenDeployer {
     	configuration = configurations.deployJars
         if (project.hasProperty("slimevoidUsername")) {
