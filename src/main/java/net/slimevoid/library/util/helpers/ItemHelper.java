@@ -2,9 +2,11 @@ package net.slimevoid.library.util.helpers;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 public class ItemHelper {
 
@@ -34,6 +36,14 @@ public class ItemHelper {
             item.age = 10;
             world.spawnEntityInWorld(item);
             return;
+        }
+    }
+    
+    public static void dropItemAtPlayer(EntityPlayer entityplayer, ItemStack stack) {
+        EntityItem entityitem = new EntityItem(entityplayer.worldObj, entityplayer.posX + 0.5D, entityplayer.posY + 0.5D, entityplayer.posZ + 0.5D, stack);
+        entityplayer.worldObj.spawnEntityInWorld(entityitem);
+        if (!(entityplayer instanceof FakePlayer)) {
+            entityitem.onCollideWithPlayer(entityplayer);
         }
     }
 
