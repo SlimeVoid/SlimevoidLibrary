@@ -10,6 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.FMLLog;
+
 public class ItemBlockBase extends ItemBlock {
 
     protected HashMap<Integer, String> itemBlockNames;
@@ -38,7 +40,8 @@ public class ItemBlockBase extends ItemBlock {
     public String getUnlocalizedName(ItemStack itemstack) {
         String itemName = (String) this.itemBlockNames.get(Integer.valueOf(itemstack.getItemDamage()));
         if (itemName == null) {
-            throw new IndexOutOfBoundsException();
+            FMLLog.severe("No Item Exists for this Item Damage");
+            itemName = "item.null"
         } else {
             return itemName;
         }
