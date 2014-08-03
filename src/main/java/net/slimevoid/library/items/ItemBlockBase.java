@@ -41,10 +41,9 @@ public class ItemBlockBase extends ItemBlock {
         String itemName = (String) this.itemBlockNames.get(Integer.valueOf(itemstack.getItemDamage()));
         if (itemName == null) {
             FMLLog.severe("No Item Exists for this Item Damage");
-            itemName = "item.null"
-        } else {
-            return itemName;
+            itemName = "item.null";
         }
+        return itemName;
     }
 
     @Override
