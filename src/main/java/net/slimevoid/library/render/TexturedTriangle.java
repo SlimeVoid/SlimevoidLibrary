@@ -65,7 +65,7 @@ public class TexturedTriangle extends TexturedQuad {
         Vec3 var5 = var4.crossProduct(var3).normalize();
         par1Tessellator.getWorldRenderer().startDrawing(GL11.GL_TRIANGLES);
 
-        par1Tessellator.getWorldRenderer()./*setNormal*/func_178975_e((float) var5.xCoord,
+        par1Tessellator.getWorldRenderer().setNormal((float) var5.xCoord,
                                   (float) var5.yCoord,
                                   (float) var5.zCoord);
 

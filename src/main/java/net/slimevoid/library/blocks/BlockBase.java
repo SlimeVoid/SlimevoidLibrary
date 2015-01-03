@@ -480,7 +480,7 @@ public abstract class BlockBase extends BlockContainer {
 
     @Override
     public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
-        BlockPos pos = target.func_178782_a();
+        BlockPos pos = target.getBlockPos();
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                pos,
