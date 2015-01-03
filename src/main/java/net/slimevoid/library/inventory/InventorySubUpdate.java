@@ -3,6 +3,7 @@ package net.slimevoid.library.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class InventorySubUpdate implements IInventory {
 
@@ -50,8 +51,8 @@ public class InventorySubUpdate implements IInventory {
     }
 
     @Override
-    public String getInventoryName() {
-        return parent.getInventoryName();
+    public String getName() {
+        return parent.getName();
     }
 
     @Override
@@ -70,15 +71,15 @@ public class InventorySubUpdate implements IInventory {
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer entityplayer) {
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer entityplayer) {
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -86,4 +87,34 @@ public class InventorySubUpdate implements IInventory {
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {
         return true;
     }
+
+	@Override
+	public IChatComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
 }

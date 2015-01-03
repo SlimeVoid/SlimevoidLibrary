@@ -39,7 +39,8 @@ public class ChatHelper {
                                                                             y,
                                                                             z,
                                                                             range,
-                                                                            world.provider.dimensionId,
+                                                                            world.provider
+																					.getDimensionId(),
                                                                             new S02PacketChat(getMessage(message,
                                                                                                          args)));
     }

@@ -8,8 +8,6 @@ import net.slimevoid.library.network.handlers.PacketPipeline;
 
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.relauncher.Side;
-
 /**
  * Client and Server channels must be registered independently
  */

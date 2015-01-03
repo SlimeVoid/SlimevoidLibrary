@@ -5,11 +5,13 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public abstract class BlockTransientLight extends Block {
 
@@ -22,16 +24,16 @@ public abstract class BlockTransientLight extends Block {
     }
 
     @Override
-    public int quantityDropped(int meta, int fortune, Random random) {
+    public int quantityDropped(IBlockState blockState, int fortune, Random random) {
         return 0;
     }
 
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
+    public void addCollisionBoxesToList(World world, BlockPos pos, IBlockState blockState, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+    public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
         return null;
     }
 
@@ -45,44 +47,36 @@ public abstract class BlockTransientLight extends Block {
         return false;
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
+    //@Override
+    //public boolean renderAsNormalBlock() {
+    //    return false;
+    //}
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
+    public void onBlockAdded(World world, BlockPos pos, IBlockState blockState) {
         if (!world.isRemote) {
-            world.scheduleBlockUpdate(x,
-                                      y,
-                                      z,
-                                      this,
-                                      tickRate(world));
+            world.scheduleUpdate(pos,
+                                 this,
+                                 this.tickRate(world));
         }
     }
 
     @Override
-    public void onBlockPreDestroy(World par1World, int par2, int par3, int par4, int par5) {
+    public void /*onBlockPreDestroy*/onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState blockState) {
 
     }
 
     @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
+    public void updateTick(World world, BlockPos pos, IBlockState blockState, Random random) {
         if (!world.isRemote) {
             if (!this.handleLightingConditions(world,
-                                               x,
-                                               y,
-                                               z,
+                                               pos,
                                                random)) {
-                world.setBlockToAir(x,
-                                    y,
-                                    z);
+                world.setBlockToAir(pos);
             }
-            world.scheduleBlockUpdate(x,
-                                      y,
-                                      z,
-                                      this,
-                                      tickRate(world));
+            world.scheduleUpdate(pos,
+                                 this,
+                                 this.tickRate(world));
         }
     }
 
@@ -91,26 +85,19 @@ public abstract class BlockTransientLight extends Block {
      * the block will remove itself automatically on this tick
      * 
      */
-    protected abstract boolean handleLightingConditions(World world, int x, int y, int z, Random random);
+    protected abstract boolean handleLightingConditions(World world, BlockPos pos, Random random);
 
     @Override
     public int getRenderType() {
-        return RenderingRegistry.getNextAvailableRenderId();
+        return 0;//RenderingRegistry.getNextAvailableRenderId();
     }
 
-    public static void setBlock(Block block, int x, int y, int z, World world) {
+    public static void setBlock(World world, IBlockState blockState, BlockPos pos) {
         if (!world.isRemote) {
-            if ((world.getBlock(x,
-                                y,
-                                z) == Blocks.air || world.getBlock(x,
-                                                                   y,
-                                                                   z) == block)) {
-                world.setBlock(x,
-                               y,
-                               z,
-                               block,
-                               0,
-                               2);
+            if ((world.getBlockState(pos).getBlock() == Blocks.air || world.getBlockState(pos).getBlock() == blockState.getBlock())) {
+                world.setBlockState(pos,
+                               		blockState,
+                               		0);
             }
         }
     }

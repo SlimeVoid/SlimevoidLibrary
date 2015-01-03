@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.slimevoid.library.ISlimevoidHelper;
@@ -46,45 +48,29 @@ public class SlimevoidHelper {
         }
     }
 
-    public static Block getBlock(World world, int x, int y, int z) {
-        for (ISlimevoidHelper helper : helperClasses) {
-            Block id = helper.getBlock(world,
-                                       x,
-                                       y,
-                                       z);
-            if (id != null) return id;
+    public static Block getBlock(World world, BlockPos pos) {
+        return getBlockState(world, pos).getBlock();
+    }
+    
+    public static IBlockState getBlockState(World world, BlockPos pos) {
+    	for (ISlimevoidHelper helper : helperClasses) {
+            IBlockState blockState = helper.getBlockState(
+            						world,
+                                    pos);
+            return blockState;
         }
-        return world.getBlock(x,
-                              y,
-                              z);
+        return world.getBlockState(pos);
     }
 
-    public static TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z) {
+    public static TileEntity getBlockTileEntity(IBlockAccess world, BlockPos pos) {
         for (ISlimevoidHelper helper : helperClasses) {
             TileEntity tileentity = helper.getBlockTileEntity(world,
-                                                              x,
-                                                              y,
-                                                              z);
+                                                              pos);
             if (tileentity != null) {
                 return tileentity;
             }
         }
-        return world.getTileEntity(x,
-                                   y,
-                                   z);
-    }
-
-    public static boolean targetExists(World world, int x, int y, int z) {
-        for (ISlimevoidHelper helper : helperClasses) {
-            boolean exists = helper.targetExists(world,
-                                                 x,
-                                                 y,
-                                                 z);
-            if (exists) return true;
-        }
-        return world.blockExists(x,
-                                 y,
-                                 z);
+        return world.getTileEntity(pos);
     }
 
     public static boolean isUseableByPlayer(World world, EntityPlayer player, int xCoord, int yCoord, int zCoord, double xDiff, double yDiff, double zDiff, double distance) {

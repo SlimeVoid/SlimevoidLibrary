@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,20 +16,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.slimevoid.library.blocks.BlockBase;
 import net.slimevoid.library.core.lib.NBTLib;
 import net.slimevoid.library.util.helpers.BlockHelper;
 import net.slimevoid.library.util.helpers.ItemHelper;
 
-public abstract class TileEntityBase extends TileEntity implements IInventory {
+public abstract class TileEntityBase extends TileEntity implements IUpdatePlayerListBox, IInventory {
 
     protected long    tickSchedule;
     protected int     rotation;
@@ -40,7 +43,7 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
         this.active = false;
     }
 
-    public void onBlockNeighborChange(Block block) {
+    public void onNeighborChange(BlockPos pos) {
 
     }
 
@@ -64,7 +67,7 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
 
     }
 
-    public boolean onBlockActivated(EntityPlayer entityplayer) {
+    public boolean onBlockActivated(IBlockState blockState, EntityPlayer entityplayer, EnumFacing side, float xHit, float yHit, float zHit) {
         return false;
     }
 
@@ -74,60 +77,48 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
         return 0;
     }
 
-    public boolean removeBlockByPlayer(EntityPlayer player, BlockBase blockBase) {
-        return blockBase.superRemoveBlockByPlayer(this.getWorldObj(),
+    public boolean removeBlockByPlayer(EntityPlayer player, BlockBase blockBase, boolean willHarvest) {
+        return blockBase.superRemoveBlockByPlayer(this.getWorld(),
+        										  pos,
                                                   player,
-                                                  this.xCoord,
-                                                  this.yCoord,
-                                                  this.zCoord);
+                                                  willHarvest);
     }
 
     public ItemStack getPickBlock(MovingObjectPosition target, BlockBase blockBase) {
         return blockBase.superGetPickBlock(target,
-                                           this.getWorldObj(),
-                                           this.xCoord,
-                                           this.yCoord,
-                                           this.zCoord);
+                                           this.getWorld(),
+                                           this.pos);
     }
 
     public float getBlockHardness(BlockBase blockBase) {
-        return blockBase.superBlockHardness(this.getWorldObj(),
-                                            this.xCoord,
-                                            this.yCoord,
-                                            this.zCoord);
+        return blockBase.superBlockHardness(this.getWorld(),
+                                            this.pos);
     }
 
-    public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, BlockBase blockBase) {
-        return ForgeHooks.blockStrength(blockBase,
+    public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, IBlockState blockState) {
+        return ForgeHooks.blockStrength(blockState,
                                         entityplayer,
-                                        this.getWorldObj(),
-                                        this.xCoord,
-                                        this.yCoord,
-                                        this.zCoord);
+                                        this.getWorld(),
+                                        this.pos);
     }
 
-    public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ, BlockBase blockBase) {
-        return blockBase.superGetExplosionResistance(entity,
-                                                     this.getWorldObj(),
-                                                     this.xCoord,
-                                                     this.yCoord,
-                                                     this.zCoord,
-                                                     explosionX,
-                                                     explosionY,
-                                                     explosionZ);
+    public float getExplosionResistance(BlockBase blockBase, Entity exploder, Explosion explosion) {
+        return blockBase.superGetExplosionResistance(this.getWorld(),
+                                                     this.pos,
+                                                     exploder,
+                                                     explosion);
     }
 
-    public int colorMultiplier(BlockBase blockBase) {
-        return blockBase.superColorMultiplier(this.getWorldObj(),
-                                              this.xCoord,
-                                              this.yCoord,
-                                              this.zCoord);
+    public int colorMultiplier(BlockBase blockBase, int renderPass) {
+        return blockBase.superColorMultiplier(this.getWorld(),
+                                              this.pos,
+                                              renderPass);
     }
 
     protected abstract void addHarvestContents(ArrayList<ItemStack> harvestList);
 
     public void scheduleTick(int time) {
-        long worldTime = this.getWorldObj().getWorldTime() + (long) time;
+        long worldTime = this.getWorld().getWorldTime() + (long) time;
         if (this.tickSchedule > 0L && this.tickSchedule < worldTime) {
             return;
         } else {
@@ -142,47 +133,37 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
     }
 
     public void updateBlock() {
-        this.getWorldObj().markBlockForUpdate(this.xCoord,
-                                              this.yCoord,
-                                              this.zCoord);
-        this.getWorldObj()./* updateAllLightTypes */func_147451_t(this.xCoord,
-                                                                  this.yCoord,
-                                                                  this.zCoord);
+        this.getWorld().markBlockForUpdate(this.pos);
+        this.getWorld().notifyLightSet(this.pos);
     }
 
     public void updateBlockAndNeighbours() {
-        BlockHelper.updateIndirectNeighbors(this.getWorldObj(),
-                                            this.xCoord,
-                                            this.yCoord,
-                                            this.zCoord,
+        BlockHelper.updateIndirectNeighbors(this.getWorld(),
+                                            this.pos,
                                             this.getBlockType());
         this.updateBlock();
     }
 
     public void markBlockDirty() {
-        BlockHelper.markBlockDirty(this.getWorldObj(),
-                                   this.xCoord,
-                                   this.yCoord,
-                                   this.zCoord);
+        //BlockHelper.markBlockDirty(this.getWorld(),
+        //                           this.pos);
     }
 
-    public void breakBlock(Block block, int metadata) {
+    public void breakBlock(IBlockState blockState) {
         ArrayList<ItemStack> harvestList = new ArrayList<ItemStack>();
         this.addHarvestContents(harvestList);
         for (ItemStack itemstack : harvestList) {
-            ItemHelper.dropItem(this.getWorldObj(),
-                                this.xCoord,
-                                this.yCoord,
-                                this.zCoord,
+            ItemHelper.dropItem(this.getWorld(),
+                                this.pos,
                                 itemstack);
         }
     }
 
     @Override
-    public void updateEntity() {
-        if (this.getWorldObj().isRemote) return;
+    public void update() {
+        if (this.getWorld().isRemote) return;
         if (this.tickSchedule < 0L) return;
-        long worldTime = this.getWorldObj().getWorldTime();
+        long worldTime = this.getWorld().getWorldTime();
         if (this.tickSchedule > worldTime + 1200L) this.tickSchedule = worldTime + 1200L;
         else if (this.tickSchedule <= worldTime) {
             this.tickSchedule = -1L;
@@ -205,16 +186,14 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
         return side;
     }
 
-    public IIcon getBlockTexture(int x, int y, int z, int metadata, int side) {
-        return this.getBlockType().getIcon(this.getRotatedSide(side),
-                                           metadata);
-    }
+    //public IIcon getBlockTexture(int x, int y, int z, int metadata, int side) {
+    //    return this.getBlockType().getIcon(this.getRotatedSide(side),
+    //                                       metadata);
+    //}
 
     public void setBlockBoundsBasedOnState(BlockBase blockBase) {
-        blockBase.superSetBlockBoundsBasedOnState(this.getWorldObj(),
-                                                  this.xCoord,
-                                                  this.yCoord,
-                                                  this.zCoord);
+        blockBase.superSetBlockBoundsBasedOnState(this.getWorld(),
+                                                  this.pos);
     }
 
     public void setBlockBoundsForItemRender(BlockBase blockBase) {
@@ -222,43 +201,35 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
     }
 
     public MovingObjectPosition collisionRayTrace(BlockBase blockbase, Vec3 startVec, Vec3 endVec) {
-        return blockbase.superCollisionRayTrace(this.getWorldObj(),
-                                                this.xCoord,
-                                                this.yCoord,
-                                                this.zCoord,
+        return blockbase.superCollisionRayTrace(this.getWorld(),
+                                                this.pos,
                                                 startVec,
                                                 endVec);
     }
 
-    public void addCollisionBoxesToList(BlockBase blockBase, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
-        blockBase.superAddCollisionBoxesToList(this.getWorldObj(),
-                                               this.xCoord,
-                                               this.yCoord,
-                                               this.zCoord,
+    public void addCollisionBoxesToList(BlockBase blockBase, IBlockState blockState, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
+        blockBase.superAddCollisionBoxesToList(this.getWorld(),
+                							   this.pos,
+        									   blockState,
                                                axisAlignedBB,
                                                aList,
                                                anEntity);
     }
 
-    public boolean isSideSolid(BlockBase blockBase, ForgeDirection side) {
-        return blockBase.superSideSolid(this.getWorldObj(),
-                                        this.xCoord,
-                                        this.yCoord,
-                                        this.zCoord,
+    public boolean isSideSolid(BlockBase blockBase, EnumFacing side) {
+        return blockBase.superSideSolid(this.getWorld(),
+                                        this.pos,
                                         side);
     }
 
-    public boolean addBlockDestroyEffects(BlockBase blockBase, int meta, EffectRenderer effectRenderer) {
-        return blockBase.superDestroyEffects(this.getWorldObj(),
-                                             this.xCoord,
-                                             this.yCoord,
-                                             this.zCoord,
-                                             meta,
+    public boolean addBlockDestroyEffects(BlockBase blockBase, EffectRenderer effectRenderer) {
+        return blockBase.superDestroyEffects(this.getWorld(),
+                                             this.pos,
                                              effectRenderer);
     }
 
     public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
-        return blockBase.superHitEffects(this.getWorldObj(),
+        return blockBase.superHitEffects(this.getWorld(),
                                          target,
                                          effectRenderer);
     }
@@ -295,7 +266,7 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+        this.readFromNBT(pkt.getNbtCompound());
         this.onInventoryChanged();
         this.updateBlock();
     }
@@ -303,45 +274,41 @@ public abstract class TileEntityBase extends TileEntity implements IInventory {
     public void onInventoryChanged() {
         this.markDirty();
         this.onInventoryHasChanged(this.worldObj,
-                                   this.xCoord,
-                                   this.yCoord,
-                                   this.zCoord);
+                                   this.pos);
     }
 
     /**
      * If we need to send information to the client it should be done here
      */
-    protected void onInventoryHasChanged(World world, int x, int y, int z) {
-        world.markBlockForUpdate(x,
-                                 y,
-                                 z);
+    protected void onInventoryHasChanged(World world, BlockPos pos) {
+        world.markBlockForUpdate(pos);
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return this.getInvName();
     }
 
     public abstract String getInvName();
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer entityplayer) {
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer entityplayer) {
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
-        Packet packet = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbttagcompound);
+        Packet packet = new S35PacketUpdateTileEntity(pos, 0, nbttagcompound);
         return packet;
     }
 }

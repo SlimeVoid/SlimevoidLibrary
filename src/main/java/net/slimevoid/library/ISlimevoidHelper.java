@@ -12,9 +12,11 @@
 package net.slimevoid.library;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -25,45 +27,44 @@ public interface ISlimevoidHelper {
      * 
      * @param world
      *            the world of the target
-     * @param x
-     *            the xCoord
-     * @param y
-     *            the yCoord
-     * @param z
-     *            the zCoord
+     * @param pos
+     *            block position
      * @return the block
      */
-    public Block getBlock(World world, int x, int y, int z);
+    public Block getBlock(World world, BlockPos pos);
+
+    /**
+     * Gets the block from location
+     * 
+     * @param world
+     *            the world of the target
+     * @param pos
+     *            block position
+     * @return the block
+     */
+    public IBlockState getBlockState(World world, BlockPos pos);
 
     /**
      * Gets the tile entity for the block
      * 
      * @param world
      *            the world of the target
-     * @param x
-     *            the xCoord
-     * @param y
-     *            the yCoord
-     * @param z
-     *            the zCoord
+     * @param pos
+     *            block position
      * @return a tile entity
      */
-    public TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z);
+    public TileEntity getBlockTileEntity(IBlockAccess world, BlockPos pos);
 
     /**
      * Checks if the target exists within the worldObj of the target
      * 
      * @param world
      *            the world of the target
-     * @param x
-     *            the xCoord
-     * @param y
-     *            the yCoord
-     * @param z
-     *            the zCoord
+     * @param pos
+     *            block position
      * @return if block exists
      */
-    public boolean targetExists(World world, int x, int y, int z);
+    public boolean targetExists(World world, BlockPos pos);
 
     /**
      * 

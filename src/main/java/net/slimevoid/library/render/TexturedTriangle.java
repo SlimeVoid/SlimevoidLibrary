@@ -63,15 +63,15 @@ public class TexturedTriangle extends TexturedQuad {
         Vec3 var3 = this.vertexPositions[1].vector3D.subtract(this.vertexPositions[0].vector3D);
         Vec3 var4 = this.vertexPositions[1].vector3D.subtract(this.vertexPositions[2].vector3D);
         Vec3 var5 = var4.crossProduct(var3).normalize();
-        par1Tessellator.startDrawing(GL11.GL_TRIANGLES);
+        par1Tessellator.getWorldRenderer().startDrawing(GL11.GL_TRIANGLES);
 
-        par1Tessellator.setNormal((float) var5.xCoord,
+        par1Tessellator.getWorldRenderer()./*setNormal*/func_178975_e((float) var5.xCoord,
                                   (float) var5.yCoord,
                                   (float) var5.zCoord);
 
         for (int var6 = 0; var6 < 3; ++var6) {
             PositionTextureVertex var7 = this.vertexPositions[var6];
-            par1Tessellator.addVertexWithUV((double) ((float) var7.vector3D.xCoord * par2),
+            par1Tessellator.getWorldRenderer().addVertexWithUV((double) ((float) var7.vector3D.xCoord * par2),
                                             (double) ((float) var7.vector3D.yCoord * par2),
                                             (double) ((float) var7.vector3D.zCoord * par2),
                                             (double) var7.texturePositionX,

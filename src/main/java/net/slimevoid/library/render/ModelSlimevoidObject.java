@@ -115,8 +115,8 @@ public class ModelSlimevoidObject {
 
     public void render(float par2) {
         for (int i = 0; i < faceList.size(); i++) {
-            faceList.get(i).draw(Tessellator.instance,
-                                 par2);
+            faceList.get(i).func_178765_a(Tessellator.getInstance().getWorldRenderer(),
+                                 		  par2);
         }
     }
 

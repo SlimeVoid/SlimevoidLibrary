@@ -11,7 +11,7 @@
  */
 package net.slimevoid.library.proxy;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class SV_ClientProxy extends SV_CommonProxy {
 

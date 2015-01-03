@@ -11,8 +11,8 @@
  */
 package net.slimevoid.library.core;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.slimevoid.library.data.LoggerSlimevoidLib;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class SlimevoidCore {
     public static void console(String modName, String s, int type) {
