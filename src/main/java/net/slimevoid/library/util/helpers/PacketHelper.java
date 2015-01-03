@@ -3,6 +3,7 @@ package net.slimevoid.library.util.helpers;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.relauncher.Side;
 import net.slimevoid.library.network.PacketUpdate;
 import net.slimevoid.library.network.handlers.PacketPipeline;
 
@@ -53,4 +54,12 @@ public class PacketHelper {
                                                           dimension);
     }
 
+    public static Side getEffectiveSide() {
+        String thr = Thread.currentThread().getName();
+        if ((thr.startsWith("Netty Server IO") || (thr.equals("Server thread")))) {
+            return Side.SERVER;
+        }
+        return Side.CLIENT;
+    }
+    
 }
