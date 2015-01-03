@@ -520,6 +520,11 @@ public abstract class BlockBase extends BlockContainer {
                                                (new StringBuilder()).append("tile.").append(name).toString());
         }
     }
+    
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return this.createTileEntity(world, this.getStateFromMeta(meta));
+    }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState blockState) {
