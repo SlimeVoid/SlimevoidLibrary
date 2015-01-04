@@ -9,18 +9,21 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package net.slimevoid.library.entity;
+package net.slimevoid.library.util.helpers;
+
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 
 public class EntityHelper {
-    // REDUNDANT Get the entity with the given entity ID
-    /*
-     * @SideOnly(Side.CLIENT) public static Entity getEntityByID(int entityId) {
-     * if (entityId == ModLoader.getMinecraftInstance().thePlayer.entityId) {
-     * return ModLoader.getMinecraftInstance().thePlayer; } else { for (int j =
-     * 0; j < ModLoader.getMinecraftInstance().theWorld.loadedEntityList
-     * .size(); j++) { Entity entity = (Entity)
-     * ModLoader.getMinecraftInstance().theWorld.loadedEntityList .get(j); if
-     * (entity == null) { return null; } if (entity.entityId == entityId) {
-     * return entity; } } } return null; }
-     */
+	
+	/**
+	 * get a floored BlockPos using x, y, z coordinates
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return floored BlockPos
+	 */
+	public static BlockPos getFlooredPosition(double x, double y, double z) {
+		return new BlockPos(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
+	}
 }
