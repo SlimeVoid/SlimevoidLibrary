@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,15 +37,18 @@ public abstract class BlockBase extends BlockContainer {
     //protected IIcon[] top;
     //protected IIcon[] front;
     //protected IIcon[] side;
-    protected Class[] tileEntityMap;
+	protected PropertyEnum VARIANT;
 
-    protected BlockBase(Material material, int maxTiles) {
+    protected BlockBase(Material material, Class<? extends IBlockEnumType> properties) {
         super(material);
-        this.tileEntityMap = new Class[maxTiles];
+        this.VARIANT = PropertyEnum.create("variant", properties);
+        this.setDefaultState(this.initializeState());
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
         this.setHardness(1.0F);
     }
+    
+    protected abstract IBlockState initializeState();
 
     //@Override
     //public void registerBlockIcons(IIconRegister iconregister) {
@@ -112,7 +116,7 @@ public abstract class BlockBase extends BlockContainer {
         
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.removeBlockByPlayer(player,
                                                       this,
@@ -136,7 +140,7 @@ public abstract class BlockBase extends BlockContainer {
     public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(world.getBlockState(pos)));
+                                                                                   this.getTileEntityClass(world.getBlockState(pos)));
         if (tileentitybase != null) {
             return tileentitybase.getPickBlock(target,
                                                this);
@@ -158,7 +162,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState state = iblockaccess.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
                                                                                    pos,
-                                                                                   this.getTileMapData(state));
+                                                                                   this.getTileEntityClass(state));
         if (tileentitybase != null) {
             tileentitybase.setBlockBoundsBasedOnState(this);
         } else {
@@ -191,7 +195,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.collisionRayTrace(this,
                                                     startVec,
@@ -208,7 +212,7 @@ public abstract class BlockBase extends BlockContainer {
     public void addCollisionBoxesToList(World world, BlockPos pos, IBlockState blockState, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             tileentitybase.addCollisionBoxesToList(this,
             									   blockState,
@@ -255,7 +259,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.isSideSolid(this,
                                               side);
@@ -277,7 +281,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.getExplosionResistance(this,
             											 exploder,
@@ -302,7 +306,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.getBlockHardness(this);
         } else {
@@ -321,7 +325,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.getPlayerRelativeBlockHardness(entityplayer,
                                                                  blockState);
@@ -337,7 +341,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = iblockaccess.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.colorMultiplier(this, renderPass);
         } else {
@@ -370,7 +374,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = iblockaccess.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             tileentitybase.onNeighborChange(posNeighbor);
         } else {
@@ -382,7 +386,7 @@ public abstract class BlockBase extends BlockContainer {
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState blockState, EntityLivingBase entityplayer, ItemStack itemstack) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                    pos,
-                                                                                   this.getTileMapData(blockState));
+                                                                                   this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             tileentitybase.onBlockPlacedBy(itemstack,
                                            entityplayer);
@@ -393,7 +397,7 @@ public abstract class BlockBase extends BlockContainer {
     public void breakBlock(World world, BlockPos pos, IBlockState blockState) {
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                pos,
-                                                                               this.getTileMapData(blockState));
+                                                                               this.getTileEntityClass(blockState));
         if (tileentity != null) {
             tileentity.breakBlock(blockState);
         }
@@ -406,7 +410,7 @@ public abstract class BlockBase extends BlockContainer {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState, EntityPlayer entityplayer, EnumFacing side, float xHit, float yHit, float zHit) {
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                pos,
-                                                                               this.getTileMapData(blockState));
+                                                                               this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.onBlockActivated(blockState, entityplayer, side, xHit, yHit, zHit);
         } else {
@@ -441,7 +445,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = iblockaccess.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
                                                                                pos,
-                                                                               this.getTileMapData(blockState));
+                                                                               this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.getLightValue();
         } else {
@@ -461,7 +465,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                pos,
-                                                                               this.getTileMapData(blockState));
+                                                                               this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.addBlockDestroyEffects(this,
                                                      effectRenderer);
@@ -484,7 +488,7 @@ public abstract class BlockBase extends BlockContainer {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
                                                                                pos,
-                                                                               this.getTileMapData(blockState));
+                                                                               this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.addBlockHitEffects(this,
                                                  target,
@@ -496,19 +500,7 @@ public abstract class BlockBase extends BlockContainer {
         }
     }
 
-    public Class getTileMapData(IBlockState blockState) {
-    	int metadata = blockState.getBlock().getMetaFromState(blockState);
-        if (metadata < this.tileEntityMap.length) {
-            return this.tileEntityMap[metadata];
-        } else {
-            return null;
-        }
-    }
-
-    public void addMapping(int metadata, Class<? extends TileEntity> tileEntityClass, String unlocalizedName) {
-        this.tileEntityMap[metadata] = tileEntityClass;
-        GameRegistry.registerTileEntity(tileEntityClass,
-                                        unlocalizedName);
+    public void addMapping(int metadata, String unlocalizedName) {
         this.setItemName(metadata,
                          unlocalizedName);
     }
@@ -520,6 +512,21 @@ public abstract class BlockBase extends BlockContainer {
                                                (new StringBuilder()).append("tile.").append(name).toString());
         }
     }
+    public Class<? extends TileEntity> getTileEntityClass(IBlockState state) {
+        return ((IBlockEnumType) state.getValue(VARIANT)).getTileEntityClass();
+    }
+    
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+    	return this.getDefaultState().withProperty(VARIANT, this.getBlockType(meta));
+    }
+    
+    @Override
+    public int getMetaFromState(IBlockState state) {
+    	return ((IBlockEnumType) state.getValue(VARIANT)).getMeta();
+    }
+    
+    protected abstract Comparable<IBlockEnumType> getBlockType(int meta);
     
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
@@ -527,9 +534,9 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState blockState) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         try {
-            return (TileEntity) this.getTileMapData(blockState).newInstance();
+            return (TileEntity) ((IBlockEnumType) state.getValue(VARIANT)).createTileEntity();
         } catch (Exception e) {
             return null;
         }
