@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,7 +26,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.slimevoid.library.items.ItemBlockBase;
 import net.slimevoid.library.sounds.SlimevoidStepSound;
 import net.slimevoid.library.tileentity.TileEntityBase;
@@ -33,47 +33,15 @@ import net.slimevoid.library.util.helpers.BlockHelper;
 
 public abstract class BlockBase extends BlockContainer {
 
-    //protected IIcon[] bottom;
-    //protected IIcon[] top;
-    //protected IIcon[] front;
-    //protected IIcon[] side;
-	protected PropertyEnum VARIANT;
-
-    protected BlockBase(Material material, Class<? extends IBlockEnumType> properties) {
+    protected BlockBase(Material material/*, Class<? extends IBlockEnumType> properties*/) {
         super(material);
-        this.VARIANT = PropertyEnum.create("variant", properties);
-        this.setDefaultState(this.initializeState());
+        //this.setPropertyList(PropertyEnum.create("variant", properties));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(this.getPropertyList(), getDefaultProperty()));
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
         this.setHardness(1.0F);
     }
-    
-    protected abstract IBlockState initializeState();
 
-    //@Override
-    //public void registerBlockIcons(IIconRegister iconregister) {
-    //    this.registerIcons(iconregister);
-    //}
-
-    /**
-     * Registers custom icons
-     * 
-     * @param iconRegister
-     */
-    //public void registerIcons(IIconRegister iconRegister) {
-    //    this.bottom = this.registerBottomIcons(iconRegister);
-    //    this.top = this.registerTopIcons(iconRegister);
-    //    this.front = this.registerFrontIcons(iconRegister);
-    //    this.side = this.registerSideIcons(iconRegister);
-    //}
-
-    //public abstract IIcon[] registerBottomIcons(IIconRegister iconRegister);
-
-    //public abstract IIcon[] registerTopIcons(IIconRegister iconRegister);
-
-    //public abstract IIcon[] registerFrontIcons(IIconRegister iconRegister);
-
-    //public abstract IIcon[] registerSideIcons(IIconRegister iconRegister);
 
     //@Override
     //public IIcon getIcon(int side, int metadata) {
@@ -512,21 +480,33 @@ public abstract class BlockBase extends BlockContainer {
                                                (new StringBuilder()).append("tile.").append(name).toString());
         }
     }
+
+    // protected abstract void setPropertyList(PropertyEnum create);
+    
+    protected abstract PropertyEnum getPropertyList();
+    
+    protected abstract Comparable<? extends IBlockEnumType> getDefaultProperty();
+    
+    @Override
+    protected BlockState createBlockState() {
+    	return new BlockState(this, new IProperty[] { this.getPropertyList() });
+    }
+    
     public Class<? extends TileEntity> getTileEntityClass(IBlockState state) {
-        return ((IBlockEnumType) state.getValue(VARIANT)).getTileEntityClass();
+        return ((IBlockEnumType) state.getValue(this.getPropertyList())).getTileEntityClass();
     }
     
     @Override
     public IBlockState getStateFromMeta(int meta) {
-    	return this.getDefaultState().withProperty(VARIANT, this.getBlockType(meta));
+    	return this.getDefaultState().withProperty(this.getPropertyList(), this.getBlockType(meta));
     }
     
     @Override
     public int getMetaFromState(IBlockState state) {
-    	return ((IBlockEnumType) state.getValue(VARIANT)).getMeta();
+    	return ((IBlockEnumType) state.getValue(this.getPropertyList())).getMeta();
     }
     
-    protected abstract Comparable<IBlockEnumType> getBlockType(int meta);
+    protected abstract Comparable<? extends IBlockEnumType> getBlockType(int meta);
     
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
@@ -536,7 +516,7 @@ public abstract class BlockBase extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         try {
-            return (TileEntity) ((IBlockEnumType) state.getValue(VARIANT)).createTileEntity();
+            return (TileEntity) ((IBlockEnumType) state.getValue(this.getPropertyList())).createTileEntity();
         } catch (Exception e) {
             return null;
         }
