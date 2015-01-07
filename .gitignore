@@ -10,5 +10,8 @@ upload.bat
 eclipse
 bin
 
+# mac stuff
+.DS_Store
+
 # run configuration
 run
