@@ -27,7 +27,7 @@ def forge = '11.14.0.1281'
 def mc = '1.8-' + forge + '-1.8'
 def pack = 'library'
 def github = 'SlimevoidLibrary'
-version = '2.0.5.0'
+version = '3.0.0.0-beta-MC1.8'
 group = 'net.slimevoid'
 archivesBaseName = 'SlimevoidLibrary'
 
