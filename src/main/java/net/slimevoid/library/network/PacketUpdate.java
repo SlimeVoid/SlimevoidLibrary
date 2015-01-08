@@ -2,6 +2,7 @@ package net.slimevoid.library.network;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 public abstract class PacketUpdate extends EurysPacket {
     public PacketPayload payload;
 
+    private BlockPos 	 pos;
+    
     public int           xPosition;
     public int           yPosition;
     public int           zPosition;
@@ -41,6 +44,10 @@ public abstract class PacketUpdate extends EurysPacket {
         this.setPacketId(packetId);
         this.payload = payload;
     }
+    
+    public BlockPos getPosition() {
+    	return this.pos;
+    }
 
     /**
      * Set the position x, y, z and side if applicable
@@ -54,11 +61,23 @@ public abstract class PacketUpdate extends EurysPacket {
      * @param side
      *            The side (if applicable)
      */
+    @Deprecated()
     public void setPosition(int x, int y, int z, int side) {
         this.xPosition = x;
         this.yPosition = y;
         this.zPosition = z;
+        this.pos = new BlockPos(x, y, z);
         this.side = side;
+    }
+    
+    /**
+     * Set the position and side
+     * 
+     * @param pos X, Y, Z coordinate object
+     * @param side the side (if applicable)
+     */
+    public void setPosition(BlockPos pos, int side) {
+    	this.setPosition(pos.getX(), pos.getY(), pos.getZ(), side);
     }
 
     /**
@@ -172,7 +191,12 @@ public abstract class PacketUpdate extends EurysPacket {
                                           data.readDouble());
     }
 
+    /**
+     * Override this method for non-block tile entities
+     * @param world
+     * @return
+     */
     public boolean targetExists(World world) {
-        return false;
+        return !world.getBlockState(pos).getBlock().isAir(world, pos);
     }
 }

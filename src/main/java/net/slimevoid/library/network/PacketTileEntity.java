@@ -40,9 +40,7 @@ public abstract class PacketTileEntity extends PacketUpdate {
     public TileEntity getTileEntity(World world) {
         if (this.targetExists(world)) {
             return SlimevoidHelper.getBlockTileEntity(world,
-                                                      new BlockPos(this.xPosition,
-                                                      this.yPosition,
-                                                      this.zPosition));
+                                                      this.getPosition());
         }
         return null;
     }
@@ -50,9 +48,7 @@ public abstract class PacketTileEntity extends PacketUpdate {
     @Override
     public boolean targetExists(World world) {
     	IBlockState blockState = SlimevoidHelper.getBlockState(world,
-                new BlockPos(this.xPosition,
-                this.yPosition,
-                this.zPosition));
+                this.getPosition());
         if (/*SlimevoidHelper.targetExists(world,
                                          this.xPosition,
                                          this.yPosition,

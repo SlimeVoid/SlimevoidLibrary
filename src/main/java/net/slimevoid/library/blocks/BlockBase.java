@@ -26,6 +26,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.slimevoid.library.IEnumBlockType;
+import net.slimevoid.library.core.SlimevoidCore;
+import net.slimevoid.library.core.lib.CoreLib;
 import net.slimevoid.library.items.ItemBlockBase;
 import net.slimevoid.library.sounds.SlimevoidStepSound;
 import net.slimevoid.library.tileentity.TileEntityBase;
@@ -33,29 +36,13 @@ import net.slimevoid.library.util.helpers.BlockHelper;
 
 public abstract class BlockBase extends BlockContainer {
 
-    protected BlockBase(Material material/*, Class<? extends IBlockEnumType> properties*/) {
+    protected BlockBase(Material material) {
         super(material);
-        //this.setPropertyList(PropertyEnum.create("variant", properties));
         this.setDefaultState(this.blockState.getBaseState().withProperty(this.getPropertyList(), getDefaultProperty()));
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
         this.setHardness(1.0F);
     }
-
-
-    //@Override
-    //public IIcon getIcon(int side, int metadata) {
-    //    switch (side) {
-    //    case 0:
-    //        return this.bottom != null && metadata < this.tileEntityMap.length ? this.bottom[metadata] : this.blockIcon;
-    //    case 1:
-    //        return this.top != null && metadata < this.tileEntityMap.length ? this.top[metadata] : this.blockIcon;
-    //    case 3:
-    //        return this.front != null && metadata < this.tileEntityMap.length ? this.front[metadata] : this.blockIcon;
-    //    default:
-    //        return this.side != null && metadata < this.tileEntityMap.length ? this.side[metadata] : this.blockIcon;
-    //    }
-    //}
 
     public abstract CreativeTabs getCreativeTab();
 
@@ -63,12 +50,7 @@ public abstract class BlockBase extends BlockContainer {
     public boolean isOpaqueCube() {
         return false;
     }
-
-    //@Override
-    //public boolean renderAsNormalBlock() {
-    //    return false;
-    //}
-
+    
     public boolean isCube() {
         return false;
     }
@@ -386,28 +368,6 @@ public abstract class BlockBase extends BlockContainer {
         }
     }
 
-    /**@Override
-    public IIcon getIcon(IBlockAccess iblockaccess, int x, int y, int z, int side) {
-        int metadata = iblockaccess.getBlockMetadata(x,
-                                                     y,
-                                                     z);
-        TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
-                                                                               x,
-                                                                               y,
-                                                                               z,
-                                                                               this.getTileMapData(metadata));
-        if (tileentity != null) {
-            return tileentity.getBlockTexture(x,
-                                              y,
-                                              z,
-                                              metadata,
-                                              side);
-        } else {
-            return this.getIcon(side,
-                                metadata);
-        }
-    }**/
-
     @Override
     public int getLightValue(IBlockAccess iblockaccess, BlockPos pos) {
         IBlockState blockState = iblockaccess.getBlockState(pos);
@@ -480,12 +440,10 @@ public abstract class BlockBase extends BlockContainer {
                                                (new StringBuilder()).append("tile.").append(name).toString());
         }
     }
-
-    // protected abstract void setPropertyList(PropertyEnum create);
     
     protected abstract PropertyEnum getPropertyList();
     
-    protected abstract Comparable<? extends IBlockEnumType> getDefaultProperty();
+    protected abstract Comparable<? extends IEnumBlockType> getDefaultProperty();
     
     @Override
     protected BlockState createBlockState() {
@@ -493,7 +451,7 @@ public abstract class BlockBase extends BlockContainer {
     }
     
     public Class<? extends TileEntity> getTileEntityClass(IBlockState state) {
-        return ((IBlockEnumType) state.getValue(this.getPropertyList())).getTileEntityClass();
+        return ((IEnumBlockType) state.getValue(this.getPropertyList())).getTileEntityClass();
     }
     
     @Override
@@ -503,10 +461,10 @@ public abstract class BlockBase extends BlockContainer {
     
     @Override
     public int getMetaFromState(IBlockState state) {
-    	return ((IBlockEnumType) state.getValue(this.getPropertyList())).getMeta();
+    	return ((IEnumBlockType) state.getValue(this.getPropertyList())).getMeta();
     }
     
-    protected abstract Comparable<? extends IBlockEnumType> getBlockType(int meta);
+    protected abstract Comparable<? extends IEnumBlockType> getBlockType(int meta);
     
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
@@ -516,8 +474,9 @@ public abstract class BlockBase extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         try {
-            return (TileEntity) ((IBlockEnumType) state.getValue(this.getPropertyList())).createTileEntity();
+            return (TileEntity) ((IEnumBlockType) state.getValue(this.getPropertyList())).createTileEntity();
         } catch (Exception e) {
+        	SlimevoidCore.console(CoreLib.MOD_NAME, e.getLocalizedMessage());
             return null;
         }
     }

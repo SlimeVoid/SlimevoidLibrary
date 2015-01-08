@@ -72,7 +72,7 @@ public class BlockHelper {
         world.playSoundEffect((float) x + 0.5F,
                               (float) y + 0.5F,
                               (float) z + 0.5F,
-                              "step.stone",
+                              block.stepSound.getPlaceSound(),
                               (block.stepSound.getFrequency() + 1.0F) / 2.0F,
                               block.stepSound.getVolume() * 0.8F);
     }

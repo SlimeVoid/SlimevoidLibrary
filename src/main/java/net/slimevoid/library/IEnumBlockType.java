@@ -1,10 +1,10 @@
-package net.slimevoid.library.blocks;
+package net.slimevoid.library;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.slimevoid.library.tileentity.TileEntityBase;
 
-public interface IBlockEnumType extends IStringSerializable {
+public interface IEnumBlockType extends IStringSerializable {
 	
 	public void setTileData(Class<? extends TileEntityBase> tileEntityClass);
 	

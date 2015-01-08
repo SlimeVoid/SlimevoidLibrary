@@ -2,9 +2,10 @@ package net.slimevoid.library.blocks;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.slimevoid.library.IEnumBlockType;
 import net.slimevoid.library.tileentity.TileEntityBase;
 
-public enum BlockTypeExample implements IBlockEnumType {
+public enum BlockTypeExample implements IEnumBlockType {
 	
 	BLOCK1(0, "name1", TileEntity.class);
 	
