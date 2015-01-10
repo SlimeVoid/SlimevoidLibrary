@@ -38,7 +38,7 @@ public abstract class BlockBase extends BlockContainer {
 
     protected BlockBase(Material material) {
         super(material);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(this.getPropertyList(), getDefaultProperty()));
+        this.setDefaultState(this.getInitialState());
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
         this.setHardness(1.0F);
@@ -441,27 +441,37 @@ public abstract class BlockBase extends BlockContainer {
         }
     }
     
-    protected abstract PropertyEnum getPropertyList();
+    /**
+     * this.blockState.getBaseState().withProperty(this.getPropertyList(), getDefaultBlockType())
+     * 
+     * @return
+     */
     
-    protected abstract Comparable<? extends IEnumBlockType> getDefaultProperty();
+    protected abstract IBlockState getInitialState();
+    
+    protected abstract PropertyEnum getBlockTypeProperty();
+    
+    protected abstract IProperty[] getPropertyList();
+    
+    protected abstract Comparable<? extends IEnumBlockType> getDefaultBlockType();
     
     @Override
     protected BlockState createBlockState() {
-    	return new BlockState(this, new IProperty[] { this.getPropertyList() });
+    	return new BlockState(this, this.getPropertyList());
     }
     
     public Class<? extends TileEntity> getTileEntityClass(IBlockState state) {
-        return ((IEnumBlockType) state.getValue(this.getPropertyList())).getTileEntityClass();
+        return ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).getTileEntityClass();
     }
     
     @Override
     public IBlockState getStateFromMeta(int meta) {
-    	return this.getDefaultState().withProperty(this.getPropertyList(), this.getBlockType(meta));
+    	return this.getDefaultState().withProperty(this.getBlockTypeProperty(), this.getBlockType(meta));
     }
     
     @Override
     public int getMetaFromState(IBlockState state) {
-    	return ((IEnumBlockType) state.getValue(this.getPropertyList())).getMeta();
+    	return ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).getMeta();
     }
     
     protected abstract Comparable<? extends IEnumBlockType> getBlockType(int meta);
@@ -474,7 +484,7 @@ public abstract class BlockBase extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         try {
-            return (TileEntity) ((IEnumBlockType) state.getValue(this.getPropertyList())).createTileEntity();
+            return (TileEntity) ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).createTileEntity();
         } catch (Exception e) {
         	SlimevoidCore.console(CoreLib.MOD_NAME, e.getLocalizedMessage());
             return null;
