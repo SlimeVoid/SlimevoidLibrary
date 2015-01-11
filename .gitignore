@@ -12,6 +12,7 @@ bin
 
 # intellij stuff
 .idea
+*.iml
 
 # mac stuff
 .DS_Store
