@@ -44,9 +44,9 @@ minecraft {
     version = mc
     mappings = map
     if  (file('../run').exists()) {
-       runDir = "../run/assets"
+       runDir = "../run"
     } else {
-       runDir = "assets"
+       runDir = "run"
     }
     replaceIn 'net/slimevoid/' + pack + '/core/lib/CoreLib.java'
     replace '@VERSION@', project.version
