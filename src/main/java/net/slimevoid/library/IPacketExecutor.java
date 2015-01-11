@@ -13,6 +13,8 @@ package net.slimevoid.library;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.slimevoid.library.network.PacketUpdate;
 
 public interface IPacketExecutor {
@@ -26,5 +28,5 @@ public interface IPacketExecutor {
      * @param entityplayer
      *            The player associated with the current Packet Data
      */
-    public void execute(PacketUpdate packet, World world, EntityPlayer entityplayer);
+    public PacketUpdate execute(PacketUpdate packet, World world, EntityPlayer entityplayer);
 }

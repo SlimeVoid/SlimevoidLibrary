@@ -1,7 +1,8 @@
 package net.slimevoid.library.network;
 
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Packet Information Base
@@ -9,22 +10,27 @@ import io.netty.channel.ChannelHandlerContext;
  * @author Eurymachus
  * 
  */
-public abstract class EurysPacket {
-    private int packetId;
-
-    /**
-     * The packet ID usually listed with PacketIds.class
-     * 
-     * @return the Packet ID for this packet instance
-     */
-    public int getPacketId() {
-        return this.packetId;
-    }
-
-    public void setPacketId(int packetId) {
-        this.packetId = packetId;
-    }
-
+public abstract class EurysPacket implements IMessage {
+	/**
+	 * The ID of the packet
+	 */
+	private int packetId;
+	
+	/**
+	 * Set packet ID
+	 * @param packetId
+	 */
+	public void setPacketId(int packetId) {
+		this.packetId = packetId;
+	}
+	
+	/**
+	 * Retrieve the packet ID
+	 * @return the packetID
+	 */
+	public int getPacketId() {
+		return this.packetId;
+	}
     /**
      * The channel for the packet
      */
@@ -52,19 +58,27 @@ public abstract class EurysPacket {
     /**
      * Encode the packet data into the ByteBuf stream. Complex data sets may need specific data handlers (See @link{cpw.mods.fml.common.network.ByteBuffUtils})
      *
-     * @param ctx    channel context
      * @param buffer the buffer to encode into
      */
-    public abstract void writeData(ChannelHandlerContext ctx, ByteBuf buffer);
+    public abstract void writeData(ByteBuf buffer);
 
+    @Override
+    public void toBytes(ByteBuf buffer) {
+    	this.writeData(buffer);
+    }
+    
     /**
      * Decode the packet data from the ByteBuf stream. Complex data sets may need specific data handlers (See @link{cpw.mods.fml.common.network.ByteBuffUtils})
      *
-     * @param ctx    channel context
      * @param buffer the buffer to decode from
      */
-    public abstract void readData(ChannelHandlerContext ctx, ByteBuf buffer);
-
+    public abstract void readData(ByteBuf buffer);
+    
+    @Override
+    public void fromBytes(ByteBuf buffer) {
+    	this.readData(buffer);
+    }
+    
     /**
      * Gets a readable output for this packet instance
      * 
@@ -82,6 +96,6 @@ public abstract class EurysPacket {
      */
     @Override
     public String toString() {
-        return getPacketId() + " " + getClass().getSimpleName();
+        return this.getClass().getSimpleName();
     }
 }

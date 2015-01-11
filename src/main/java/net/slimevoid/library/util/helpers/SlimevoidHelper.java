@@ -91,12 +91,15 @@ public class SlimevoidHelper {
                                     zCoord + zDiff) <= distance;
     }
 
+    @Deprecated
     public static boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
+        return isLadder(world, new BlockPos(x, y, z), entity);
+    }
+
+    public static boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isLadder = helper.isLadder(world,
-                                               x,
-                                               y,
-                                               z,
+                                               pos,
                                                entity);
             if (isLadder) return true;
         }

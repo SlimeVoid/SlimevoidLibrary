@@ -1,7 +1,6 @@
 package net.slimevoid.library.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -35,13 +34,16 @@ public abstract class PacketUpdate extends EurysPacket {
     public float         hitZ;
 
     public String        command;
-
+    
+    public PacketUpdate() {}
+    
     public PacketUpdate(int packetId) {
-        this.setPacketId(packetId);
+    	this();
+    	this.setPacketId(packetId);
     }
 
     public PacketUpdate(int packetId, PacketPayload payload) {
-        this.setPacketId(packetId);
+        this(packetId);
         this.payload = payload;
     }
     
@@ -105,9 +107,8 @@ public abstract class PacketUpdate extends EurysPacket {
     }
 
     @Override
-    public void writeData(ChannelHandlerContext ctx, ByteBuf data) {
-        data.writeByte(this.getPacketId());
-
+    public void writeData(ByteBuf data) {
+    	data.writeInt(this.getPacketId());
         ByteBufUtils.writeUTF8String(data,
                                      this.getCommand());
 
@@ -153,9 +154,8 @@ public abstract class PacketUpdate extends EurysPacket {
     }
 
     @Override
-    public void readData(ChannelHandlerContext ctx, ByteBuf data) {
-        // this.setPacketId(data.readByte());
-
+    public void readData(ByteBuf data) {
+    	this.setPacketId(data.readInt());
         this.setCommand(ByteBufUtils.readUTF8String(data));
 
         this.setPosition(data.readInt(),

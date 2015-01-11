@@ -12,7 +12,6 @@
 package net.slimevoid.library.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 
@@ -54,16 +53,14 @@ public abstract class PacketEntity extends PacketUpdate {
     }
 
     @Override
-    public void writeData(ChannelHandlerContext ctx, ByteBuf data) {
-        super.writeData(ctx,
-                        data);
+    public void writeData(ByteBuf data) {
+        super.writeData(data);
         data.writeInt(this.entityId);
     }
 
     @Override
-    public void readData(ChannelHandlerContext ctx, ByteBuf data) {
-        super.readData(ctx,
-                       data);
+    public void readData(ByteBuf data) {
+        super.readData(data);
         this.entityId = data.readInt();
     }
 

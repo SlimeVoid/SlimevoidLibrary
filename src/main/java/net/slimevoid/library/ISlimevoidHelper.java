@@ -112,5 +112,17 @@ public interface ISlimevoidHelper {
      * 
      * @return true of false
      */
+    @Deprecated
     public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity);
+
+    /**
+     * Overridden to determine whether or not the entity is on a ladder
+     * 
+     * @param world
+     * @param pos
+     * @param entity
+     * 
+     * @return true of false
+     */
+    public boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity);
 }

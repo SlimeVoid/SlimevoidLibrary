@@ -1,7 +1,6 @@
 package net.slimevoid.library.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 public abstract class PacketGuiEvent extends PacketUpdate {
 
@@ -20,16 +19,14 @@ public abstract class PacketGuiEvent extends PacketUpdate {
     }
 
     @Override
-    public void writeData(ChannelHandlerContext ctx, ByteBuf data) {
-        super.writeData(ctx,
-                        data);
+    public void writeData(ByteBuf data) {
+        super.writeData(data);
         data.writeInt(this.guiID);
     }
 
     @Override
-    public void readData(ChannelHandlerContext ctx, ByteBuf data) {
-        super.readData(ctx,
-                       data);
+    public void readData(ByteBuf data) {
+        super.readData(data);
         this.guiID = data.readInt();
     }
 
