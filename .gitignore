@@ -1,7 +1,14 @@
+# mac stuff
+.DS_Store
+
 # gradle stuff
 build
 .gradle
 upload.bat
+
+# intellij stuff
+.idea
+*.iml
 
 # eclipse stuff
 .classpath
@@ -9,13 +16,6 @@ upload.bat
 .settings
 eclipse
 bin
-
-# intellij stuff
-.idea
-*.iml
-
-# mac stuff
-.DS_Store
 
 # run configuration
 run
