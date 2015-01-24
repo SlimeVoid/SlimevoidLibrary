@@ -19,6 +19,8 @@ import java.util.Map;
 import net.slimevoid.library.core.SlimevoidCore;
 import net.slimevoid.library.core.lib.CoreLib;
 
+import net.slimevoid.library.data.Logger;
+import net.slimevoid.library.data.LoggerSlimevoidLib;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -74,14 +76,18 @@ public abstract class XMLLoader {
                                         val);
 
         if (flag != null) {
-            SlimevoidCore.console(CoreLib.MOD_ID,
-                                  "XML Variable replaced ID [" + flag
-                                          + "] with ID [" + val
-                                          + "] and mapped to " + var);
+            LoggerSlimevoidLib.getInstance(CoreLib.MOD_NAME).write(
+                    false,
+                    "XML Variable replaced ID [" + flag
+                            + "] with ID [" + val
+                            + "] and mapped to ",
+                    Logger.LogLevel.DEBUG);
         } else {
-            SlimevoidCore.console(CoreLib.MOD_ID,
-                                  "XML Variable loaded for [" + var + "] @ID ["
-                                          + val + "]");
+            LoggerSlimevoidLib.getInstance(CoreLib.MOD_NAME).write(
+                    false,
+                    "XML Variable loaded for [" + var + "] @ID ["
+                            + val + "]",
+                    Logger.LogLevel.DEBUG);
         }
     }
 
