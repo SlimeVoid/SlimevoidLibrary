@@ -47,7 +47,7 @@ public class PacketHelper {
     public static void registerServerExecutor(Class executor, Class packet, int packetIndex) {
     	String modChannel = Loader.instance().activeModContainer().getModId();
         if (channels.containsKey(modChannel)) {
-        	channels.get(modChannel).registerMessage(executor, packet, 0, Side.SERVER);
+        	channels.get(modChannel).registerMessage(executor, packet, packetIndex, Side.SERVER);
         }
     }
 
