@@ -1,4 +1,4 @@
-package net.slimevoid.library.blocks;
+package net.slimevoid.testmod;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -7,7 +7,7 @@ import net.slimevoid.library.tileentity.TileEntityBase;
 
 public enum BlockTypeExample implements IEnumBlockType {
 	
-	BLOCK1(0, "name1", TileEntity.class);
+	BLOCK1(0, "blockTypeExampleName", TileEntityBase.class);
 	
 	int meta;
 	String name;
