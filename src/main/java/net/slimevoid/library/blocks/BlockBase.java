@@ -7,10 +7,14 @@ import java.util.Random;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +30,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.slimevoid.library.IEnumBlockType;
 import net.slimevoid.library.core.SlimevoidCore;
 import net.slimevoid.library.core.lib.CoreLib;
@@ -33,8 +42,11 @@ import net.slimevoid.library.items.ItemBlockBase;
 import net.slimevoid.library.sounds.SlimevoidStepSound;
 import net.slimevoid.library.tileentity.TileEntityBase;
 import net.slimevoid.library.util.helpers.BlockHelper;
+import net.slimevoid.library.util.helpers.ResourceHelper;
 
 public abstract class BlockBase extends BlockContainer {
+
+    public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     protected BlockBase(Material material) {
         super(material);
@@ -436,9 +448,19 @@ public abstract class BlockBase extends BlockContainer {
     public void setItemName(int metadata, String name) {
         Item item = Item.getItemFromBlock(this);
         if (item != null) {
-            ((ItemBlockBase) item).setMetaName(metadata,
-                                               (new StringBuilder()).append("tile.").append(name).toString());
+            ItemBlockBase itembase = ((ItemBlockBase) item).setMetaName(metadata,
+                    (new StringBuilder()).append("tile.").append(name).toString());
+            if (FMLCommonHandler.instance().getSide().isClient()) {
+                this.registerVariant(itembase, metadata, name);
+            }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void registerVariant(ItemBlockBase item, int meta, String name) {
+        String domain = Loader.instance().activeModContainer().getModId();
+        String fullName = domain + ":" + name;
+        ResourceHelper.registerVariant(item, meta, fullName);
     }
     
     /**
@@ -479,6 +501,15 @@ public abstract class BlockBase extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return this.createTileEntity(world, this.getStateFromMeta(meta));
+    }
+
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, pos, this.getTileEntityClass(state));
+        if (tileentity != null) {
+            return tileentity.getActualState(state, this);
+        } else {
+            return state;
+        }
     }
 
     @Override

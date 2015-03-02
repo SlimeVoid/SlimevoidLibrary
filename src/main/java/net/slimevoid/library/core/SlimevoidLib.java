@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.slimevoid.library.ICommonProxy;
 import net.slimevoid.library.core.lib.ConfigurationLib;
 import net.slimevoid.library.core.lib.CoreLib;
+import net.slimevoid.library.util.helpers.ResourceHelper;
 import net.slimevoid.library.util.helpers.SlimevoidHelper;
 import net.slimevoid.library.util.json.JSONLoader;
 import net.slimevoid.library.util.xml.XMLVariables;
@@ -46,6 +47,7 @@ public class SlimevoidLib {
 
         proxy.preInit();
         SlimevoidHelper.init();
+        ResourceHelper.processVariants();
         ConfigurationLib.init();
         XMLVariables.registerDefaultXMLVariables();
     }

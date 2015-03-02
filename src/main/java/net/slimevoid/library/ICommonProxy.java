@@ -77,4 +77,9 @@ public interface ICommonProxy extends IGuiHandler {
      */
     public boolean isClient(World world);
 
+    /**
+     * Initializes Packet Handlers
+     */
+    public void registerPacketHandlers();
+
 }

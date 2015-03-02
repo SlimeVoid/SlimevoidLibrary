@@ -29,10 +29,11 @@ public class ItemBlockBase extends ItemBlock {
         return damage;
     }
 
-    public void setMetaName(int damage, String name) {
+    public ItemBlockBase setMetaName(int damage, String name) {
         this.itemBlockNames.put(Integer.valueOf(damage),
                                 name);
         this.getValidItemBlocks().add(Integer.valueOf(damage));
+        return this;
     }
 
     @Override

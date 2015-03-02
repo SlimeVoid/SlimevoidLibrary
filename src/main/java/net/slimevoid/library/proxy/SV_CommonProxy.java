@@ -64,6 +64,10 @@ public class SV_CommonProxy implements ICommonProxy {
     }
 
     @Override
+    public void registerPacketHandlers() {
+    }
+
+    @Override
     public void registerConfigurationProperties(File configFile) {
     }
 

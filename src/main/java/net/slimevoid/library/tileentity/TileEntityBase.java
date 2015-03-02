@@ -52,7 +52,7 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
     }
 
     public void onBlockPlacedBy(ItemStack itemstack, EntityLivingBase entity) {
-        this.rotation = (int) Math.floor((double) ((entity.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+        this.setRotation((int) Math.floor((double) ((entity.rotationYaw * 4F) / 360F) + 0.5D) & 3);
     }
 
     public int getRotation() {
@@ -172,18 +172,18 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
         }
     }
 
-    public int getRotatedSide(int side) {
-        switch (rotation) {
+    public EnumFacing getFacing() {
+        switch (this.rotation) {
         case 0:
-            return side == 3 ? 2 : side == 2 ? 3 : side;
+            return EnumFacing.NORTH;
         case 1:
-            return side == 3 ? 5 : side == 5 ? 3 : side;
+            return EnumFacing.EAST;
         case 2:
-            return side;
+            return EnumFacing.SOUTH;
         case 3:
-            return side == 3 ? 4 : side == 4 ? 3 : side;
+            return EnumFacing.WEST;
         }
-        return side;
+        return EnumFacing.NORTH;
     }
 
     //public IIcon getBlockTexture(int x, int y, int z, int metadata, int side) {
@@ -224,14 +224,19 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
 
     public boolean addBlockDestroyEffects(BlockBase blockBase, EffectRenderer effectRenderer) {
         return blockBase.superDestroyEffects(this.getWorld(),
-                                             this.pos,
-                                             effectRenderer);
+                this.pos,
+                effectRenderer);
     }
 
     public boolean addBlockHitEffects(BlockBase blockBase, MovingObjectPosition target, EffectRenderer effectRenderer) {
         return blockBase.superHitEffects(this.getWorld(),
-                                         target,
-                                         effectRenderer);
+                target,
+                effectRenderer);
+    }
+
+    public IBlockState getActualState(IBlockState state, BlockBase blockBase) {
+        System.out.println(this.rotation);
+        return state.withProperty(BlockBase.FACING, this.getFacing());
     }
 
     /**
@@ -257,11 +262,11 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setLong(NBTLib.TILE_TICK_SCHEDULE,
-                               this.tickSchedule);
+                this.tickSchedule);
         nbttagcompound.setByte(NBTLib.TILE_ROTATION,
-                               (byte) this.rotation);
+                (byte) this.rotation);
         nbttagcompound.setByte(NBTLib.TILE_ACTIVE,
-                               (byte) (this.active ? 1 : 0));
+                (byte) (this.active ? 1 : 0));
     }
 
     @Override
@@ -274,7 +279,7 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
     public void onInventoryChanged() {
         this.markDirty();
         this.onInventoryHasChanged(this.worldObj,
-                                   this.pos);
+                this.pos);
     }
 
     /**
@@ -285,7 +290,7 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
     }
 
     @Override
-    public String getName() {
+    public String getCommandSenderName() {
         return this.getInvName();
     }
 

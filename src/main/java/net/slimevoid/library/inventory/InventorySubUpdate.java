@@ -51,8 +51,8 @@ public class InventorySubUpdate implements IInventory {
     }
 
     @Override
-    public String getName() {
-        return parent.getName();
+    public String getCommandSenderName() {
+        return parent.getCommandSenderName();
     }
 
     @Override
