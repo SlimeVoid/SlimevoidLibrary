@@ -73,22 +73,27 @@ public class SlimevoidHelper {
         return world.getTileEntity(pos);
     }
 
-    public static boolean isUseableByPlayer(World world, EntityPlayer player, int xCoord, int yCoord, int zCoord, double xDiff, double yDiff, double zDiff, double distance) {
+    @Deprecated
+    public static boolean isUseableByPlayer(World world, EntityPlayer player, int x, int y, int z, double xDiff, double yDiff, double zDiff, double distance) {
+        return isUseableByPlayer(world, player, new BlockPos(x, y, z), xDiff, yDiff, zDiff, distance);
+    }
+
+    public static boolean isUseableByPlayer(World world, EntityPlayer player, BlockPos pos, double xDiff, double yDiff, double zDiff, double distance) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isUseable = helper.isUseableByPlayer(world,
                                                          player,
-                                                         xCoord,
-                                                         yCoord,
-                                                         zCoord,
+                                                         pos,
                                                          xDiff,
                                                          yDiff,
                                                          zDiff,
                                                          distance);
             if (isUseable) return true;
         }
-        return player.getDistanceSq(xCoord + xDiff,
-                                    yCoord + yDiff,
-                                    zCoord + zDiff) <= distance;
+        return player.getDistanceSq(
+                pos.add(
+                        xDiff,
+                        yDiff,
+                        zDiff)) <= distance;
     }
 
     @Deprecated

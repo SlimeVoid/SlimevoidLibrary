@@ -66,21 +66,19 @@ public interface ISlimevoidHelper {
      */
     public boolean targetExists(World world, BlockPos pos);
 
+    @Deprecated
+    public boolean isUseableByPlayer(World world, EntityPlayer player, int xCoord, int yCoord, int zCoord, double xDiff, double yDiff, double zDiff, double distance);
+
     /**
-     * 
      * Helps get the usable by player for Containers
-     * 
+     *
      * @param world
      *            NOT player.worldObj world of the object e.g.
      *            tileentity.worldObj
      * @param player
      *            the player attempting to use the block
-     * @param xCoord
-     *            the xCoord of the object
-     * @param yCoord
-     *            the yCoord of the object
-     * @param zCoord
-     *            the zCoord of the object
+     * @param pos
+     *            the {@link BlockPos}
      * @param xDiff
      *            the x differential (0.5D)
      * @param yDiff
@@ -89,10 +87,10 @@ public interface ISlimevoidHelper {
      *            the z differential (0.5D)
      * @param distance
      *            the distance from object (64.0D)
-     * 
+     *
      * @return whether the Player can use the object
      */
-    public boolean isUseableByPlayer(World world, EntityPlayer player, int xCoord, int yCoord, int zCoord, double xDiff, double yDiff, double zDiff, double distance);
+    public boolean isUseableByPlayer(World world, EntityPlayer player, BlockPos pos, double xDiff, double yDiff, double zDiff, double distance);
 
     /**
      * Overridden to return a readable name string
