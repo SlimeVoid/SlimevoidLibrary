@@ -6,20 +6,12 @@ import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -30,31 +22,21 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.slimevoid.library.IEnumBlockType;
-import net.slimevoid.library.core.SlimevoidCore;
-import net.slimevoid.library.core.lib.CoreLib;
-import net.slimevoid.library.items.ItemBlockBase;
 import net.slimevoid.library.sounds.SlimevoidStepSound;
 import net.slimevoid.library.tileentity.TileEntityBase;
 import net.slimevoid.library.util.helpers.BlockHelper;
-import net.slimevoid.library.util.helpers.ResourceHelper;
 
 public abstract class BlockBase extends BlockContainer {
 
-    public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-
     protected BlockBase(Material material) {
         super(material);
-        this.setDefaultState(this.getInitialState());
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
         this.setHardness(1.0F);
+        this.setActualDefaultState();
     }
+
+    protected abstract void setActualDefaultState();
 
     public abstract CreativeTabs getCreativeTab();
 
@@ -440,85 +422,5 @@ public abstract class BlockBase extends BlockContainer {
         }
     }
 
-    public void addMapping(int metadata, String unlocalizedName) {
-        this.setItemName(metadata,
-                         unlocalizedName);
-    }
-
-    public void setItemName(int metadata, String name) {
-        Item item = Item.getItemFromBlock(this);
-        if (item != null) {
-            ItemBlockBase itembase = ((ItemBlockBase) item).setMetaName(metadata,
-                    (new StringBuilder()).append("tile.").append(name).toString());
-            if (FMLCommonHandler.instance().getSide().isClient()) {
-                this.registerVariant(itembase, metadata, name);
-            }
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected void registerVariant(ItemBlockBase item, int meta, String name) {
-        String domain = Loader.instance().activeModContainer().getModId();
-        String fullName = domain + ":" + name;
-        ResourceHelper.registerVariant(item, meta, fullName);
-    }
-    
-    /**
-     * this.blockState.getBaseState().withProperty(this.getPropertyList(), getDefaultBlockType())
-     * 
-     * @return
-     */
-    
-    protected abstract IBlockState getInitialState();
-    
-    protected abstract PropertyEnum getBlockTypeProperty();
-    
-    protected abstract IProperty[] getPropertyList();
-    
-    protected abstract Comparable<? extends IEnumBlockType> getDefaultBlockType();
-    
-    @Override
-    protected BlockState createBlockState() {
-    	return new BlockState(this, this.getPropertyList());
-    }
-    
-    public Class<? extends TileEntity> getTileEntityClass(IBlockState state) {
-        return ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).getTileEntityClass();
-    }
-    
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-    	return this.getDefaultState().withProperty(this.getBlockTypeProperty(), this.getBlockType(meta));
-    }
-    
-    @Override
-    public int getMetaFromState(IBlockState state) {
-    	return ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).getMeta();
-    }
-    
-    protected abstract Comparable<? extends IEnumBlockType> getBlockType(int meta);
-    
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return this.createTileEntity(world, this.getStateFromMeta(meta));
-    }
-
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, pos, this.getTileEntityClass(state));
-        if (tileentity != null) {
-            return tileentity.getActualState(state, this);
-        } else {
-            return state;
-        }
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        try {
-            return (TileEntity) ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).createTileEntity();
-        } catch (Exception e) {
-        	SlimevoidCore.console(CoreLib.MOD_NAME, e.getLocalizedMessage());
-            return null;
-        }
-    }
+    public abstract Class<? extends TileEntity> getTileEntityClass(IBlockState state);
 }

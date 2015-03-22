@@ -27,6 +27,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.slimevoid.library.blocks.BlockBase;
+import net.slimevoid.library.blocks.BlockStates;
 import net.slimevoid.library.core.lib.NBTLib;
 import net.slimevoid.library.util.helpers.BlockHelper;
 import net.slimevoid.library.util.helpers.ItemHelper;
@@ -235,9 +236,10 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
     }
 
     public IBlockState getActualState(IBlockState state, BlockBase blockBase) {
-        System.out.println(this.rotation);
-        return state.withProperty(BlockBase.FACING, this.getFacing());
+        return this.getExtendedState(state.withProperty(BlockStates.FACING, this.getFacing()), blockBase);
     }
+
+    public abstract IBlockState getExtendedState(IBlockState state, BlockBase blockBase);
 
     /**
      * This can be overriden and used to retrieve the step sound based on

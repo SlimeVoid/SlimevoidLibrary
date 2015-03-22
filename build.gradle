@@ -23,7 +23,7 @@ apply plugin: 'maven'
 apply plugin: 'forge'
 apply plugin: 'eclipse'
 
-def number = '3.0.0.4'
+def number = '3.0.0.5'
 def release = 'beta'
 def mcversion = '1.8'
 def forge = '11.14.1.1334'
