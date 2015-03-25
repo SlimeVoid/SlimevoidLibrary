@@ -18,7 +18,7 @@ public class ResourceHelper {
 
     public static void registerVariant(ItemBlockBase item, int meta, String name) {
         ModelBakery.addVariantName(item, name);
-        ItemStack stack = new ItemStack(item, meta);
+        ItemStack stack = new ItemStack(item, 0, meta);
         variants.put(stack, name);
     }
 
