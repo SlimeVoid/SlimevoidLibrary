@@ -234,9 +234,7 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
                 effectRenderer);
     }
 
-    public IBlockState getActualState(IBlockState state, BlockBase blockBase) {
-        return this.getExtendedState(state.withProperty(BlockStates.FACING, this.getFacing()), blockBase);
-    }
+    public abstract IBlockState getActualState(IBlockState state, BlockBase blockBase);
 
     public abstract IBlockState getExtendedState(IBlockState state, BlockBase blockBase);
 

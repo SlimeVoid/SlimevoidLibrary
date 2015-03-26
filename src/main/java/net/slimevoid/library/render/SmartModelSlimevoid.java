@@ -61,6 +61,7 @@ public abstract class SmartModelSlimevoid implements ISmartBlockModel, ISmartIte
 
         IBakedModel defaultModel = this.getModel();
 
+        if (defaultModel == null) return new ArrayList();
         List listQuadsIn = defaultModel.getFaceQuads(face);
         Integer[] UVs = new Integer[8];
         for (Iterator iterator = listQuadsIn.iterator(); iterator.hasNext();) {

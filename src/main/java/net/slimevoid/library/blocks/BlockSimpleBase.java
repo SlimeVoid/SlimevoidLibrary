@@ -101,6 +101,16 @@ public abstract class BlockSimpleBase extends BlockBase {
         }
     }
 
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world, pos, this.getTileEntityClass(state));
+        if (tileentity != null) {
+            return tileentity.getExtendedState(state, this);
+        } else {
+            return state;
+        }
+    }
+
     public Class<? extends TileEntity> getTileEntityClass(IBlockState state) {
         if (!(state.getBlock() instanceof BlockBase)) return null;
         return ((IEnumBlockType) state.getValue(this.getBlockTypeProperty())).getTileEntityClass();
