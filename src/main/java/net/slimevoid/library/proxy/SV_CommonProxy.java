@@ -16,7 +16,6 @@ import java.io.File;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.slimevoid.library.ICommonProxy;
 
 public class SV_CommonProxy implements ICommonProxy {
 

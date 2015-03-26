@@ -1,4 +1,4 @@
-package net.slimevoid.library.blocks;
+package net.slimevoid.library.blocks.state;
 
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.util.EnumFacing;

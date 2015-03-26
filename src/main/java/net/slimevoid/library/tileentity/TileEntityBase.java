@@ -3,7 +3,6 @@ package net.slimevoid.library.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
@@ -27,7 +26,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.slimevoid.library.blocks.BlockBase;
-import net.slimevoid.library.blocks.BlockStates;
+import net.slimevoid.library.blocks.state.BlockStates;
 import net.slimevoid.library.core.lib.NBTLib;
 import net.slimevoid.library.util.helpers.BlockHelper;
 import net.slimevoid.library.util.helpers.ItemHelper;

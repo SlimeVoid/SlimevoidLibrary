@@ -9,7 +9,7 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package net.slimevoid.library;
+package net.slimevoid.library.proxy;
 
 import java.io.File;
 

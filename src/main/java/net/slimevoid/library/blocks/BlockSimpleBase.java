@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.slimevoid.library.IEnumBlockType;
+import net.slimevoid.library.blocks.state.BlockStates;
 import net.slimevoid.library.core.SlimevoidCore;
 import net.slimevoid.library.core.lib.CoreLib;
 import net.slimevoid.library.items.ItemBlockBase;
@@ -30,6 +30,7 @@ public abstract class BlockSimpleBase extends BlockBase {
 
     public BlockSimpleBase(Material material) {
         super(material);
+        this.setActualDefaultState();
     }
 
     public void addMapping(int metadata, String unlocalizedName) {
@@ -55,7 +56,6 @@ public abstract class BlockSimpleBase extends BlockBase {
         ResourceHelper.registerVariant(item, meta, fullName);
     }
 
-    @Override
     protected void setActualDefaultState() {
         this.setDefaultState(this.getInitialState(this.blockState.getBaseState().withProperty(BlockStates.FACING, EnumFacing.NORTH).withProperty(this.getBlockTypeProperty(), this.getDefaultBlockType())));
     }

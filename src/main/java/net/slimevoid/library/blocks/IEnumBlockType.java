@@ -1,4 +1,4 @@
-package net.slimevoid.library;
+package net.slimevoid.library.blocks;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;

@@ -2,7 +2,7 @@ package net.slimevoid.testmod;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.slimevoid.library.IEnumBlockType;
+import net.slimevoid.library.blocks.IEnumBlockType;
 import net.slimevoid.library.tileentity.TileEntityBase;
 
 public enum BlockTypeExample implements IEnumBlockType {

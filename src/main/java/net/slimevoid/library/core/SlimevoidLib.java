@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.slimevoid.library.ICommonProxy;
+import net.slimevoid.library.proxy.ICommonProxy;
 import net.slimevoid.library.core.lib.ConfigurationLib;
 import net.slimevoid.library.core.lib.CoreLib;
 import net.slimevoid.library.util.helpers.ResourceHelper;

@@ -33,10 +33,7 @@ public abstract class BlockBase extends BlockContainer {
         this.setCreativeTab(this.getCreativeTab());
         this.setStepSound(new SlimevoidStepSound("blockbase", 1.0F, 1.0F));
         this.setHardness(1.0F);
-        this.setActualDefaultState();
     }
-
-    protected abstract void setActualDefaultState();
 
     public abstract CreativeTabs getCreativeTab();
 
