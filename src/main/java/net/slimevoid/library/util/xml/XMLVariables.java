@@ -1,10 +1,10 @@
 package net.slimevoid.library.util.xml;
 
-import java.util.Iterator;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+
+import java.util.Iterator;
 
 public class XMLVariables {
 
@@ -14,7 +14,7 @@ public class XMLVariables {
             Block block = blocks.next();
             if (block != null) {
                 XMLLoader.addXmlVariable("$" + block.getUnlocalizedName(),
-                                         Block.getIdFromBlock(block));
+                        Block.getIdFromBlock(block));
             }
         }
         Iterator<Item> items = Item.itemRegistry.iterator();
@@ -22,7 +22,7 @@ public class XMLVariables {
             Item item = items.next();
             if (item != null && !(item instanceof ItemBlock)) {
                 XMLLoader.addXmlVariable("$" + item.getUnlocalizedName(),
-                                         Item.getIdFromItem(item));
+                        Item.getIdFromItem(item));
 
             }
         }

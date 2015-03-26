@@ -7,9 +7,9 @@ import net.minecraft.util.IChatComponent;
 
 public class InventorySubUpdate implements IInventory {
 
-    int           size;
-    int           start;
-    IInventory    parent;
+    int size;
+    int start;
+    IInventory parent;
     ContainerBase container;
 
     public InventorySubUpdate(ContainerBase container, IInventory parentInventory, int startSlot, int inventorySize) {
@@ -33,7 +33,7 @@ public class InventorySubUpdate implements IInventory {
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         ItemStack itemstack = parent.decrStackSize(slot + start,
-                                                   amount);
+                amount);
         if (itemstack != null) {
         }
         return itemstack;
@@ -47,7 +47,7 @@ public class InventorySubUpdate implements IInventory {
     @Override
     public void setInventorySlotContents(int slot, ItemStack ist) {
         parent.setInventorySlotContents(slot + start,
-                                        ist);
+                ist);
     }
 
     @Override
@@ -88,33 +88,33 @@ public class InventorySubUpdate implements IInventory {
         return true;
     }
 
-	@Override
-	public IChatComponent getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public IChatComponent getDisplayName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public int getField(int id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int getField(int id) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public void setField(int id, int value) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setField(int id, int value) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public int getFieldCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    }
 
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public int getFieldCount() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        // TODO Auto-generated method stub
+
+    }
 }

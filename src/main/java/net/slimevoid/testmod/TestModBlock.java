@@ -10,15 +10,15 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.slimevoid.library.util.helpers.PacketHelper;
 
 public class TestModBlock extends BlockDirt {
-	
-	@Override
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-		TestModMessage message = new TestModMessage();
-		message.setCommand("Testing");
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-			PacketHelper.sendToServer(message);
-		}
-		return true;
-	}
+        TestModMessage message = new TestModMessage();
+        message.setCommand("Testing");
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            PacketHelper.sendToServer(message);
+        }
+        return true;
+    }
 
 }

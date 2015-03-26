@@ -10,8 +10,8 @@ import net.minecraft.world.World;
 public abstract class ContainerBase extends Container {
 
     protected InventoryPlayer playerInventory;
-    protected IInventory      customInventory;
-    protected World           world;
+    protected IInventory customInventory;
+    protected World world;
 
     public ContainerBase(InventoryPlayer playerInventory, IInventory customInventory, World world, int playerColOffset, int playerRowOffset) {
         super();
@@ -21,7 +21,7 @@ public abstract class ContainerBase extends Container {
         this.bindLocalInventory();
         if (this.shouldBindPlayerInventory()) {
             this.bindPlayerInventory(playerColOffset,
-                                     playerRowOffset);
+                    playerRowOffset);
         }
     }
 
@@ -51,9 +51,9 @@ public abstract class ContainerBase extends Container {
 
     protected void bindPlayerInventory(int playerColOffset, int playerRowOffset) {
         this.bindUpperInventory(playerColOffset,
-                                playerRowOffset);
+                playerRowOffset);
         this.bindHotBarInventory(playerColOffset,
-                                 playerRowOffset);
+                playerRowOffset);
     }
 
     public InventoryPlayer getPlayerInventory() {
@@ -71,7 +71,6 @@ public abstract class ContainerBase extends Container {
 
     /**
      * Fake Container Class
-     * 
      */
 
     protected static class ContainerNull extends Container {

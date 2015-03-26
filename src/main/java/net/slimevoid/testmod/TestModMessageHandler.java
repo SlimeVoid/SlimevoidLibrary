@@ -8,10 +8,10 @@ import net.slimevoid.library.network.executor.PacketExecutor;
 
 public class TestModMessageHandler extends PacketExecutor<TestModMessage, IMessage> {
 
-	@Override
-	public PacketUpdate execute(PacketUpdate packet, World world, EntityPlayer entityplayer) {
-		System.out.println(packet.getCommand() + " ¬ " + entityplayer);
-		return null;
-	}
+    @Override
+    public PacketUpdate execute(PacketUpdate packet, World world, EntityPlayer entityplayer) {
+        System.out.println(packet.getCommand() + " ¬ " + entityplayer);
+        return null;
+    }
 
 }

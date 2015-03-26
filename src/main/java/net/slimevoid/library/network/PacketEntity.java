@@ -12,19 +12,17 @@
 package net.slimevoid.library.network;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 /**
  * Packet for sending Entity information
- * 
+ * <p/>
  * entityId The ID of the entity to send
- * 
+ *
  * @author Eurymachus
- * 
  */
 public abstract class PacketEntity extends PacketUpdate {
     private int entityId;
@@ -35,7 +33,7 @@ public abstract class PacketEntity extends PacketUpdate {
 
     /**
      * Get the entityId for this packet
-     * 
+     *
      * @return The entity ID
      */
     public int getEntityId() {
@@ -44,9 +42,8 @@ public abstract class PacketEntity extends PacketUpdate {
 
     /**
      * Set the entityId for this packet
-     * 
-     * @param entityId
-     *            The entity ID
+     *
+     * @param entityId The entity ID
      */
     public void setEntityId(int entityId) {
         this.entityId = entityId;

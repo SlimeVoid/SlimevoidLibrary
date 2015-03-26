@@ -11,32 +11,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.slimevoid.library.network.PacketUpdate;
 
-public abstract class PacketExecutor <REQ extends PacketUpdate, REPLY extends IMessage> implements IPacketExecutor, IMessageHandler<REQ, REPLY> {
+public abstract class PacketExecutor<REQ extends PacketUpdate, REPLY extends IMessage> implements IPacketExecutor, IMessageHandler<REQ, REPLY> {
 
-	@SuppressWarnings("unchecked")
-	@Override
+    @SuppressWarnings("unchecked")
+    @Override
     public REPLY onMessage(REQ message, MessageContext ctx) {
         EntityPlayer entityplayer = null;
         World world = null;
-    	switch (ctx.side) {
-        case CLIENT:
-            entityplayer = this.getClientPlayer();
-            world = this.getClientWorld();
-            break;
+        switch (ctx.side) {
+            case CLIENT:
+                entityplayer = this.getClientPlayer();
+                world = this.getClientWorld();
+                break;
 
-        case SERVER:
-            entityplayer = ((NetHandlerPlayServer) ctx.netHandler).playerEntity;
-            world = entityplayer.worldObj;
-            break;
-    	}
-		return (REPLY) this.execute(message, world, entityplayer);
+            case SERVER:
+                entityplayer = ((NetHandlerPlayServer) ctx.netHandler).playerEntity;
+                world = entityplayer.worldObj;
+                break;
+        }
+        return (REPLY) this.execute(message, world, entityplayer);
     }
 
     @SideOnly(Side.CLIENT)
     private EntityPlayer getClientPlayer() {
         return FMLClientHandler.instance().getClientPlayerEntity();
     }
-    
+
     @SideOnly(Side.CLIENT)
     private World getClientWorld() {
         return FMLClientHandler.instance().getWorldClient();

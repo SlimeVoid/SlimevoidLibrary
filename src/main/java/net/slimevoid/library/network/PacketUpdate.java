@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
  * Packet Information for Reading/Writing packet data
- * 
+ * <p/>
  * packetId The ID of the packet used to identify which packet handler to use
  * payload The payload to be delivered with the packet xPosition The value x for
  * the current packet yPosition The value y for the current packet zPosition The
@@ -15,53 +15,49 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
  * (Used for blocks and activation) hitX The hitX for the current packet (Used
  * for blocks and activation) hitY The hitY for the current packet (Used for
  * blocks and activation) hitZ the hitZ for the current packet
- * 
+ *
  * @author Eurymachus
- * 
  */
 public abstract class PacketUpdate extends EurysPacket {
     public PacketPayload payload;
 
-    private BlockPos 	 pos;
-    
-    public int           xPosition;
-    public int           yPosition;
-    public int           zPosition;
-    public int           side;
+    private BlockPos pos;
 
-    public float         hitX;
-    public float         hitY;
-    public float         hitZ;
+    public int xPosition;
+    public int yPosition;
+    public int zPosition;
+    public int side;
 
-    public String        command;
-    
-    public PacketUpdate() {}
-    
+    public float hitX;
+    public float hitY;
+    public float hitZ;
+
+    public String command;
+
+    public PacketUpdate() {
+    }
+
     public PacketUpdate(int packetId) {
-    	this();
-    	this.setPacketId(packetId);
+        this();
+        this.setPacketId(packetId);
     }
 
     public PacketUpdate(int packetId, PacketPayload payload) {
         this(packetId);
         this.payload = payload;
     }
-    
+
     public BlockPos getPosition() {
-    	return this.pos;
+        return this.pos;
     }
 
     /**
      * Set the position x, y, z and side if applicable
-     * 
-     * @param x
-     *            The x position
-     * @param y
-     *            The y position
-     * @param z
-     *            The z position
-     * @param side
-     *            The side (if applicable)
+     *
+     * @param x    The x position
+     * @param y    The y position
+     * @param z    The z position
+     * @param side The side (if applicable)
      */
     @Deprecated()
     public void setPosition(int x, int y, int z, int side) {
@@ -71,26 +67,23 @@ public abstract class PacketUpdate extends EurysPacket {
         this.pos = new BlockPos(x, y, z);
         this.side = side;
     }
-    
+
     /**
      * Set the position and side
-     * 
-     * @param pos X, Y, Z coordinate object
+     *
+     * @param pos  X, Y, Z coordinate object
      * @param side the side (if applicable)
      */
     public void setPosition(BlockPos pos, int side) {
-    	this.setPosition(pos.getX(), pos.getY(), pos.getZ(), side);
+        this.setPosition(pos.getX(), pos.getY(), pos.getZ(), side);
     }
 
     /**
      * Set the selected vector positions (if applicable)
-     * 
-     * @param hitX
-     *            The selected vector on x
-     * @param hitY
-     *            The selected vector on y
-     * @param hitZ
-     *            The selected vector on z
+     *
+     * @param hitX The selected vector on x
+     * @param hitY The selected vector on y
+     * @param hitZ The selected vector on z
      */
     public void setHitVectors(float hitX, float hitY, float hitZ) {
         this.hitX = hitX;
@@ -108,9 +101,9 @@ public abstract class PacketUpdate extends EurysPacket {
 
     @Override
     public void writeData(ByteBuf data) {
-    	data.writeInt(this.getPacketId());
+        data.writeInt(this.getPacketId());
         ByteBufUtils.writeUTF8String(data,
-                                     this.getCommand());
+                this.getCommand());
 
         data.writeInt(this.xPosition);
         data.writeInt(this.yPosition);
@@ -146,7 +139,7 @@ public abstract class PacketUpdate extends EurysPacket {
             data.writeFloat(this.payload.getFloatPayload(i));
         for (int i = 0; i < this.payload.getStringSize(); i++)
             ByteBufUtils.writeUTF8String(data,
-                                         this.payload.getStringPayload(i));
+                    this.payload.getStringPayload(i));
         for (int i = 0; i < this.payload.getBoolSize(); i++)
             data.writeBoolean(this.payload.getBoolPayload(i));
         for (int i = 0; i < this.payload.getDoubleSize(); i++)
@@ -155,16 +148,16 @@ public abstract class PacketUpdate extends EurysPacket {
 
     @Override
     public void readData(ByteBuf data) {
-    	this.setPacketId(data.readInt());
+        this.setPacketId(data.readInt());
         this.setCommand(ByteBufUtils.readUTF8String(data));
 
         this.setPosition(data.readInt(),
-                         data.readInt(),
-                         data.readInt(),
-                         data.readInt());
+                data.readInt(),
+                data.readInt(),
+                data.readInt());
         this.setHitVectors(data.readFloat(),
-                           data.readFloat(),
-                           data.readFloat());
+                data.readFloat(),
+                data.readFloat());
 
         int intSize = data.readInt();
         int floatSize = data.readInt();
@@ -176,23 +169,24 @@ public abstract class PacketUpdate extends EurysPacket {
 
         for (int i = 0; i < this.payload.getIntSize(); i++)
             this.payload.setIntPayload(i,
-                                       data.readInt());
+                    data.readInt());
         for (int i = 0; i < this.payload.getFloatSize(); i++)
             this.payload.setFloatPayload(i,
-                                         data.readFloat());
+                    data.readFloat());
         for (int i = 0; i < this.payload.getStringSize(); i++)
             this.payload.setStringPayload(i,
-                                          ByteBufUtils.readUTF8String(data));
+                    ByteBufUtils.readUTF8String(data));
         for (int i = 0; i < this.payload.getBoolSize(); i++)
             this.payload.setBoolPayload(i,
-                                        data.readBoolean());
+                    data.readBoolean());
         for (int i = 0; i < this.payload.getDoubleSize(); i++)
             this.payload.setDoublePayload(i,
-                                          data.readDouble());
+                    data.readDouble());
     }
 
     /**
      * Override this method for non-block tile entities
+     *
      * @param world
      * @return
      */

@@ -11,6 +11,19 @@
  */
 package net.slimevoid.library.util.xml;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.slimevoid.library.core.SlimevoidCore;
+import net.slimevoid.library.core.lib.CoreLib;
+import net.slimevoid.library.util.FileReader;
+import net.slimevoid.library.util.FileUtils;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,25 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.slimevoid.library.core.SlimevoidCore;
-import net.slimevoid.library.core.lib.CoreLib;
-import net.slimevoid.library.util.FileReader;
-import net.slimevoid.library.util.FileUtils;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 public class XMLRecipeLoader extends XMLLoader {
     /**
      * Default XML files. Are copied over when not already exists.
@@ -47,9 +41,8 @@ public class XMLRecipeLoader extends XMLLoader {
 
     /**
      * Loads default XML Recipe files from a directory.
-     * 
-     * @param dir
-     *            Default XML directory.
+     *
+     * @param dir Default XML directory.
      */
     public static void registerDefaultsFromLocation(Class clazz, String location) {
         // Checks that our location list does not contain a reference already
@@ -58,7 +51,7 @@ public class XMLRecipeLoader extends XMLLoader {
                 // Retrieves the resource listing based on the path and class
                 // given
                 String[] resourceList = FileUtils.getResourceListing(clazz,
-                                                                     location);
+                        location);
                 // If we retrieved results continue
                 if (resourceList.length > 0) {
                     // Creates a hashmap of each resource in the list
@@ -66,25 +59,25 @@ public class XMLRecipeLoader extends XMLLoader {
                     for (String file : resourceList) {
                         // Returns the file as an InputStream
                         InputStream instr = clazz.getClassLoader().getResourceAsStream(location
-                                                                                       + file);
+                                + file);
                         // Places that InputStream against its reference name
                         // for use later
                         defaultStreams.put(file,
-                                           instr);
+                                instr);
                     }
                     // Adds the InputStream HashMap to our resourceLocations Map
                     defaultLocations.put(location,
-                                         defaultStreams);
+                            defaultStreams);
                     SlimevoidCore.console(CoreLib.MOD_ID,
-                                          "Resource list loaded from ["
-                                                  + clazz.getSimpleName()
-                                                  + "][" + location + "]");
+                            "Resource list loaded from ["
+                                    + clazz.getSimpleName()
+                                    + "][" + location + "]");
                 } else {
                     SlimevoidCore.console(CoreLib.MOD_ID,
-                                          "Caution: Failed to get resource list from ["
-                                                  + clazz.getSimpleName()
-                                                  + "][" + location + "]",
-                                          1);
+                            "Caution: Failed to get resource list from ["
+                                    + clazz.getSimpleName()
+                                    + "][" + location + "]",
+                            1);
                 }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -96,9 +89,8 @@ public class XMLRecipeLoader extends XMLLoader {
 
     /**
      * Loads XML Recipe files from a directory.
-     * 
-     * @param dir
-     *            Source directory.
+     *
+     * @param dir Source directory.
      */
     public static void loadFolder(String locationKey, File dir) {
         // Create the directory if it does not already exist.
@@ -111,24 +103,24 @@ public class XMLRecipeLoader extends XMLLoader {
                 // If it does not exist in the source directory; copy defaults
                 // over.
                 if (!FileReader.checkIfExists(filename,
-                                              dir)) {
+                        dir)) {
                     File newFile = new File(dir.getPath() + File.separator
-                                            + filename);
+                            + filename);
                     if (FileUtils.copyStream(defaultStreams.get(filename),
-                                             newFile)) {
+                            newFile)) {
                         SlimevoidCore.console(CoreLib.MOD_ID,
-                                              "Default was file loaded ["
-                                                      + newFile.getName() + "]");
+                                "Default was file loaded ["
+                                        + newFile.getName() + "]");
                     } else {
                         SlimevoidCore.console(CoreLib.MOD_ID,
-                                              "Failed to load default file ["
-                                                      + newFile.getName() + "]");
+                                "Failed to load default file ["
+                                        + newFile.getName() + "]");
                     }
                 } else {
                     SlimevoidCore.console(CoreLib.MOD_ID,
-                                          "File ["
-                                                  + filename
-                                                  + "] already exists! Skipping...");
+                            "File ["
+                                    + filename
+                                    + "] already exists! Skipping...");
                 }
             }
 
@@ -140,16 +132,15 @@ public class XMLRecipeLoader extends XMLLoader {
             defaultLocations.remove(locationKey);
         } else {
             SlimevoidCore.console(CoreLib.MOD_ID,
-                                  "Caution: Could not load default settings from ["
-                                          + locationKey + "]");
+                    "Caution: Could not load default settings from ["
+                            + locationKey + "]");
         }
     }
 
     /**
      * Load a specific XML Recipe file.
-     * 
-     * @param file
-     *            Source file.
+     *
+     * @param file Source file.
      */
     public static void loadXML(File file) {
         try {
@@ -168,7 +159,7 @@ public class XMLRecipeLoader extends XMLLoader {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
                     assemble(element,
-                             file);
+                            file);
                 }
             }
 
@@ -182,7 +173,7 @@ public class XMLRecipeLoader extends XMLLoader {
             // The syntax must be correct XML. One root node, closed nodes, etc
             // etc.
             FileReader.endWithError("Could not parse XML markup: "
-                                    + file.getName());
+                    + file.getName());
             e.printStackTrace();
         } catch (IOException e) {
             // File I/O error.
@@ -194,11 +185,9 @@ public class XMLRecipeLoader extends XMLLoader {
 
     /**
      * Assemble a recipe Element node.
-     * 
-     * @param element
-     *            Element node.
-     * @param xmlFile
-     *            Source XML File.
+     *
+     * @param element Element node.
+     * @param xmlFile Source XML File.
      */
     private static void assemble(Element element, File xmlFile) {
         // The layout
@@ -244,7 +233,7 @@ public class XMLRecipeLoader extends XMLLoader {
         // Do not continue without ID.
         if (outItem == null) {
             FileReader.endWithError("recipe.outID not set! ("
-                                    + xmlFile.getName() + ")");
+                    + xmlFile.getName() + ")");
             return;
         }
 
@@ -253,7 +242,7 @@ public class XMLRecipeLoader extends XMLLoader {
          ****************/
         // Split it up by newline
         recipeLayout = getValue("layout",
-                                element).split("\n");
+                element).split("\n");
         int nextI = 0;
         for (int i = 0; i < recipeLayout.length; i++) {
             // Trim the line. Removing all leading and trailing whitespaces.
@@ -306,14 +295,14 @@ public class XMLRecipeLoader extends XMLLoader {
                 // Do not continue without ID.
                 if (item == null) {
                     FileReader.endWithError("mapping.id not set! ("
-                                            + xmlFile.getName() + ")");
+                            + xmlFile.getName() + ")");
                     return;
                 }
 
                 // Add the input mapping to the recipe map.
                 // The node's value is the variable.
                 recipeMap.put(node.getChildNodes().item(0).getNodeValue(),
-                              new ItemStack(item, 1, meta));
+                        new ItemStack(item, 1, meta));
             }
         }
 
@@ -340,7 +329,7 @@ public class XMLRecipeLoader extends XMLLoader {
         // Register recipe.
         // Output itemstack and convert the list to object array.
         registerRecipe(new ItemStack(outItem, recipeStackSize, outMeta),
-                       recipe.toArray());
+                recipe.toArray());
     }
 
     private static int xmlValueToInteger(String xmlString) {
@@ -380,16 +369,14 @@ public class XMLRecipeLoader extends XMLLoader {
     /**
      * Register a recipe.<br>
      * Uses Minecraft API (Forge/Modloader) specific method of registration.
-     * 
-     * @param output
-     *            Recipe output.
-     * @param input
-     *            Recipe input.
+     *
+     * @param output Recipe output.
+     * @param input  Recipe input.
      */
     private static void registerRecipe(ItemStack output, Object[] input) {
         GameRegistry.addRecipe(output,
-                               input);
+                input);
         FileReader.sendMessage("Adding recipe for: "
-                               + output.getUnlocalizedName());
+                + output.getUnlocalizedName());
     }
 }

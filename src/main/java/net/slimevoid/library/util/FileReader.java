@@ -11,17 +11,11 @@
  */
 package net.slimevoid.library.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.channels.FileChannel;
-
 import net.slimevoid.library.core.SlimevoidCore;
 import net.slimevoid.library.core.lib.CoreLib;
+
+import java.io.*;
+import java.nio.channels.FileChannel;
 
 public class FileReader {
 
@@ -63,11 +57,9 @@ public class FileReader {
 
     /**
      * Checks if a file exists in a directory.
-     * 
-     * @param filename
-     *            The filename.
-     * @param dir
-     *            The directory.
+     *
+     * @param filename The filename.
+     * @param dir      The directory.
      * @return True if file exists in directory, false otherwise.
      */
     public static boolean checkIfExists(String filename, File dir) {
@@ -76,17 +68,14 @@ public class FileReader {
 
     /**
      * Copies a file to a directory.
-     * 
-     * @param from
-     *            Source file.
-     * @param toDir
-     *            Destination directory.
-     * 
+     *
+     * @param from  Source file.
+     * @param toDir Destination directory.
      * @throws IOException
      */
     public static void copyDefaultTo(File from, File toDir) throws IOException {
         sendMessage("Copying from default: " + from.getName() + "->"
-                    + toDir.getAbsolutePath());
+                + toDir.getAbsolutePath());
 
         // Initialize destination file.
         File to = new File(toDir.getPath() + File.separator + from.getName());
@@ -104,8 +93,8 @@ public class FileReader {
             // Copy over entire content from source channel to destination
             // channel.
             destination.transferFrom(source,
-                                     0,
-                                     source.size());
+                    0,
+                    source.size());
         } finally {
             // Close the channels when finished.
             if (source != null) source.close();
@@ -115,23 +104,21 @@ public class FileReader {
 
     /**
      * Send a info message, logger or console.
-     * 
-     * @param error
-     *            The message.
+     *
+     * @param error The message.
      */
     public static void sendMessage(String message) {
         SlimevoidCore.console(CoreLib.MOD_ID,
-                              message);
+                message);
     }
 
     /**
      * Send a error message, logger or console.
-     * 
-     * @param error
-     *            The message.
+     *
+     * @param error The message.
      */
     public static void endWithError(String error) {
         SlimevoidCore.console(CoreLib.MOD_ID,
-                              error);
+                error);
     }
 }

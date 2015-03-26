@@ -5,15 +5,14 @@ import java.lang.reflect.Modifier;
 
 /**
  * Example Usage:
- * 
+ * <p/>
  * Object privateVariable = ReflectionHelper.getInstance([ClassName].class).getPrivateFieldAtIndex(0);
- * 
+ * <p/>
  * if (privateVariable instanceof Block) {
- *      Block block = (Block) privateVariable;
+ * Block block = (Block) privateVariable;
  * }
- * 
+ *
  * @author Gregory Jones
- * 
  */
 public class ReflectionHelper {
 
@@ -34,7 +33,7 @@ public class ReflectionHelper {
         try {
             Field declaredField = this._clazz.getDeclaredFields()[declaredIndex];
             this.setFinalStatic(declaredField,
-                                newValue);
+                    newValue);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,10 +47,10 @@ public class ReflectionHelper {
         Field modifiersField = Field.class.getDeclaredField("modifiers");
         modifiersField.setAccessible(true);
         modifiersField.setInt(field,
-                              field.getModifiers() & ~Modifier.FINAL);
+                field.getModifiers() & ~Modifier.FINAL);
 
         field.set(null,
-                  newValue);
+                newValue);
     }
 
     public Object getPrivateFieldAtIndex(int declaredIndex) {

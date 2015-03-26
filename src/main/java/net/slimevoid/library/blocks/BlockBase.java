@@ -1,9 +1,5 @@
 package net.slimevoid.library.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,17 +10,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.slimevoid.library.sounds.SlimevoidStepSound;
 import net.slimevoid.library.tileentity.TileEntityBase;
 import net.slimevoid.library.util.helpers.BlockHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public abstract class BlockBase extends BlockContainer {
 
@@ -41,7 +37,7 @@ public abstract class BlockBase extends BlockContainer {
     public boolean isOpaqueCube() {
         return false;
     }
-    
+
     public boolean isCube() {
         return false;
     }
@@ -54,226 +50,227 @@ public abstract class BlockBase extends BlockContainer {
     @Override
     public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
         IBlockState blockState = world.getBlockState(pos);
-        
+
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.removeBlockByPlayer(player,
-                                                      this,
-                                                      willHarvest);
+                    this,
+                    willHarvest);
         } else {
             return super.removedByPlayer(world,
-            							 pos,
-                                         player,
-                                         willHarvest);
+                    pos,
+                    player,
+                    willHarvest);
         }
     }
 
     public boolean superRemoveBlockByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
         return super.removedByPlayer(world,
-                					 pos,
-                                     player,
-                                     willHarvest);
+                pos,
+                player,
+                willHarvest);
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(world.getBlockState(pos)));
+                pos,
+                this.getTileEntityClass(world.getBlockState(pos)));
         if (tileentitybase != null) {
             return tileentitybase.getPickBlock(target,
-                                               this);
+                    this);
         } else {
             return super.getPickBlock(target,
-                                      world,
-                                      pos);
+                    world,
+                    pos);
         }
     }
 
     public final ItemStack superGetPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
         return super.getPickBlock(target,
-                                  world,
-                                  pos);
+                world,
+                pos);
     }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, BlockPos pos) {
         IBlockState state = iblockaccess.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(state));
+                pos,
+                this.getTileEntityClass(state));
         if (tileentitybase != null) {
             tileentitybase.setBlockBoundsBasedOnState(this);
         } else {
             super.setBlockBoundsBasedOnState(iblockaccess,
-                                             pos);
+                    pos);
         }
     }
 
     /**
-    public void setBlockBoundsForItemRender(int metadata) {
-        TileEntityBase tileentitybase = (TileEntityBase) this.createTileEntity(null,
-                                                                               metadata);
-        if (tileentitybase != null) {
-            tileentitybase.setBlockBoundsForItemRender(this);
-        }
-    }**/
+     * public void setBlockBoundsForItemRender(int metadata) {
+     * TileEntityBase tileentitybase = (TileEntityBase) this.createTileEntity(null,
+     * metadata);
+     * if (tileentitybase != null) {
+     * tileentitybase.setBlockBoundsForItemRender(this);
+     * }
+     * }*
+     */
 
     @Override
     public void setBlockBoundsForItemRender() {
         this.setBlockBounds(0.0F,
-                            0.0F,
-                            0.0F,
-                            1.0F,
-                            1.0F,
-                            1.0F);
+                0.0F,
+                0.0F,
+                1.0F,
+                1.0F,
+                1.0F);
     }
 
     @Override
     public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 startVec, Vec3 endVec) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.collisionRayTrace(this,
-                                                    startVec,
-                                                    endVec);
+                    startVec,
+                    endVec);
         } else {
             return super.collisionRayTrace(world,
-                                           pos,
-                                           startVec,
-                                           endVec);
+                    pos,
+                    startVec,
+                    endVec);
         }
     }
 
     @Override
     public void addCollisionBoxesToList(World world, BlockPos pos, IBlockState blockState, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             tileentitybase.addCollisionBoxesToList(this,
-            									   blockState,
-                                                   axisAlignedBB,
-                                                   aList,
-                                                   anEntity);
+                    blockState,
+                    axisAlignedBB,
+                    aList,
+                    anEntity);
         } else {
             super.addCollisionBoxesToList(world,
-                                          pos,
-                                          blockState,
-                                          axisAlignedBB,
-                                          aList,
-                                          anEntity);
+                    pos,
+                    blockState,
+                    axisAlignedBB,
+                    aList,
+                    anEntity);
         }
     }
 
     public final void superSetBlockBoundsBasedOnState(World worldObj, BlockPos pos) {
         this.setBlockBounds(0.0F,
-                            0.0F,
-                            0.0F,
-                            1.0F,
-                            1.0F,
-                            1.0F);
+                0.0F,
+                0.0F,
+                1.0F,
+                1.0F,
+                1.0F);
     }
 
     public final MovingObjectPosition superCollisionRayTrace(World world, BlockPos pos, Vec3 startVec, Vec3 endVec) {
         return super.collisionRayTrace(world,
-                                       pos,
-                                       startVec,
-                                       endVec);
+                pos,
+                startVec,
+                endVec);
     }
 
     public final void superAddCollisionBoxesToList(World world, BlockPos pos, IBlockState blockState, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
         super.addCollisionBoxesToList(world,
-                                      pos,
-                                      blockState,
-                                      axisAlignedBB,
-                                      aList,
-                                      anEntity);
+                pos,
+                blockState,
+                axisAlignedBB,
+                aList,
+                anEntity);
     }
 
     @Override
     public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.isSideSolid(this,
-                                              side);
+                    side);
         } else {
             return super.isSideSolid(world,
-                                     pos,
-                                     side);
+                    pos,
+                    side);
         }
     }
 
     public boolean superSideSolid(World world, BlockPos pos, EnumFacing side) {
         return super.isSideSolid(world,
-                                 pos,
-                                 side);
+                pos,
+                side);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.getExplosionResistance(this,
-            											 exploder,
-                                                         explosion);
+                    exploder,
+                    explosion);
         } else {
             return super.getExplosionResistance(world,
-                                                pos,
-                                                exploder,
-                                                explosion);
+                    pos,
+                    exploder,
+                    explosion);
         }
     }
 
     public final float superGetExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
         return super.getExplosionResistance(world,
-                                            pos,
-                                            exploder,
-                                            explosion);
+                pos,
+                exploder,
+                explosion);
     }
 
     @Override
     public float getBlockHardness(World world, BlockPos pos) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.getBlockHardness(this);
         } else {
             return super.getBlockHardness(world,
-                                          pos);
+                    pos);
         }
     }
 
     public float superBlockHardness(World world, BlockPos pos) {
         return super.getBlockHardness(world,
-                                      pos);
+                pos);
     }
 
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, World world, BlockPos pos) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.getPlayerRelativeBlockHardness(entityplayer,
-                                                                 blockState);
+                    blockState);
         } else {
             return super.getPlayerRelativeBlockHardness(entityplayer,
-                                                        world,
-                                                        pos);
+                    world,
+                    pos);
         }
     }
 
@@ -281,21 +278,21 @@ public abstract class BlockBase extends BlockContainer {
     public int colorMultiplier(IBlockAccess iblockaccess, BlockPos pos, int renderPass) {
         IBlockState blockState = iblockaccess.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             return tileentitybase.colorMultiplier(this, renderPass);
         } else {
             return super.colorMultiplier(iblockaccess,
-                                         pos,
-                                         renderPass);
+                    pos,
+                    renderPass);
         }
     }
 
     public int superColorMultiplier(World world, BlockPos pos, int renderPass) {
         return super.colorMultiplier(world,
-                                     pos,
-                                     renderPass);
+                pos,
+                renderPass);
     }
 
     @Override
@@ -314,8 +311,8 @@ public abstract class BlockBase extends BlockContainer {
     public void onNeighborChange(IBlockAccess iblockaccess, BlockPos pos, BlockPos posNeighbor) {
         IBlockState blockState = iblockaccess.getBlockState(pos);
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             tileentitybase.onNeighborChange(posNeighbor);
         } else {
@@ -326,32 +323,32 @@ public abstract class BlockBase extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState blockState, EntityLivingBase entityplayer, ItemStack itemstack) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                                   pos,
-                                                                                   this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentitybase != null) {
             tileentitybase.onBlockPlacedBy(itemstack,
-                                           entityplayer);
+                    entityplayer);
         }
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState blockState) {
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                               pos,
-                                                                               this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentity != null) {
             tileentity.breakBlock(blockState);
         }
         super.breakBlock(world,
-                         pos,
-                         blockState);
+                pos,
+                blockState);
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState, EntityPlayer entityplayer, EnumFacing side, float xHit, float yHit, float zHit) {
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                               pos,
-                                                                               this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.onBlockActivated(blockState, entityplayer, side, xHit, yHit, zHit);
         } else {
@@ -363,42 +360,42 @@ public abstract class BlockBase extends BlockContainer {
     public int getLightValue(IBlockAccess iblockaccess, BlockPos pos) {
         IBlockState blockState = iblockaccess.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(iblockaccess,
-                                                                               pos,
-                                                                               this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.getLightValue();
         } else {
             return super.getLightValue(iblockaccess,
-                                       pos);
+                    pos);
         }
     }
 
     public boolean superDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer) {
         return super.addDestroyEffects(world,
-                                       pos,
-                                       effectRenderer);
+                pos,
+                effectRenderer);
     }
 
     @Override
     public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                               pos,
-                                                                               this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.addBlockDestroyEffects(this,
-                                                     effectRenderer);
+                    effectRenderer);
         } else {
             return super.addDestroyEffects(world,
-                                           pos,
-                                           effectRenderer);
+                    pos,
+                    effectRenderer);
         }
     }
 
     public boolean superHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
         return super.addHitEffects(world,
-                                   target,
-                                   effectRenderer);
+                target,
+                effectRenderer);
     }
 
     @Override
@@ -406,16 +403,16 @@ public abstract class BlockBase extends BlockContainer {
         BlockPos pos = target.getBlockPos();
         IBlockState blockState = world.getBlockState(pos);
         TileEntityBase tileentity = (TileEntityBase) BlockHelper.getTileEntity(world,
-                                                                               pos,
-                                                                               this.getTileEntityClass(blockState));
+                pos,
+                this.getTileEntityClass(blockState));
         if (tileentity != null) {
             return tileentity.addBlockHitEffects(this,
-                                                 target,
-                                                 effectRenderer);
+                    target,
+                    effectRenderer);
         } else {
             return super.addHitEffects(world,
-                                       target,
-                                       effectRenderer);
+                    target,
+                    effectRenderer);
         }
     }
 

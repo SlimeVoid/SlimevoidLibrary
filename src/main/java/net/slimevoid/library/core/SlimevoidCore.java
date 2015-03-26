@@ -17,34 +17,34 @@ import net.slimevoid.library.data.LoggerSlimevoidLib;
 public class SlimevoidCore {
     public static void console(String modName, String s, int type) {
         switch (type) {
-        case 0:
-            FMLCommonHandler.instance().getFMLLogger().info("[" + modName
-                                                            + "] " + s);
-            LoggerSlimevoidLib.getInstance(modName).write(false,
-                                                          s,
-                                                          LoggerSlimevoidLib.LogLevel.DEBUG);
-            break;
-        case 1:
-            FMLCommonHandler.instance().getFMLLogger().warn("[" + modName
-                                                            + "] " + s);
-            LoggerSlimevoidLib.getInstance(modName).write(false,
-                                                          s,
-                                                          LoggerSlimevoidLib.LogLevel.WARNING);
-            break;
-        case 2:
-            FMLCommonHandler.instance().getFMLLogger().fatal("[" + modName
-                                                             + "] " + s);
-            LoggerSlimevoidLib.getInstance(modName).write(false,
-                                                          s,
-                                                          LoggerSlimevoidLib.LogLevel.ERROR);
-            break;
-        default:
-            FMLCommonHandler.instance().getFMLLogger().info("[" + modName
-                                                            + "] " + s);
-            LoggerSlimevoidLib.getInstance(modName).write(false,
-                                                          s,
-                                                          LoggerSlimevoidLib.LogLevel.INFO);
-            break;
+            case 0:
+                FMLCommonHandler.instance().getFMLLogger().info("[" + modName
+                        + "] " + s);
+                LoggerSlimevoidLib.getInstance(modName).write(false,
+                        s,
+                        LoggerSlimevoidLib.LogLevel.DEBUG);
+                break;
+            case 1:
+                FMLCommonHandler.instance().getFMLLogger().warn("[" + modName
+                        + "] " + s);
+                LoggerSlimevoidLib.getInstance(modName).write(false,
+                        s,
+                        LoggerSlimevoidLib.LogLevel.WARNING);
+                break;
+            case 2:
+                FMLCommonHandler.instance().getFMLLogger().fatal("[" + modName
+                        + "] " + s);
+                LoggerSlimevoidLib.getInstance(modName).write(false,
+                        s,
+                        LoggerSlimevoidLib.LogLevel.ERROR);
+                break;
+            default:
+                FMLCommonHandler.instance().getFMLLogger().info("[" + modName
+                        + "] " + s);
+                LoggerSlimevoidLib.getInstance(modName).write(false,
+                        s,
+                        LoggerSlimevoidLib.LogLevel.INFO);
+                break;
         }
     }
 

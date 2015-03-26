@@ -15,15 +15,16 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 
 public class EntityHelper {
-	
-	/**
-	 * get a floored BlockPos using x, y, z coordinates
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return floored BlockPos
-	 */
-	public static BlockPos getFlooredPosition(double x, double y, double z) {
-		return new BlockPos(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
-	}
+
+    /**
+     * get a floored BlockPos using x, y, z coordinates
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @return floored BlockPos
+     */
+    public static BlockPos getFlooredPosition(double x, double y, double z) {
+        return new BlockPos(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
+    }
 }

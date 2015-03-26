@@ -1,8 +1,5 @@
 package net.slimevoid.library.blocks;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -11,7 +8,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+
+import java.util.List;
+import java.util.Random;
 
 public abstract class BlockTransientLight extends Block {
 
@@ -56,8 +55,8 @@ public abstract class BlockTransientLight extends Block {
     public void onBlockAdded(World world, BlockPos pos, IBlockState blockState) {
         if (!world.isRemote) {
             world.scheduleUpdate(pos,
-                                 this,
-                                 this.tickRate(world));
+                    this,
+                    this.tickRate(world));
         }
     }
 
@@ -70,20 +69,19 @@ public abstract class BlockTransientLight extends Block {
     public void updateTick(World world, BlockPos pos, IBlockState blockState, Random random) {
         if (!world.isRemote) {
             if (!this.handleLightingConditions(world,
-                                               pos,
-                                               random)) {
+                    pos,
+                    random)) {
                 world.setBlockToAir(pos);
             }
             world.scheduleUpdate(pos,
-                                 this,
-                                 this.tickRate(world));
+                    this,
+                    this.tickRate(world));
         }
     }
 
     /**
      * This method should return true if you handled lighting updates otherwise
      * the block will remove itself automatically on this tick
-     * 
      */
     protected abstract boolean handleLightingConditions(World world, BlockPos pos, Random random);
 
@@ -96,8 +94,8 @@ public abstract class BlockTransientLight extends Block {
         if (!world.isRemote) {
             if ((world.getBlockState(pos).getBlock() == Blocks.air || world.getBlockState(pos).getBlock() == blockState.getBlock())) {
                 world.setBlockState(pos,
-                               		blockState,
-                               		0);
+                        blockState,
+                        0);
             }
         }
     }

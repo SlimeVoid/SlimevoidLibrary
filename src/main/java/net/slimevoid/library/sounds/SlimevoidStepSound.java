@@ -6,7 +6,7 @@ public class SlimevoidStepSound extends SoundType {
 
     /**
      * This is a facade class used for the BlockBase of Slimevoid Mods
-     * 
+     *
      * @param stepSoundName
      * @param volume
      * @param pitch

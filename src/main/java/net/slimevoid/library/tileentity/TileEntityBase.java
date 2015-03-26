@@ -1,8 +1,5 @@
 package net.slimevoid.library.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
@@ -17,24 +14,22 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.slimevoid.library.blocks.BlockBase;
-import net.slimevoid.library.blocks.state.BlockStates;
 import net.slimevoid.library.core.lib.NBTLib;
 import net.slimevoid.library.util.helpers.BlockHelper;
 import net.slimevoid.library.util.helpers.ItemHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class TileEntityBase extends TileEntity implements IUpdatePlayerListBox, IInventory {
 
-    protected long    tickSchedule;
-    protected int     rotation;
+    protected long tickSchedule;
+    protected int rotation;
     protected boolean active;
 
     public TileEntityBase() {
@@ -79,40 +74,40 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
 
     public boolean removeBlockByPlayer(EntityPlayer player, BlockBase blockBase, boolean willHarvest) {
         return blockBase.superRemoveBlockByPlayer(this.getWorld(),
-        										  pos,
-                                                  player,
-                                                  willHarvest);
+                pos,
+                player,
+                willHarvest);
     }
 
     public ItemStack getPickBlock(MovingObjectPosition target, BlockBase blockBase) {
         return blockBase.superGetPickBlock(target,
-                                           this.getWorld(),
-                                           this.pos);
+                this.getWorld(),
+                this.pos);
     }
 
     public float getBlockHardness(BlockBase blockBase) {
         return blockBase.superBlockHardness(this.getWorld(),
-                                            this.pos);
+                this.pos);
     }
 
     public float getPlayerRelativeBlockHardness(EntityPlayer entityplayer, IBlockState blockState) {
         return ForgeHooks.blockStrength(blockState,
-                                        entityplayer,
-                                        this.getWorld(),
-                                        this.pos);
+                entityplayer,
+                this.getWorld(),
+                this.pos);
     }
 
     public float getExplosionResistance(BlockBase blockBase, Entity exploder, Explosion explosion) {
         return blockBase.superGetExplosionResistance(this.getWorld(),
-                                                     this.pos,
-                                                     exploder,
-                                                     explosion);
+                this.pos,
+                exploder,
+                explosion);
     }
 
     public int colorMultiplier(BlockBase blockBase, int renderPass) {
         return blockBase.superColorMultiplier(this.getWorld(),
-                                              this.pos,
-                                              renderPass);
+                this.pos,
+                renderPass);
     }
 
     protected abstract void addHarvestContents(ArrayList<ItemStack> harvestList);
@@ -139,8 +134,8 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
 
     public void updateBlockAndNeighbours() {
         BlockHelper.updateIndirectNeighbors(this.getWorld(),
-                                            this.pos,
-                                            this.getBlockType());
+                this.pos,
+                this.getBlockType());
         this.updateBlock();
     }
 
@@ -154,8 +149,8 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
         this.addHarvestContents(harvestList);
         for (ItemStack itemstack : harvestList) {
             ItemHelper.dropItem(this.getWorld(),
-                                this.pos,
-                                itemstack);
+                    this.pos,
+                    itemstack);
         }
     }
 
@@ -174,14 +169,14 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
 
     public EnumFacing getFacing() {
         switch (this.rotation) {
-        case 0:
-            return EnumFacing.NORTH;
-        case 1:
-            return EnumFacing.EAST;
-        case 2:
-            return EnumFacing.SOUTH;
-        case 3:
-            return EnumFacing.WEST;
+            case 0:
+                return EnumFacing.NORTH;
+            case 1:
+                return EnumFacing.EAST;
+            case 2:
+                return EnumFacing.SOUTH;
+            case 3:
+                return EnumFacing.WEST;
         }
         return EnumFacing.NORTH;
     }
@@ -193,7 +188,7 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
 
     public void setBlockBoundsBasedOnState(BlockBase blockBase) {
         blockBase.superSetBlockBoundsBasedOnState(this.getWorld(),
-                                                  this.pos);
+                this.pos);
     }
 
     public void setBlockBoundsForItemRender(BlockBase blockBase) {
@@ -202,24 +197,24 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
 
     public MovingObjectPosition collisionRayTrace(BlockBase blockbase, Vec3 startVec, Vec3 endVec) {
         return blockbase.superCollisionRayTrace(this.getWorld(),
-                                                this.pos,
-                                                startVec,
-                                                endVec);
+                this.pos,
+                startVec,
+                endVec);
     }
 
     public void addCollisionBoxesToList(BlockBase blockBase, IBlockState blockState, AxisAlignedBB axisAlignedBB, List aList, Entity anEntity) {
         blockBase.superAddCollisionBoxesToList(this.getWorld(),
-                							   this.pos,
-        									   blockState,
-                                               axisAlignedBB,
-                                               aList,
-                                               anEntity);
+                this.pos,
+                blockState,
+                axisAlignedBB,
+                aList,
+                anEntity);
     }
 
     public boolean isSideSolid(BlockBase blockBase, EnumFacing side) {
         return blockBase.superSideSolid(this.getWorld(),
-                                        this.pos,
-                                        side);
+                this.pos,
+                side);
     }
 
     public boolean addBlockDestroyEffects(BlockBase blockBase, EffectRenderer effectRenderer) {
@@ -241,7 +236,7 @@ public abstract class TileEntityBase extends TileEntity implements IUpdatePlayer
     /**
      * This can be overriden and used to retrieve the step sound based on
      * TileEntity information
-     * 
+     *
      * @return a Step Sound
      */
     public SoundType getStepSound() {

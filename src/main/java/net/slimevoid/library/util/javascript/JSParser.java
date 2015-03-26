@@ -11,14 +11,13 @@
  */
 package net.slimevoid.library.util.javascript;
 
-import java.util.Map;
+import net.slimevoid.library.core.SlimevoidCore;
+import net.slimevoid.library.core.lib.CoreLib;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import net.slimevoid.library.core.SlimevoidCore;
-import net.slimevoid.library.core.lib.CoreLib;
+import java.util.Map;
 
 public class JSParser {
 
@@ -29,14 +28,14 @@ public class JSParser {
         try {
             for (String param : params.keySet()) {
                 se.put(param,
-                       params.get(param));
+                        params.get(param));
             }
 
             se.eval(script);
             return se.eval(func);
         } catch (ScriptException e) {
             SlimevoidCore.console(CoreLib.MOD_ID,
-                                  e.getLocalizedMessage());
+                    e.getLocalizedMessage());
         }
         return null;
     }

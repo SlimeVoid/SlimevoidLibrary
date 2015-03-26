@@ -13,15 +13,13 @@ package net.slimevoid.library.network;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.slimevoid.library.util.helpers.SlimevoidHelper;
 
 /**
  * Packet for sending TileEntity information
- * 
+ *
  * @author Eurymachus
- * 
  */
 public abstract class PacketTileEntity extends PacketUpdate {
 
@@ -31,23 +29,21 @@ public abstract class PacketTileEntity extends PacketUpdate {
 
     /**
      * Get the tileentity instance for this packet
-     * 
-     * @param world
-     *            The world in which the tileentity resides
-     * 
+     *
+     * @param world The world in which the tileentity resides
      * @return The tileentity
      */
     public TileEntity getTileEntity(World world) {
         if (this.targetExists(world)) {
             return SlimevoidHelper.getBlockTileEntity(world,
-                                                      this.getPosition());
+                    this.getPosition());
         }
         return null;
     }
 
     @Override
     public boolean targetExists(World world) {
-    	IBlockState blockState = SlimevoidHelper.getBlockState(world,
+        IBlockState blockState = SlimevoidHelper.getBlockState(world,
                 this.getPosition());
         if (/*SlimevoidHelper.targetExists(world,
                                          this.xPosition,

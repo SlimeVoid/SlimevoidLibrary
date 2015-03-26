@@ -24,44 +24,36 @@ public interface ISlimevoidHelper {
 
     /**
      * Gets the block from location
-     * 
-     * @param world
-     *            the world of the target
-     * @param pos
-     *            block position
+     *
+     * @param world the world of the target
+     * @param pos   block position
      * @return the block
      */
     public Block getBlock(World world, BlockPos pos);
 
     /**
      * Gets the block from location
-     * 
-     * @param world
-     *            the world of the target
-     * @param pos
-     *            block position
+     *
+     * @param world the world of the target
+     * @param pos   block position
      * @return the block
      */
     public IBlockState getBlockState(World world, BlockPos pos);
 
     /**
      * Gets the tile entity for the block
-     * 
-     * @param world
-     *            the world of the target
-     * @param pos
-     *            block position
+     *
+     * @param world the world of the target
+     * @param pos   block position
      * @return a tile entity
      */
     public TileEntity getBlockTileEntity(IBlockAccess world, BlockPos pos);
 
     /**
      * Checks if the target exists within the worldObj of the target
-     * 
-     * @param world
-     *            the world of the target
-     * @param pos
-     *            block position
+     *
+     * @param world the world of the target
+     * @param pos   block position
      * @return if block exists
      */
     public boolean targetExists(World world, BlockPos pos);
@@ -72,42 +64,33 @@ public interface ISlimevoidHelper {
     /**
      * Helps get the usable by player for Containers
      *
-     * @param world
-     *            NOT player.worldObj world of the object e.g.
-     *            tileentity.worldObj
-     * @param player
-     *            the player attempting to use the block
-     * @param pos
-     *            the {@link BlockPos}
-     * @param xDiff
-     *            the x differential (0.5D)
-     * @param yDiff
-     *            the y differential (0.5D)
-     * @param zDiff
-     *            the z differential (0.5D)
-     * @param distance
-     *            the distance from object (64.0D)
-     *
+     * @param world    NOT player.worldObj world of the object e.g.
+     *                 tileentity.worldObj
+     * @param player   the player attempting to use the block
+     * @param pos      the {@link BlockPos}
+     * @param xDiff    the x differential (0.5D)
+     * @param yDiff    the y differential (0.5D)
+     * @param zDiff    the z differential (0.5D)
+     * @param distance the distance from object (64.0D)
      * @return whether the Player can use the object
      */
     public boolean isUseableByPlayer(World world, EntityPlayer player, BlockPos pos, double xDiff, double yDiff, double zDiff, double distance);
 
     /**
      * Overridden to return a readable name string
-     * 
+     *
      * @return the name of the helper
      */
     public String getHelperName();
 
     /**
      * Overridden to determine whether or not the entity is on a ladder
-     * 
+     *
      * @param world
      * @param x
      * @param y
      * @param z
      * @param entity
-     * 
      * @return true of false
      */
     @Deprecated
@@ -115,11 +98,10 @@ public interface ISlimevoidHelper {
 
     /**
      * Overridden to determine whether or not the entity is on a ladder
-     * 
+     *
      * @param world
      * @param pos
      * @param entity
-     * 
      * @return true of false
      */
     public boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity);

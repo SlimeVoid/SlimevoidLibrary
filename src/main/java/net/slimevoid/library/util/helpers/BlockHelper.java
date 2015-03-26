@@ -18,15 +18,15 @@ public class BlockHelper {
         Block block = blockState.getBlock();
         if (block != null) {
             block.onNeighborBlockChange(world,
-                                        pos,
-                                        blockState,
-                                        source);
+                    pos,
+                    blockState,
+                    source);
         }
     }
 
     public static void updateIndirectNeighbors(World world, BlockPos pos, Block neighbor) {
         if (world.isRemote
-            || FMLCommonHandler.instance().getSide() == Side.CLIENT) return;
+                || FMLCommonHandler.instance().getSide() == Side.CLIENT) return;
         for (int inDirX = -3; inDirX <= 3; inDirX++) {
             for (int inDirY = -3; inDirY <= 3; inDirY++) {
                 for (int inDirZ = -3; inDirZ <= 3; inDirZ++) {
@@ -35,8 +35,8 @@ public class BlockHelper {
                     updateDirection += inDirZ >= 0 ? inDirZ : -inDirZ;
                     if (updateDirection <= 3) {
                         notifyBlock(world,
-                        			pos,
-                                    neighbor);
+                                pos,
+                                neighbor);
                     }
                 }
 
@@ -51,7 +51,7 @@ public class BlockHelper {
             return null;
         }
         TileEntity tileentity = SlimevoidHelper.getBlockTileEntity(world,
-                                                                   pos);
+                pos);
         if (!tileEntityClass.isInstance(tileentity)) {
             return null;
         } else {
@@ -62,18 +62,18 @@ public class BlockHelper {
     public static TileEntity getTileEntityAtBase(Entity entity) {
         int x = MathHelper.floor_double(entity.posX);
         int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D
-                                        - (double) entity.getYOffset());
+                - (double) entity.getYOffset());
         int z = MathHelper.floor_double(entity.posZ);
         return SlimevoidHelper.getBlockTileEntity(entity.worldObj,
-                                                  new BlockPos(x, y, z));
+                new BlockPos(x, y, z));
     }
 
     public static void playBlockPlaceNoise(World world, int x, int y, int z, Block block) {
         world.playSoundEffect((float) x + 0.5F,
-                              (float) y + 0.5F,
-                              (float) z + 0.5F,
-                              block.stepSound.getPlaceSound(),
-                              (block.stepSound.getFrequency() + 1.0F) / 2.0F,
-                              block.stepSound.getVolume() * 0.8F);
+                (float) y + 0.5F,
+                (float) z + 0.5F,
+                block.stepSound.getPlaceSound(),
+                (block.stepSound.getFrequency() + 1.0F) / 2.0F,
+                block.stepSound.getVolume() * 0.8F);
     }
 }

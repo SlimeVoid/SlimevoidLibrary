@@ -11,11 +11,11 @@
  */
 package net.slimevoid.library.proxy;
 
-import java.io.File;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import java.io.File;
 
 public class SV_CommonProxy implements ICommonProxy {
 

@@ -11,9 +11,6 @@
  */
 package net.slimevoid.library.util.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,9 +21,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.slimevoid.library.core.SlimevoidCore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SlimevoidHelper {
 
-    private static boolean                initialized = false;
+    private static boolean initialized = false;
     private static List<ISlimevoidHelper> helperClasses;
 
     public static void init() {
@@ -41,21 +41,21 @@ public class SlimevoidHelper {
             helperClasses.add(newHelper);
         } else {
             SlimevoidCore.console("Slimevoid Lib",
-                                  "Attempted to register helper Object "
-                                          + newHelper.getHelperName()
-                                          + " that was already registered.");
+                    "Attempted to register helper Object "
+                            + newHelper.getHelperName()
+                            + " that was already registered.");
         }
     }
 
     public static Block getBlock(World world, BlockPos pos) {
         return getBlockState(world, pos).getBlock();
     }
-    
+
     public static IBlockState getBlockState(World world, BlockPos pos) {
-    	for (ISlimevoidHelper helper : helperClasses) {
+        for (ISlimevoidHelper helper : helperClasses) {
             IBlockState blockState = helper.getBlockState(
-            						world,
-                                    pos);
+                    world,
+                    pos);
             return blockState;
         }
         return world.getBlockState(pos);
@@ -64,7 +64,7 @@ public class SlimevoidHelper {
     public static TileEntity getBlockTileEntity(IBlockAccess world, BlockPos pos) {
         for (ISlimevoidHelper helper : helperClasses) {
             TileEntity tileentity = helper.getBlockTileEntity(world,
-                                                              pos);
+                    pos);
             if (tileentity != null) {
                 return tileentity;
             }
@@ -80,12 +80,12 @@ public class SlimevoidHelper {
     public static boolean isUseableByPlayer(World world, EntityPlayer player, BlockPos pos, double xDiff, double yDiff, double zDiff, double distance) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isUseable = helper.isUseableByPlayer(world,
-                                                         player,
-                                                         pos,
-                                                         xDiff,
-                                                         yDiff,
-                                                         zDiff,
-                                                         distance);
+                    player,
+                    pos,
+                    xDiff,
+                    yDiff,
+                    zDiff,
+                    distance);
             if (isUseable) return true;
         }
         return player.getDistanceSq(
@@ -103,8 +103,8 @@ public class SlimevoidHelper {
     public static boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isLadder = helper.isLadder(world,
-                                               pos,
-                                               entity);
+                    pos,
+                    entity);
             if (isLadder) return true;
         }
         return false;
@@ -112,13 +112,10 @@ public class SlimevoidHelper {
 
     /**
      * Used to trace where a method is being called from
-     * 
-     * @param _class
-     *            the Class to compare against
-     * @param traceValue
-     *            the value of the trace level, (DO NOT preempt the stack trace
-     *            + 1 simply use the trace from where you call this method)
-     * 
+     *
+     * @param _class     the Class to compare against
+     * @param traceValue the value of the trace level, (DO NOT preempt the stack trace
+     *                   + 1 simply use the trace from where you call this method)
      * @return if the trace matches
      */
     public static boolean isReflectedClass(Class _class, int traceValue) {
