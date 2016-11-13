@@ -10,7 +10,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,7 +49,7 @@ public abstract class BlockBase extends BlockContainer {
     }
 
     @Override
-    public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
         IBlockState blockState = world.getBlockState(pos);
 
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
@@ -59,22 +60,26 @@ public abstract class BlockBase extends BlockContainer {
                     this,
                     willHarvest);
         } else {
-            return super.removedByPlayer(world,
+            return super.removedByPlayer(
+                    state,
+                    world,
                     pos,
                     player,
                     willHarvest);
         }
     }
 
-    public boolean superRemoveBlockByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-        return super.removedByPlayer(world,
+    public boolean superRemoveBlockByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+        return super.removedByPlayer(
+                state,
+                world,
                 pos,
                 player,
                 willHarvest);
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         TileEntityBase tileentitybase = (TileEntityBase) BlockHelper.getTileEntity(world,
                 pos,
                 this.getTileEntityClass(world.getBlockState(pos)));
@@ -82,9 +87,11 @@ public abstract class BlockBase extends BlockContainer {
             return tileentitybase.getPickBlock(target,
                     this);
         } else {
-            return super.getPickBlock(target,
+            return super.getPickBlock(state,
+                    target,
                     world,
-                    pos);
+                    pos,
+                    player);
         }
     }
 
