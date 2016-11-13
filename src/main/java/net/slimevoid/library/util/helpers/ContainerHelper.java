@@ -31,28 +31,28 @@ public class ContainerHelper {
 
         if (stackToMerge.isStackable()) {
             while (stackToMerge.stackSize > 0
-                   && (!reverseOrder && realSlotStart < slotEnd || reverseOrder
-                                                                   && realSlotStart >= slotStart)) {
+                    && (!reverseOrder && realSlotStart < slotEnd || reverseOrder
+                    && realSlotStart >= slotStart)) {
                 slot = (Slot) container.inventorySlots.get(realSlotStart);
                 stackInSlot = slot.getStack();
 
                 if (stackInSlot != null
-                    && stackInSlot.getItem() == stackToMerge.getItem()
-                    && (!stackToMerge.getHasSubtypes() || stackToMerge.getItemDamage() == stackInSlot.getItemDamage())
-                    && ItemStack.areItemStackTagsEqual(stackToMerge,
-                                                       stackInSlot)) {
+                        && stackInSlot.getItem() == stackToMerge.getItem()
+                        && (!stackToMerge.getHasSubtypes() || stackToMerge.getItemDamage() == stackInSlot.getItemDamage())
+                        && ItemStack.areItemStackTagsEqual(stackToMerge,
+                        stackInSlot)) {
                     int l = stackInSlot.stackSize + stackToMerge.stackSize;
 
                     if (l <= stackToMerge.getMaxStackSize()
-                        && l <= slot.getSlotStackLimit()) {
+                            && l <= slot.getSlotStackLimit()) {
                         stackToMerge.stackSize = 0;
                         stackInSlot.stackSize = l;
                         slot.onSlotChanged();
                         stackMerged = true;
                     } else if (stackInSlot.stackSize < stackToMerge.getMaxStackSize()
-                               && stackInSlot.stackSize < slot.getSlotStackLimit()) {
+                            && stackInSlot.stackSize < slot.getSlotStackLimit()) {
                         stackToMerge.stackSize -= stackToMerge.getMaxStackSize()
-                                                  - stackInSlot.stackSize;
+                                - stackInSlot.stackSize;
                         stackInSlot.stackSize = stackToMerge.getMaxStackSize();
                         slot.onSlotChanged();
                         stackMerged = true;
@@ -75,7 +75,7 @@ public class ContainerHelper {
             }
 
             while (!reverseOrder && realSlotStart < slotEnd || reverseOrder
-                   && realSlotStart >= slotStart) {
+                    && realSlotStart >= slotStart) {
                 slot = (Slot) container.inventorySlots.get(realSlotStart);
                 stackInSlot = slot.getStack();
 

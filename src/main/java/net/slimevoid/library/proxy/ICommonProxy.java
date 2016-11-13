@@ -9,14 +9,14 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package net.slimevoid.library;
-
-import java.io.File;
+package net.slimevoid.library.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+
+import java.io.File;
 
 public interface ICommonProxy extends IGuiHandler {
 
@@ -31,7 +31,7 @@ public interface ICommonProxy extends IGuiHandler {
 
     /**
      * Retrieves the Minecraft directory
-     * 
+     *
      * @return the Path
      */
     public String getMinecraftDir();
@@ -64,17 +64,21 @@ public interface ICommonProxy extends IGuiHandler {
 
     /**
      * Register tileentity renderer (Client only)
-     * 
-     * @param clazz
-     *            the TileEntity class to register for
+     *
+     * @param clazz the TileEntity class to register for
      */
     public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz);
 
     /**
      * Checks if we're looking at the Client side session.
-     * 
+     *
      * @return True or false.
      */
     public boolean isClient(World world);
+
+    /**
+     * Initializes Packet Handlers
+     */
+    public void registerPacketHandlers();
 
 }

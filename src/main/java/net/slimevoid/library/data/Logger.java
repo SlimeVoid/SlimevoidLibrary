@@ -11,31 +11,31 @@
  */
 package net.slimevoid.library.data;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.slimevoid.library.core.SlimevoidLib;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import net.slimevoid.library.core.SlimevoidLib;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-
 /**
  * Slimevoid logging engine.<br>
  * Singleton pattern class.
- * 
+ *
  * @author ali4z
  */
 public abstract class Logger {
-    protected String       name;
+    protected String name;
     protected LoggerWriter writer;
-    protected LogLevel     filterLevel;
+    protected LogLevel filterLevel;
 
     /**
      * Log level.<br>
      * All messages are DEBUG or higher.<br>
      * Stack trace errors are ERROR messages.
-     * 
+     *
      * @author ali4z
      */
     public static enum LogLevel {
@@ -51,9 +51,9 @@ public abstract class Logger {
 
     /**
      * Gets the logger name
-     * 
+     * <p/>
      * Implemented to return a mod specific name for logfile
-     * 
+     *
      * @return Mod Name
      */
     protected abstract String getLoggerName();
@@ -61,9 +61,8 @@ public abstract class Logger {
     /**
      * Sets the filtering level based on a string.<br>
      * "DEBUG","INFO","WARNING","ERROR" are valid strings.
-     * 
-     * @param f
-     *            log level string
+     *
+     * @param f log level string
      * @return true if string valid was valid. Defaults to INFO if not.
      */
     public boolean setFilterLevel(String f) {
@@ -101,11 +100,9 @@ public abstract class Logger {
 
     /**
      * Write a message to the logger.
-     * 
-     * @param msg
-     *            message text
-     * @param lvl
-     *            message level
+     *
+     * @param msg message text
+     * @param lvl message level
      */
     public void write(boolean isRemote, String msg, LogLevel lvl) {
         String name = this.getName();
@@ -118,15 +115,15 @@ public abstract class Logger {
             } catch (Exception e) {
                 StackTraceElement[] c = e.getStackTrace();
                 int min = Math.min(3,
-                                   c.length - 1);
+                        c.length - 1);
                 for (int i = min; i >= 1; i--) {
                     trace.append(filterClassName(c[i].getClassName()) + "."
-                                 + c[i].getMethodName());
+                            + c[i].getMethodName());
                     if (i > 1) trace.append("->");
                 }
             }
             writer.write(lvl.name() + ":" + getSide(isRemote) + ":" + name
-                         + ":" + msg + ":" + trace);
+                    + ":" + msg + ":" + trace);
         }
     }
 
@@ -140,33 +137,32 @@ public abstract class Logger {
 
     /**
      * Write an exception stack trace to the logger.
-     * 
-     * @param e
-     *            exception
+     *
+     * @param e exception
      */
     public void writeStackTrace(Exception e) {
         if (writer == null) writer = new LoggerWriter(this.getLoggerName());
 
         writer.writeStackTrace(e);
         FMLCommonHandler.instance().raiseException(e,
-                                                   e.getMessage(),
-                                                   false);
+                e.getMessage(),
+                false);
     }
 
     /**
      * Logger file handler.
-     * 
+     *
      * @author ali4z
      */
     private class LoggerWriter {
-        private File        file;
-        private FileWriter  fstream;
+        private File file;
+        private FileWriter fstream;
         private PrintWriter out;
 
         public LoggerWriter(String modName) {
             try {
                 String fileName = SlimevoidLib.proxy.getMinecraftDir()
-                                  + File.separator + modName + ".log";
+                        + File.separator + modName + ".log";
                 System.out.println(fileName);
                 file = new File(fileName);
                 fstream = new FileWriter(file);
@@ -203,9 +199,8 @@ public abstract class Logger {
     /**
      * Find the class name from a string.<br>
      * Returns the string beyond the last period ".".
-     * 
-     * @param name
-     *            class name
+     *
+     * @param name class name
      * @return Filtered class name.
      */
 
@@ -215,7 +210,7 @@ public abstract class Logger {
 
     /**
      * Gets the instance name for the Logger
-     * 
+     *
      * @return
      */
     public String getName() {
@@ -224,7 +219,7 @@ public abstract class Logger {
 
     /**
      * Sets the instance name for the Logger
-     * 
+     *
      * @param name
      */
     public void setName(String name) {

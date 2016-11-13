@@ -1,7 +1,14 @@
+# mac stuff
+.DS_Store
+
 # gradle stuff
 build
 .gradle
 upload.bat
+
+# intellij stuff
+.idea
+*.iml
 
 # eclipse stuff
 .classpath

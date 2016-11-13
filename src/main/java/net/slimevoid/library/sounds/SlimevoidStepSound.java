@@ -6,7 +6,7 @@ public class SlimevoidStepSound extends SoundType {
 
     /**
      * This is a facade class used for the BlockBase of Slimevoid Mods
-     * 
+     *
      * @param stepSoundName
      * @param volume
      * @param pitch
@@ -20,18 +20,8 @@ public class SlimevoidStepSound extends SoundType {
         return "dig.slimevoid." + this.soundName;
     }
 
-    @Override
-    public String getStepResourcePath() {
-        return this.getStepSound();
-    }
-
     public String getStepSound() {
         return "step.slimevoid." + this.soundName;
-    }
-
-    @Override
-    public String func_150496_b() {
-        return this.getPlaceSound();
     }
 
     public String getPlaceSound() {

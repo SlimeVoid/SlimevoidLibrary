@@ -11,21 +11,22 @@
  */
 package net.slimevoid.library.util.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.slimevoid.library.ISlimevoidHelper;
 import net.slimevoid.library.core.SlimevoidCore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SlimevoidHelper {
 
-    private static boolean                initialized = false;
+    private static boolean initialized = false;
     private static List<ISlimevoidHelper> helperClasses;
 
     public static void init() {
@@ -40,78 +41,70 @@ public class SlimevoidHelper {
             helperClasses.add(newHelper);
         } else {
             SlimevoidCore.console("Slimevoid Lib",
-                                  "Attempted to register helper Object "
-                                          + newHelper.getHelperName()
-                                          + " that was already registered.");
+                    "Attempted to register helper Object "
+                            + newHelper.getHelperName()
+                            + " that was already registered.");
         }
     }
 
-    public static Block getBlock(World world, int x, int y, int z) {
+    public static Block getBlock(World world, BlockPos pos) {
+        return getBlockState(world, pos).getBlock();
+    }
+
+    public static IBlockState getBlockState(World world, BlockPos pos) {
         for (ISlimevoidHelper helper : helperClasses) {
-            Block id = helper.getBlock(world,
-                                       x,
-                                       y,
-                                       z);
-            if (id != null) return id;
+            IBlockState blockState = helper.getBlockState(
+                    world,
+                    pos);
+            return blockState;
         }
-        return world.getBlock(x,
-                              y,
-                              z);
+        return world.getBlockState(pos);
     }
 
-    public static TileEntity getBlockTileEntity(IBlockAccess world, int x, int y, int z) {
+    public static TileEntity getBlockTileEntity(IBlockAccess world, BlockPos pos) {
         for (ISlimevoidHelper helper : helperClasses) {
             TileEntity tileentity = helper.getBlockTileEntity(world,
-                                                              x,
-                                                              y,
-                                                              z);
+                    pos);
             if (tileentity != null) {
                 return tileentity;
             }
         }
-        return world.getTileEntity(x,
-                                   y,
-                                   z);
+        return world.getTileEntity(pos);
     }
 
-    public static boolean targetExists(World world, int x, int y, int z) {
-        for (ISlimevoidHelper helper : helperClasses) {
-            boolean exists = helper.targetExists(world,
-                                                 x,
-                                                 y,
-                                                 z);
-            if (exists) return true;
-        }
-        return world.blockExists(x,
-                                 y,
-                                 z);
+    @Deprecated
+    public static boolean isUseableByPlayer(World world, EntityPlayer player, int x, int y, int z, double xDiff, double yDiff, double zDiff, double distance) {
+        return isUseableByPlayer(world, player, new BlockPos(x, y, z), xDiff, yDiff, zDiff, distance);
     }
 
-    public static boolean isUseableByPlayer(World world, EntityPlayer player, int xCoord, int yCoord, int zCoord, double xDiff, double yDiff, double zDiff, double distance) {
+    public static boolean isUseableByPlayer(World world, EntityPlayer player, BlockPos pos, double xDiff, double yDiff, double zDiff, double distance) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isUseable = helper.isUseableByPlayer(world,
-                                                         player,
-                                                         xCoord,
-                                                         yCoord,
-                                                         zCoord,
-                                                         xDiff,
-                                                         yDiff,
-                                                         zDiff,
-                                                         distance);
+                    player,
+                    pos,
+                    xDiff,
+                    yDiff,
+                    zDiff,
+                    distance);
             if (isUseable) return true;
         }
-        return player.getDistanceSq(xCoord + xDiff,
-                                    yCoord + yDiff,
-                                    zCoord + zDiff) <= distance;
+        return player.getDistanceSq(
+                pos.add(
+                        xDiff,
+                        yDiff,
+                        zDiff)) <= distance;
     }
 
+    @Deprecated
     public static boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
+        return isLadder(world, new BlockPos(x, y, z), entity);
+    }
+
+    public static boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
         for (ISlimevoidHelper helper : helperClasses) {
             boolean isLadder = helper.isLadder(world,
-                                               x,
-                                               y,
-                                               z,
-                                               entity);
+                    pos,
+                    entity);
             if (isLadder) return true;
         }
         return false;
@@ -119,13 +112,10 @@ public class SlimevoidHelper {
 
     /**
      * Used to trace where a method is being called from
-     * 
-     * @param _class
-     *            the Class to compare against
-     * @param traceValue
-     *            the value of the trace level, (DO NOT preempt the stack trace
-     *            + 1 simply use the trace from where you call this method)
-     * 
+     *
+     * @param _class     the Class to compare against
+     * @param traceValue the value of the trace level, (DO NOT preempt the stack trace
+     *                   + 1 simply use the trace from where you call this method)
      * @return if the trace matches
      */
     public static boolean isReflectedClass(Class _class, int traceValue) {

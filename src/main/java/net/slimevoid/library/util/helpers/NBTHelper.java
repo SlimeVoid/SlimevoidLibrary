@@ -9,34 +9,33 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package net.slimevoid.library.nbt;
+package net.slimevoid.library.util.helpers;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.network.ByteBufUtils;
-
 public class NBTHelper {
 
     /**
      * Writes an ItemStack to a, Output Stream
-     * 
+     *
      * @param data
      * @param itemstack
      */
     public static void writeItemStack(ByteBuf data, ItemStack itemstack) {
         ByteBufUtils.writeItemStack(data,
-                                    itemstack);
+                itemstack);
     }
 
     /**
      * Reads an ItemStack from an Input Stream
-     * 
+     *
      * @param data
      * @return
      * @throws IOException
@@ -65,7 +64,7 @@ public class NBTHelper {
 
         if (stringLength > allowedLength) {
             throw new IOException("Received string length longer than maximum allowed ("
-                                  + stringLength + " > " + allowedLength + ")");
+                    + stringLength + " > " + allowedLength + ")");
         } else if (stringLength < 0) {
             throw new IOException("Received string length is less than zero! Weird string!");
         } else {
@@ -84,7 +83,7 @@ public class NBTHelper {
      */
     public static void writeNBTTagCompound(NBTTagCompound nbttagcompound, ByteBuf data) {
         ByteBufUtils.writeTag(data,
-                              nbttagcompound);
+                nbttagcompound);
     }
 
     /**
@@ -103,7 +102,7 @@ public class NBTHelper {
             return tag.getInteger(key);
         } else {
             tag.setInteger(key,
-                           defaultValue);
+                    defaultValue);
         }
         itemstack.setTagCompound(tag);
         return tag.getInteger(key);

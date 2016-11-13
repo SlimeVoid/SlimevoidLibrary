@@ -1,21 +1,20 @@
 package net.slimevoid.library.items;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 
-import cpw.mods.fml.common.FMLLog;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ItemBlockBase extends ItemBlock {
 
     protected HashMap<Integer, String> itemBlockNames;
-    private ArrayList<Integer>       validItemBlocks;
+    private ArrayList<Integer> validItemBlocks;
 
     public ItemBlockBase(Block block) {
         super(block);
@@ -30,10 +29,11 @@ public class ItemBlockBase extends ItemBlock {
         return damage;
     }
 
-    public void setMetaName(int damage, String name) {
+    public ItemBlockBase setMetaName(int damage, String name) {
         this.itemBlockNames.put(Integer.valueOf(damage),
-                                name);
+                name);
         this.getValidItemBlocks().add(Integer.valueOf(damage));
+        return this;
     }
 
     @Override

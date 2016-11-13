@@ -11,17 +11,17 @@
  */
 package net.slimevoid.library.util.xml;
 
+import net.slimevoid.library.core.lib.CoreLib;
+import net.slimevoid.library.data.Logger;
+import net.slimevoid.library.data.LoggerSlimevoidLib;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.slimevoid.library.core.SlimevoidCore;
-import net.slimevoid.library.core.lib.CoreLib;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public abstract class XMLLoader {
     /**
@@ -32,13 +32,13 @@ public abstract class XMLLoader {
     /**
      * Filename filter. Used for filtering out other files than XML files.
      */
-    protected static FilenameFilter       filter       = new FilenameFilter() {
-                                                           @Override
-                                                           public boolean accept(File dir, String name) {
-                                                               return name.substring(name.length() - 4,
-                                                                                     name.length()).equals(".xml");
-                                                           }
-                                                       };
+    protected static FilenameFilter filter = new FilenameFilter() {
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.substring(name.length() - 4,
+                    name.length()).equals(".xml");
+        }
+    };
 
     private static int getInteger(String value) {
         int returns;
@@ -53,11 +53,9 @@ public abstract class XMLLoader {
     /**
      * Add a XML variable mapping. Variable name can be used in XML files
      * instead of IDs.
-     * 
-     * @param var
-     *            Variable name.
-     * @param val
-     *            Variable value.
+     *
+     * @param var Variable name.
+     * @param val Variable value.
      * @return
      */
     public static void addXmlVariable(String var, int val) {
@@ -71,27 +69,29 @@ public abstract class XMLLoader {
             }
         }
         Integer flag = xmlVariables.put(var,
-                                        val);
+                val);
 
         if (flag != null) {
-            SlimevoidCore.console(CoreLib.MOD_ID,
-                                  "XML Variable replaced ID [" + flag
-                                          + "] with ID [" + val
-                                          + "] and mapped to " + var);
+            LoggerSlimevoidLib.getInstance(CoreLib.MOD_NAME).write(
+                    false,
+                    "XML Variable replaced ID [" + flag
+                            + "] with ID [" + val
+                            + "] and mapped to ",
+                    Logger.LogLevel.DEBUG);
         } else {
-            SlimevoidCore.console(CoreLib.MOD_ID,
-                                  "XML Variable loaded for [" + var + "] @ID ["
-                                          + val + "]");
+            LoggerSlimevoidLib.getInstance(CoreLib.MOD_NAME).write(
+                    false,
+                    "XML Variable loaded for [" + var + "] @ID ["
+                            + val + "]",
+                    Logger.LogLevel.DEBUG);
         }
     }
 
     /**
      * Fetches a value with set tag from a element node.
-     * 
-     * @param tag
-     *            Tag name.
-     * @param element
-     *            Element node.
+     *
+     * @param tag     Tag name.
+     * @param element Element node.
      * @return The tag's value.
      */
     protected static String getValue(String tag, Element element) {

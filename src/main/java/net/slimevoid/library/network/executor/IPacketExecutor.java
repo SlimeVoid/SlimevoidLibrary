@@ -9,7 +9,7 @@
  * Lesser General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  */
-package net.slimevoid.library;
+package net.slimevoid.library.network.executor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -18,13 +18,10 @@ import net.slimevoid.library.network.PacketUpdate;
 public interface IPacketExecutor {
     /**
      * Execute the packet.
-     * 
-     * @param packet
-     *            The Packet Data.
-     * @param world
-     *            The world object.
-     * @param entityplayer
-     *            The player associated with the current Packet Data
+     *
+     * @param packet       The Packet Data.
+     * @param world        The world object.
+     * @param entityplayer The player associated with the current Packet Data
      */
-    public void execute(PacketUpdate packet, World world, EntityPlayer entityplayer);
+    public PacketUpdate execute(PacketUpdate packet, World world, EntityPlayer entityplayer);
 }

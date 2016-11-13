@@ -11,18 +11,19 @@
  */
 package net.slimevoid.library.core;
 
-import net.slimevoid.library.ICommonProxy;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.slimevoid.library.core.lib.ConfigurationLib;
 import net.slimevoid.library.core.lib.CoreLib;
+import net.slimevoid.library.proxy.ICommonProxy;
+import net.slimevoid.library.util.helpers.ResourceHelper;
 import net.slimevoid.library.util.helpers.SlimevoidHelper;
 import net.slimevoid.library.util.json.JSONLoader;
 import net.slimevoid.library.util.xml.XMLVariables;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(
         modid = CoreLib.MOD_ID,
@@ -46,6 +47,7 @@ public class SlimevoidLib {
 
         proxy.preInit();
         SlimevoidHelper.init();
+        ResourceHelper.processVariants();
         ConfigurationLib.init();
         XMLVariables.registerDefaultXMLVariables();
     }

@@ -11,12 +11,11 @@
  */
 package net.slimevoid.library.proxy;
 
-import java.io.File;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.slimevoid.library.ICommonProxy;
+
+import java.io.File;
 
 public class SV_CommonProxy implements ICommonProxy {
 
@@ -61,6 +60,10 @@ public class SV_CommonProxy implements ICommonProxy {
 
     @Override
     public void postInit() {
+    }
+
+    @Override
+    public void registerPacketHandlers() {
     }
 
     @Override

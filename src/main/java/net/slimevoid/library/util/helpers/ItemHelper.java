@@ -5,6 +5,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -12,17 +13,17 @@ public class ItemHelper {
 
     public static boolean isBlockStack(ItemStack itemstack) {
         return itemstack != null
-               && itemstack.getItem() != null
-               && itemstack.getItem() instanceof ItemBlock
-               && !Block.getBlockFromItem(itemstack.getItem()).hasTileEntity(itemstack.getItemDamage());
+                && itemstack.getItem() != null
+                && itemstack.getItem() instanceof ItemBlock
+                && !Block.getBlockFromItem(itemstack.getItem()).hasTileEntity(Block.getStateById(Block.getIdFromBlock(Block.getBlockFromItem(itemstack.getItem())) + itemstack.getItemDamage()));
     }
 
     public static boolean isSolidBlockStack(ItemStack itemstack, World world, int x, int y, int z) {
         return isBlockStack(itemstack)
-               && Block.getBlockFromItem(itemstack.getItem()).renderAsNormalBlock();
+                ;//&& Block.getBlockFromItem(itemstack.getItem()).renderAsNormalBlock();
     }
 
-    public static void dropItem(World world, int x, int y, int z, ItemStack itemstack) {
+    public static void dropItem(World world, BlockPos pos, ItemStack itemstack) {
         if (world.isRemote) {
             return;
         } else {
@@ -30,15 +31,15 @@ public class ItemHelper {
             double xx = (double) world.rand.nextFloat() * d + (1.0D - d) * 0.5D;
             double yy = (double) world.rand.nextFloat() * d + (1.0D - d) * 0.5D;
             double zz = (double) world.rand.nextFloat() * d + (1.0D - d) * 0.5D;
-            EntityItem item = new EntityItem(world, (double) x + xx, (double) y
-                                                                     + yy, (double) z
-                                                                           + zz, itemstack);
-            item.age = 10;
+            EntityItem item = new EntityItem(world, (double) pos.getX() + xx, (double) pos.getY()
+                    + yy, (double) pos.getZ()
+                    + zz, itemstack);
+            //item.age = 10;
             world.spawnEntityInWorld(item);
             return;
         }
     }
-    
+
     public static void dropItemAtPlayer(EntityPlayer entityplayer, ItemStack stack) {
         EntityItem entityitem = new EntityItem(entityplayer.worldObj, entityplayer.posX + 0.5D, entityplayer.posY + 0.5D, entityplayer.posZ + 0.5D, stack);
         entityplayer.worldObj.spawnEntityInWorld(entityitem);
@@ -68,7 +69,7 @@ public class ItemHelper {
 
     public static String itemstackToName(ItemStack itemstack) {
         return itemstack != null ? itemstack.getDisplayName() + " | "
-                                   + itemstack.stackSize : "null";
+                + itemstack.stackSize : "null";
     }
 
     public static String itemstackArrayToStrings(Object[] input) {
@@ -84,6 +85,6 @@ public class ItemHelper {
 
     public static String itemstackToString(ItemStack itemstack) {
         return itemstack != null ? itemstack.getDisplayName() + " | "
-                                   + itemstack.stackSize : "null";
+                + itemstack.stackSize : "null";
     }
 }
